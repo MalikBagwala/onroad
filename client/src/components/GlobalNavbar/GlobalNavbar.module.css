@@ -1,0 +1,8 @@
+.base{
+    border-bottom: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-white));
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background: var(--mantine-color-white);
+}
