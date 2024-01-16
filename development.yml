@@ -11,7 +11,6 @@ services:
     volumes:
       - ./client:/app
       - /app/node_modules/
-      - /app/.nuxt/
     environment:
       GQL_HOST: ${GQL_HOST}
     depends_on:
