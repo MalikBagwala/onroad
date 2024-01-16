@@ -1,0 +1,68 @@
+table:
+  name: votes
+  schema: public
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      set:
+        created_at: NOW()
+        updated_at: NOW()
+      columns:
+        - contribution_id
+        - type
+        - user_id
+    comment: ""
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - type
+        - created_at
+        - updated_at
+        - contribution_id
+        - id
+        - user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      limit: 300
+      allow_aggregations: true
+    comment: ""
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - type
+      filter: {}
+      check:
+        user_id:
+          _eq: X-Hasura-User-Id
+      set:
+        updated_at: NOW()
+    comment: ""
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+    comment: ""
+event_triggers:
+  - name: update_votes
+    definition:
+      delete:
+        columns: '*'
+      enable_manual: false
+      insert:
+        columns: '*'
+      update:
+        columns:
+          - contribution_id
+          - user_id
+          - type
+    retry_conf:
+      interval_sec: 10
+      num_retries: 0
+      timeout_sec: 60
+    webhook: '{{API_HOST}}/api/trigger/update_votes/'

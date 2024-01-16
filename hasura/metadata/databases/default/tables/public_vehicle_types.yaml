@@ -1,0 +1,20 @@
+table:
+  name: vehicle_types
+  schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - category
+        - name
+        - id
+      filter: {}
+    comment: ""
+  - role: user
+    permission:
+      columns:
+        - category
+        - name
+        - id
+      filter: {}
+    comment: ""

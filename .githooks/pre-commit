@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# Get the list of staged .py files
+py_files=$(git diff --name-only --cached | grep '\.py$')
+
+# Check if any .py files are staged
+if [ -n "$py_files" ]; then
+    # Run black on the staged .py files
+    pipenv run black $py_files
+
+    # Count the number of formatted files
+    formatted_count=$(echo "$py_files" | wc -l)
+
+    if [ "$formatted_count" -eq 1 ]; then
+        echo -e "\033[0;32m✅ 1 Python file formatted and added to the staging area. 🎨\033[0m"
+    else
+        echo -e "\033[0;32m✅ $formatted_count Python files formatted and added to the staging area. 🎨\033[0m"
+    fi
+fi
+
+# Add all changes to the staging area
+git add .
+
+# Print a message indicating that changes were added
+echo -e "\033[0;32m✅ All changes added to the staging area. 🚀\033[0m"

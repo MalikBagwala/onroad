@@ -1,0 +1,63 @@
+table:
+  name: users
+  schema: public
+object_relationships:
+  - name: city
+    using:
+      foreign_key_constraint_on: city_id
+array_relationships:
+  - name: contributions
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: contributions
+          schema: public
+  - name: groups
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: users_groups
+          schema: public
+  - name: permissions
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: users_user_permissions
+          schema: public
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - city_id
+        - created_at
+        - email
+        - email_verified
+        - first_name
+        - id
+        - last_name
+        - updated_at
+        - username
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+    comment: ""
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - city_id
+        - email
+        - first_name
+        - last_name
+        - password
+        - username
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null
+      set:
+        updated_at: NOW()
+    comment: ""

@@ -1,0 +1,27 @@
+table:
+  name: variants_attachments
+  schema: public
+object_relationships:
+  - name: media
+    using:
+      foreign_key_constraint_on: media_id
+  - name: variant
+    using:
+      foreign_key_constraint_on: variant_id
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - id
+        - media_id
+        - variant_id
+      filter: {}
+    comment: ""
+  - role: user
+    permission:
+      columns:
+        - id
+        - media_id
+        - variant_id
+      filter: {}
+    comment: ""

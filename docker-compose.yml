@@ -1,0 +1,116 @@
+version: "3.9"
+
+services:
+  # client:
+  #   image: onroadclient:latest
+  #   container_name: or_client
+  #   build:
+  #     context: ./client
+  #   depends_on:
+  #     - django
+  #     - hasura
+  #   networks:
+  #     - db_network
+
+  django:
+    image: onroadapi:latest
+    container_name: or_django
+    build:
+      dockerfile: Dockerfile
+    volumes:
+      - ./static:/code/static
+    env_file:
+      - ./.env
+    environment:
+      - POSTGRES_HOST=db
+    depends_on:
+      - db
+    networks:
+      - db_network
+
+  caddy:
+    restart: always
+    image: caddy
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./static:/var/www/static
+      - ./cert.crt:/etc/pki/tls/certs/cert.crt
+      - ./cert.key:/etc/pki/tls/private/cert.key
+    container_name: or_caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - django
+      - hasura
+      - client
+    networks:
+      - db_network
+
+  db:
+    image: postgis/postgis
+    container_name: or_database
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    networks:
+      - db_network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: or_admin
+    links:
+      - db
+    depends_on:
+      - db
+    environment:
+      PGADMIN_DEFAULT_EMAIL: m.bagwala@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "4000:80"
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    networks:
+      - db_network
+
+  redis:
+    image: redis
+    container_name: or_redis
+    volumes:
+      - redis:/data
+    restart: always
+    networks:
+      - redis_network
+
+  hasura:
+    container_name: or_hasura
+    image: hasura/graphql-engine:latest.cli-migrations-v3
+    restart: always
+    depends_on:
+      - "db"
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+      HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256","key":"${JWT_SECRET_KEY}","claims_namespace":"user_claims","claims_format":"json"}'
+      API_HOST: "http://django:9000"
+    networks:
+      - db_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+networks:
+  db_network:
+    driver: bridge
+  redis_network:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:
+  redis:

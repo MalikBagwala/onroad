@@ -1,0 +1,28 @@
+table:
+  name: countries
+  schema: public
+array_relationships:
+  - name: states
+    using:
+      foreign_key_constraint_on:
+        column: country_id
+        table:
+          name: states
+          schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - code
+        - name
+        - id
+      filter: {}
+    comment: ""
+  - role: user
+    permission:
+      columns:
+        - code
+        - name
+        - id
+      filter: {}
+    comment: ""

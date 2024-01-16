@@ -1,0 +1,153 @@
+version: "3.9"
+
+services:
+  client:
+    image: onroadclient:dev
+    container_name: or_client_dev
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    restart: unless-stopped
+    volumes:
+      - ./client:/app
+      - /app/node_modules/
+      - /app/.nuxt/
+    environment:
+      GQL_HOST: ${GQL_HOST}
+    depends_on:
+      - django
+      - hasura
+    networks:
+      - db_network
+
+  django:
+    image: onroadapi:dev
+    container_name: or_django_dev
+    build:
+      dockerfile: ./Dockerfile.dev
+    restart: unless-stopped
+    volumes:
+      - .:/app
+    env_file:
+      - ./.env
+    environment:
+      - POSTGRES_HOST=db
+    depends_on:
+      - db
+    networks:
+      - db_network
+
+  worker:
+    image: onroadapi:dev
+    container_name: or_worker_dev
+    build:
+      dockerfile: ./Dockerfile.dev
+    command: python manage.py rundramatiq
+    restart: unless-stopped
+    volumes:
+      - .:/app
+    env_file:
+      - ./.env
+    environment:
+      - POSTGRES_HOST=db
+    depends_on:
+      - db
+      - rabbitmq
+    networks:
+      - db_network
+
+  caddy:
+    restart: always
+    image: caddy
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./static:/var/www/static
+      - ./cert.crt:/etc/pki/tls/certs/cert.crt
+      - ./cert.key:/etc/pki/tls/private/cert.key
+    container_name: or_caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - django
+      - hasura
+      - client
+    networks:
+      - db_network
+
+  db:
+    image: postgis/postgis
+    container_name: or_database
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    networks:
+      - db_network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: or_admin
+    links:
+      - db
+    depends_on:
+      - db
+    environment:
+      PGADMIN_DEFAULT_EMAIL: m.bagwala@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "4000:80"
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    networks:
+      - db_network
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: or_rabbitmq
+    restart: always
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+    # - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_DEFAULT_VHOST}
+    networks:
+      - db_network
+
+  hasura:
+    container_name: or_hasura
+    image: hasura/graphql-engine:latest.cli-migrations-v3
+    restart: always
+    volumes:
+      - ./hasura/migrations:/hasura-migrations
+      - ./hasura/metadata:/hasura-metadata
+    depends_on:
+      - "db"
+      - "django"
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+      HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256","key":"${JWT_SECRET_KEY}","claims_namespace":"user_claims","claims_format":"json"}'
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: "anonymous"
+      HASURA_GRAPHQL_MIGRATIONS_SERVER_TIMEOUT: 120
+      API_HOST: "http://django:9000"
+    networks:
+      - db_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+networks:
+  db_network:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:
+  rabbitmq:

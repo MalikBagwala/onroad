@@ -1,0 +1,7 @@
+- name: DjangoGraphqlAPI
+  definition:
+    url: '{{API_HOST}}/api/graphql/'
+    timeout_seconds: 60
+    customization: {}
+    forward_client_headers: true
+  comment: The graphene-django API Server for AUTH and Custom Logic

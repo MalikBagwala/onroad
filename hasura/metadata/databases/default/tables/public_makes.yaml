@@ -1,0 +1,28 @@
+table:
+  name: makes
+  schema: public
+array_relationships:
+  - name: vehicles
+    using:
+      foreign_key_constraint_on:
+        column: make_id
+        table:
+          name: vehicles
+          schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - name
+        - estb_year
+        - id
+      filter: {}
+    comment: ""
+  - role: user
+    permission:
+      columns:
+        - name
+        - estb_year
+        - id
+      filter: {}
+    comment: ""

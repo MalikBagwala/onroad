@@ -1,0 +1,34 @@
+table:
+  name: states
+  schema: public
+object_relationships:
+  - name: country
+    using:
+      foreign_key_constraint_on: country_id
+array_relationships:
+  - name: cities
+    using:
+      foreign_key_constraint_on:
+        column: state_id
+        table:
+          name: cities
+          schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - code
+        - name
+        - country_id
+        - id
+      filter: {}
+    comment: ""
+  - role: user
+    permission:
+      columns:
+        - code
+        - name
+        - country_id
+        - id
+      filter: {}
+    comment: ""

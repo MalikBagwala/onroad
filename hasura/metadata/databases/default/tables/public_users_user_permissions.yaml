@@ -1,0 +1,3 @@
+table:
+  name: users_user_permissions
+  schema: public

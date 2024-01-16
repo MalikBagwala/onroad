@@ -1,0 +1,13 @@
+.vscode
+.githooks
+docker-compose.yml
+development.yml
+.gitignore
+.env*
+hasura
+/static
+.gitlab-ci.yml
+Caddyfile
+cert*
+client
+node_modules

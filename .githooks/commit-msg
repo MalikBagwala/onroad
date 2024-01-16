@@ -1,0 +1,30 @@
+#!/bin/bash
+
+commit_message_file=$1
+commit_message=$(cat "$commit_message_file")
+
+# Emoji symbols
+SUCCESS_EMOJI='✅'
+FAILURE_EMOJI='❌'
+
+# Skip validation for merge commits
+if git rev-parse -q --verify MERGE_HEAD >/dev/null; then
+    echo "${SUCCESS_EMOJI} Merge commit detected. Skipping validation."
+    exit 0
+fi
+
+# Skip validation for chore type
+if [[ $commit_message =~ ^chore: ]]; then
+    echo "${SUCCESS_EMOJI} Chore commit detected. Skipping validation."
+    exit 0
+fi
+
+# Validate conventional commit with Jira ID
+if ! [[ $commit_message =~ ^(feat|fix|chore)\((VT)-[0-9]+\): ]]; then
+    echo "${FAILURE_EMOJI} Error: Commit message does not follow conventional commit format with Jira ID."
+    echo "Example: feat(VT-123): add xyz"
+    exit 1
+fi
+
+echo "${SUCCESS_EMOJI} Commit message is valid."
+exit 0

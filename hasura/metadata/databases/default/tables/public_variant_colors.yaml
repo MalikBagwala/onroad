@@ -1,0 +1,26 @@
+table:
+  name: variant_colors
+  schema: public
+object_relationships:
+  - name: variant
+    using:
+      foreign_key_constraint_on: variant_id
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - hex_code
+        - name
+        - id
+        - variant_id
+      filter: {}
+    comment: ""
+  - role: user
+    permission:
+      columns:
+        - hex_code
+        - name
+        - id
+        - variant_id
+      filter: {}
+    comment: ""

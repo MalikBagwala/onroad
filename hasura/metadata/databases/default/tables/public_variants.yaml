@@ -1,0 +1,50 @@
+table:
+  name: variants
+  schema: public
+object_relationships:
+  - name: vehicle
+    using:
+      foreign_key_constraint_on: vehicle_id
+array_relationships:
+  - name: attachments
+    using:
+      foreign_key_constraint_on:
+        column: variant_id
+        table:
+          name: variants_attachments
+          schema: public
+  - name: contributions
+    using:
+      foreign_key_constraint_on:
+        column: variant_id
+        table:
+          name: contributions
+          schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - fuel_type
+        - manufacturer_link
+        - name
+        - transmission
+        - launch_date
+        - specifications
+        - description
+        - id
+        - vehicle_id
+      filter: {}
+    comment: ""
+  - role: user
+    permission:
+      columns:
+        - fuel_type
+        - name
+        - transmission
+        - launch_date
+        - specifications
+        - description
+        - id
+        - vehicle_id
+      filter: {}
+    comment: ""
