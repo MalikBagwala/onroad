@@ -1,0 +1,15 @@
+FROM node:lts-alpine
+
+WORKDIR /app
+
+ENV ENVIRONMENT=development
+
+COPY package.json yarn.lock .yarnrc.yml ./
+
+COPY .yarn ./.yarn
+
+RUN yarn install
+
+COPY . .
+
+RUN yarn dev

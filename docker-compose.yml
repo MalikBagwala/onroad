@@ -1,24 +1,14 @@
 version: "3.9"
 
 services:
-  # client:
-  #   image: onroadclient:latest
-  #   container_name: or_client
-  #   build:
-  #     context: ./client
-  #   depends_on:
-  #     - django
-  #     - hasura
-  #   networks:
-  #     - db_network
-
   django:
     image: onroadapi:latest
     container_name: or_django
     build:
       dockerfile: Dockerfile
+    restart: unless-stopped
     volumes:
-      - ./static:/code/static
+      - static:/app/static
     env_file:
       - ./.env
     environment:
@@ -28,14 +18,33 @@ services:
     networks:
       - db_network
 
+  worker:
+    image: onroadapi:latest
+    container_name: or_worker
+    build:
+      dockerfile: Dockerfile
+    command: python manage.py rundramatiq
+    restart: unless-stopped
+    volumes:
+      - static:/app/static
+    env_file:
+      - ./.env
+    environment:
+      - POSTGRES_HOST=db
+    depends_on:
+      - db
+      - rabbitmq
+    networks:
+      - db_network
+
   caddy:
     restart: always
-    image: caddy
+    image: webserver:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.caddy
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - ./static:/var/www/static
-      - ./cert.crt:/etc/pki/tls/certs/cert.crt
-      - ./cert.key:/etc/pki/tls/private/cert.key
+      - static:/static/djstatic
     container_name: or_caddy
     ports:
       - "80:80"
@@ -43,12 +52,11 @@ services:
     depends_on:
       - django
       - hasura
-      - client
     networks:
       - db_network
 
   db:
-    image: postgis/postgis
+    image: kartoza/postgis
     container_name: or_database
     volumes:
       - postgres:/var/lib/postgresql/data
@@ -76,21 +84,29 @@ services:
     networks:
       - db_network
 
-  redis:
-    image: redis
-    container_name: or_redis
-    volumes:
-      - redis:/data
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: or_rabbitmq
     restart: always
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_DEFAULT_VHOST}
     networks:
-      - redis_network
+      - db_network
 
   hasura:
     container_name: or_hasura
     image: hasura/graphql-engine:latest.cli-migrations-v3
     restart: always
+    volumes:
+      - ./hasura/migrations:/hasura-migrations
+      - ./hasura/metadata:/hasura-metadata
     depends_on:
       - "db"
+      - "django"
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
@@ -98,6 +114,8 @@ services:
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
       HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256","key":"${JWT_SECRET_KEY}","claims_namespace":"user_claims","claims_format":"json"}'
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: "anonymous"
+      HASURA_GRAPHQL_MIGRATIONS_SERVER_TIMEOUT: 120
       API_HOST: "http://django:9000"
     networks:
       - db_network
@@ -107,10 +125,9 @@ services:
 networks:
   db_network:
     driver: bridge
-  redis_network:
-    driver: bridge
 
 volumes:
   postgres:
   pgadmin:
-  redis:
+  rabbitmq:
+  static:

@@ -5,7 +5,7 @@ tls /etc/pki/tls/certs/cert.crt /etc/pki/tls/private/cert.key
 
 # Django Staticfiles
 handle_path /static* {
-	root * /var/www/static
+	root * /static/djstatic
 	file_server
 }
 
@@ -26,5 +26,6 @@ handle_path /rabbitmq* {
 
 # Main Web Application (Client)
 handle_path /* {
-	reverse_proxy client:3000
+	root * /static/client
+	file_server
 }

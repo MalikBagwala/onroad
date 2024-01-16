@@ -17,10 +17,10 @@ strawberry-graphql-django = "*"
 pyjwt = "*"
 dramatiq = {extras = ["rabbitmq", "watch"], version = "*"}
 django-dramatiq = "*"
+python-dotenv = "*"
 
 [dev-packages]
 black = "*"
-python-dotenv = "*"
 
 [requires]
 python_version = "3.12"

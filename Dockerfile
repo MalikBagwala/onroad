@@ -23,7 +23,4 @@ COPY . /app/
 
 RUN chmod +x ./deploy.sh
 
-# Collect static files
-RUN python3 manage.py collectstatic --no-input
-
 CMD ["./deploy.sh"]

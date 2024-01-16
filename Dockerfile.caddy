@@ -1,0 +1,23 @@
+FROM node:lts-alpine as client-builder
+
+WORKDIR /app
+
+ENV ENVIRONMENT=production
+
+COPY client/package.json client/yarn.lock client/.yarnrc.yml ./
+
+COPY client/.yarn ./.yarn
+
+RUN yarn install --immutable
+
+COPY client .
+
+RUN yarn build
+
+FROM caddy as runner
+
+COPY --from=client-builder /app/dist /static/client
+
+COPY ./cert.crt /etc/pki/tls/certs/cert.crt
+COPY ./cert.key /etc/pki/tls/private/cert.key
+COPY ./Caddyfile /etc/caddy/Caddyfile
