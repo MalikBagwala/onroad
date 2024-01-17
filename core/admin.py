@@ -113,6 +113,8 @@ class VehicleTypeAdmin(ImportExportModelAdmin):
 
 @admin.register(models.Vehicle)
 class VehicleAdmin(ImportExportModelAdmin):
+    search_fields = ("name",)
+    list_filter = ("make__name","vehicle_type__name",)
     pass
 
 
