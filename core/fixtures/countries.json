@@ -1,0 +1,10 @@
+[
+  {
+    "model": "core.Country",
+    "pk": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+    "fields": {
+      "name": "India",
+      "code": "IN"
+    }
+  }
+]
