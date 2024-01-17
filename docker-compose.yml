@@ -1,12 +1,39 @@
 version: "3.9"
 
 services:
+  db:
+    restart: unless-stopped
+    image: kartoza/postgis
+    container_name: or_database
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    networks:
+      - db_network
+
+  rabbitmq:
+    restart: unless-stopped
+    image: rabbitmq:management
+    container_name: or_rabbitmq
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_DEFAULT_VHOST}
+    networks:
+      - db_network
+
   django:
+    restart: unless-stopped
     image: onroadapi:latest
     container_name: or_django
     build:
-      dockerfile: Dockerfile
-    restart: unless-stopped
+      context: .
+      dockerfile: Dockerfile.api
     volumes:
       - static:/app/static
     env_file:
@@ -19,12 +46,13 @@ services:
       - db_network
 
   worker:
+    restart: unless-stopped
     image: onroadapi:latest
     container_name: or_worker
     build:
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile.api
     command: python manage.py rundramatiq
-    restart: unless-stopped
     volumes:
       - static:/app/static
     env_file:
@@ -37,70 +65,10 @@ services:
     networks:
       - db_network
 
-  caddy:
-    restart: always
-    image: webserver:latest
-    build:
-      context: .
-      dockerfile: Dockerfile.caddy
-    volumes:
-      - static:/static/djstatic
-    container_name: or_caddy
-    ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - django
-      - hasura
-    networks:
-      - db_network
-
-  db:
-    image: kartoza/postgis
-    container_name: or_database
-    volumes:
-      - postgres:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    networks:
-      - db_network
-
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: or_admin
-    links:
-      - db
-    depends_on:
-      - db
-    environment:
-      PGADMIN_DEFAULT_EMAIL: m.bagwala@gmail.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-    ports:
-      - "4000:80"
-    volumes:
-      - pgadmin:/var/lib/pgadmin
-    networks:
-      - db_network
-
-  rabbitmq:
-    image: rabbitmq:management
-    container_name: or_rabbitmq
-    restart: always
-    volumes:
-      - rabbitmq:/var/lib/rabbitmq
-    environment:
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
-      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_DEFAULT_VHOST}
-    networks:
-      - db_network
-
   hasura:
-    container_name: or_hasura
+    restart: unless-stopped
     image: hasura/graphql-engine:latest.cli-migrations-v3
-    restart: always
+    container_name: or_hasura
     volumes:
       - ./hasura/migrations:/hasura-migrations
       - ./hasura/metadata:/hasura-metadata
@@ -121,6 +89,54 @@ services:
       - db_network
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
+  # client:
+  #   restart: unless-stopped
+  #   image: onroadclient:latest
+  #   container_name: or_client
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.client
+  #   depends_on:
+  #     - hasura
+  #   networks:
+  #     - db_network
+
+  caddy:
+    restart: unless-stopped
+    image: webserver:latest
+    container_name: or_caddy
+    build:
+      context: .
+      dockerfile: Dockerfile.caddy
+    volumes:
+      - static:/static/djstatic
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - django
+      - hasura
+    networks:
+      - db_network
+
+  pgadmin:
+    restart: unless-stopped
+    image: dpage/pgadmin4
+    container_name: or_admin
+    links:
+      - db
+    depends_on:
+      - db
+    environment:
+      PGADMIN_DEFAULT_EMAIL: m.bagwala@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "4000:80"
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    networks:
+      - db_network
 
 networks:
   db_network:

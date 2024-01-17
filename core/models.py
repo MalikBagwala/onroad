@@ -14,10 +14,7 @@ from .enums import (
     FluelTypes,
     ContributionStatus,
 )
-from onroad.settings import (
-    PASSWORD_CHANGE_REQUEST_EXPIRATION_MINUTES,
-    OTP_EXPIRATION_MINUTES,
-)
+
 from .utils import jwt
 
 # Create your models here.

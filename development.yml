@@ -1,31 +1,32 @@
 version: "3.9"
 
 services:
-  client:
-    image: onroadclient:dev
-    container_name: or_client_dev
-    build:
-      context: ./client
-      dockerfile: Dockerfile.dev
-    restart: unless-stopped
-    volumes:
-      - ./client:/app
-      - /app/node_modules/
-    environment:
-      GQL_HOST: ${GQL_HOST}
-    depends_on:
-      - django
-      - hasura
-    networks:
-      - db_network
+  # client:
+  #   image: onroadclient:dev
+  #   container_name: or_client_dev
+  #   build:
+  #     context: ./client
+  #     dockerfile: Dockerfile.dev
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./client:/app
+  #     - /app/node_modules/
+  #   environment:
+  #     GQL_HOST: ${GQL_HOST}
+  #   depends_on:
+  #     - django
+  #     - hasura
+  #   networks:
+  #     - db_network
 
   django:
     image: onroadapi:dev
     container_name: or_django_dev
     build:
-      dockerfile: ./Dockerfile.dev
+      dockerfile: ./Dockerfile.api.dev
     restart: unless-stopped
     volumes:
+      - static:/app/static
       - .:/app
     env_file:
       - ./.env
@@ -40,10 +41,11 @@ services:
     image: onroadapi:dev
     container_name: or_worker_dev
     build:
-      dockerfile: ./Dockerfile.dev
+      dockerfile: ./Dockerfile.api.dev
     command: python manage.py rundramatiq
     restart: unless-stopped
     volumes:
+      - static:/app/static
       - .:/app
     env_file:
       - ./.env
@@ -59,8 +61,8 @@ services:
     restart: always
     image: caddy
     volumes:
+      - static:/static/djstatic
       - ./Caddyfile:/etc/caddy/Caddyfile
-      - ./static:/var/www/static
       - ./cert.crt:/etc/pki/tls/certs/cert.crt
       - ./cert.key:/etc/pki/tls/private/cert.key
     container_name: or_caddy
@@ -70,7 +72,6 @@ services:
     depends_on:
       - django
       - hasura
-      - client
     networks:
       - db_network
 
@@ -150,3 +151,4 @@ volumes:
   postgres:
   pgadmin:
   rabbitmq:
+  static:
