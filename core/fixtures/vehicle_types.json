@@ -1,0 +1,42 @@
+[
+  {
+    "model": "core.VehicleType",
+    "pk": "ecd0ab5b-c1a3-4f5e-8904-e139968b8681",
+    "fields": {
+      "name": "Compact SUV",
+      "category": "CRS"
+    }
+  },
+  {
+    "model": "core.VehicleType",
+    "pk": "6be8a535-c5a7-4409-88ca-9f5198d04bee",
+    "fields": {
+      "name": "SUV",
+      "category": "SUV"
+    }
+  },
+  {
+    "model": "core.VehicleType",
+    "pk": "5f60c271-9214-4d5f-9b8a-684c9181e490",
+    "fields": {
+      "name": "Sedan",
+      "category": "SED"
+    }
+  },
+  {
+    "model": "core.VehicleType",
+    "pk": "79f14dac-a150-457f-9cf5-5c49e09e5c50",
+    "fields": {
+      "name": "Hatchback",
+      "category": "HAT"
+    }
+  },
+  {
+    "model": "core.VehicleType",
+    "pk": "409d5ccf-972f-4ede-9d59-06f878115a54",
+    "fields": {
+      "name": "MPV",
+      "category": "SUV"
+    }
+  }
+]
