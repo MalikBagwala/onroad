@@ -119,7 +119,7 @@ class VehicleType(UUIDPrimaryKey):
         db_table = "vehicle_types"
 
     def __str__(self):
-        return f"{self.name} ({self.category})"
+        return f"{self.name}"
 
 
 class Vehicle(UUIDPrimaryKey):
@@ -131,7 +131,7 @@ class Vehicle(UUIDPrimaryKey):
         db_table = "vehicles"
 
     def __str__(self):
-        return f"{self.make} {self.name} ({self.vehicle_type})"
+        return f"{self.name} ({self.vehicle_type})"
 
 
 class Variant(UUIDPrimaryKey):
