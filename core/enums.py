@@ -51,6 +51,27 @@ class VoteTypes(models.TextChoices):
     DOWNVOTE = "DN", _("Downvote")
 
 
+class PriceCategoryTypes(models.TextChoices):
+    EX_SHOWROOM_PRICE = "EX", _("Ex-Showroom Price")
+    TCS = "TCS", _("Tax Collected at Source")
+    RTO = "RTO", _("Regional Transport Office")
+    INSURANCE = "IN", _("Insurance")
+    EXTENDED_WARRANTY = "EW", _("Extended Warranty")
+    BASIC_KIT = "BK", _("Basic Kit")
+    FAST_TAG = "FT", _("Fast Tag")
+    LOCAL_BODY_TAXES = "LBT", _("Local Body Taxes")
+    OTHER_ACCESSORIES = "OA", _("Other Accessories")
+    CONSUMER_PROMOTION = "CP", _("Consumer Promotion")
+    MISCELLANEOUS = "MI", _("Miscellaneous")
+    DISCOUNT = "DI", _("Discount")
+    SUBSIDY = "SU", _("Subsidy")
+
+
+class TransactionTypes(models.TextChoices):
+    CREDIT = "CR", _("Credit")
+    DEBIT = "DB", _("Debit")
+
+
 class ContributionStatus(models.TextChoices):
     PENDING = "PD", _("Pending")
     ACCEPTED = "AC", _("Accepted")

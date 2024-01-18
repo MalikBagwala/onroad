@@ -1,46 +1,49 @@
 table:
-  name: contributions_attachments
+  name: contribution_price_items
   schema: public
 object_relationships:
   - name: contribution
     using:
       foreign_key_constraint_on: contribution_id
-  - name: media
+  - name: price_item
     using:
-      foreign_key_constraint_on: media_id
+      foreign_key_constraint_on: price_item_id
 insert_permissions:
   - role: contributor
     permission:
       check: {}
-      columns: []
+      columns:
+        - contribution_id
+        - price_item_id
+        - value
     comment: ""
   - role: user
     permission:
       check: {}
-      columns: []
+      columns:
+        - contribution_id
+        - price_item_id
+        - serial_no
+        - value
     comment: ""
 select_permissions:
-  - role: anonymous
-    permission:
-      columns:
-        - id
-        - contribution_id
-        - media_id
-      filter: {}
-    comment: ""
   - role: contributor
     permission:
       columns:
-        - id
         - contribution_id
-        - media_id
+        - id
+        - price_item_id
+        - serial_no
+        - value
       filter: {}
     comment: ""
 update_permissions:
   - role: contributor
     permission:
       columns:
-        - media_id
+        - price_item_id
+        - serial_no
+        - value
       filter:
         contribution:
           user_id:
@@ -50,12 +53,14 @@ update_permissions:
   - role: user
     permission:
       columns:
-        - media_id
+        - price_item_id
+        - serial_no
+        - value
       filter:
         contribution:
           user_id:
             _eq: X-Hasura-User-Id
-      check: {}
+      check: null
     comment: ""
 delete_permissions:
   - role: contributor
@@ -72,3 +77,21 @@ delete_permissions:
           user_id:
             _eq: X-Hasura-User-Id
     comment: ""
+event_triggers:
+  - name: update_contribution_total
+    definition:
+      delete:
+        columns: '*'
+      enable_manual: false
+      insert:
+        columns: '*'
+      update:
+        columns:
+          - price_item_id
+          - contribution_id
+          - value
+    retry_conf:
+      interval_sec: 10
+      num_retries: 0
+      timeout_sec: 60
+    webhook: '{{API_HOST}}/api/trigger/update_contribution_total/'

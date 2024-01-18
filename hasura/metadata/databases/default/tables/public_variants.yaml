@@ -35,16 +35,31 @@ select_permissions:
         - vehicle_id
       filter: {}
     comment: ""
-  - role: user
+  - role: contributor
     permission:
       columns:
         - fuel_type
+        - manufacturer_link
         - name
         - transmission
         - launch_date
         - specifications
         - description
         - id
+        - vehicle_id
+      filter: {}
+    comment: ""
+  - role: user
+    permission:
+      columns:
+        - description
+        - fuel_type
+        - id
+        - launch_date
+        - manufacturer_link
+        - name
+        - specifications
+        - transmission
         - vehicle_id
       filter: {}
     comment: ""

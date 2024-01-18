@@ -134,6 +134,13 @@ class VariantColorAdmin(ImportExportModelAdmin):
     pass
 
 
+@admin.register(models.PriceItem)
+class PriceItemAdmin(ImportExportModelAdmin):
+    search_fields = ("name",)
+    list_display = ("name", "description","category","type")
+    list_filter = ("category",)
+    pass
+
 @admin.register(models.Contribution)
 class ContributionAdmin(ImportExportModelAdmin):
     search_fields = ("variant__name", "city__name")
@@ -142,6 +149,13 @@ class ContributionAdmin(ImportExportModelAdmin):
     autocomplete_fields = ("user", "color", "variant", "city")
     pass
 
+@admin.register(models.ContributionPriceItem)
+class ContributionPriceItemAdmin(ImportExportModelAdmin):
+    search_fields = ("contribution__variant__name", "price_item__name")
+    list_display = ("serial_no", "contribution", "price_item", "value")
+    list_filter = ("contribution__variant__name", "price_item__name")
+    autocomplete_fields = ("contribution", "price_item")
+    pass
 
 @admin.register(models.Vote)
 class VotesAdmin(ImportExportModelAdmin):

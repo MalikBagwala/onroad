@@ -7,6 +7,8 @@ from django.db import models
 from .utils.random import generate_otp
 from django.utils import timezone
 from .enums import (
+    PriceCategoryTypes,
+    TransactionTypes,
     VoteTypes,
     OtpTypes,
     VehicleCategories,
@@ -54,7 +56,7 @@ class City(UUIDPrimaryKey):
         verbose_name_plural = "Cities"
 
     def __str__(self):
-        return f"{self.name} ({self.code})"
+        return self.name
 
 
 class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
@@ -170,6 +172,19 @@ class VariantColor(UUIDPrimaryKey):
         return f"{self.name}"
 
 
+class PriceItem(UUIDPrimaryKey, AbstractTimestamp):
+    name = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True)
+    category = models.CharField(max_length=3, choices=PriceCategoryTypes.choices)
+    type = models.CharField(max_length=2, choices=TransactionTypes.choices)
+
+    def __str__(self) -> str:
+        return f"{self.name} - {self.type}"
+
+    class Meta:
+        db_table = "price_items"
+
+
 class Contribution(UUIDPrimaryKey, AbstractTimestamp):
     status = models.CharField(
         max_length=2,
@@ -185,39 +200,26 @@ class Contribution(UUIDPrimaryKey, AbstractTimestamp):
 
     quoted_on = models.DateField()
     dealership_name = models.CharField(max_length=255)
-    ex_showroom = models.DecimalField(max_digits=10, decimal_places=2)
-    rto = models.DecimalField(max_digits=10, decimal_places=2)
-    insurance = models.DecimalField(
-        max_digits=10, decimal_places=2, default=decimal.Decimal(0)
-    )
-    accessories = models.DecimalField(
-        max_digits=10, decimal_places=2, default=decimal.Decimal(0)
-    )
-    subsidies = models.DecimalField(
-        max_digits=10, decimal_places=2, default=decimal.Decimal(0)
-    )
-    misc = models.DecimalField(
-        max_digits=10, decimal_places=2, default=decimal.Decimal(0)
-    )
+
     total = models.DecimalField(
         max_digits=10, decimal_places=2, default=decimal.Decimal(0)
     )
-    metadata = models.JSONField(null=True, blank=True, default=dict)
     attachments = models.ManyToManyField(Media, blank=True)
     upvotes = models.IntegerField(default=0)
     downvotes = models.IntegerField(default=0)
     remark = models.TextField(null=True, blank=True)
 
     def update_total(self):
-        self.total = (
-            self.ex_showroom
-            + self.rto
-            + self.insurance
-            + self.accessories
-            - self.subsidies
-            + self.misc
-        )
-        self.save()
+        # self.total = (
+        #     self.ex_showroom
+        #     + self.rto
+        #     + self.insurance
+        #     + self.accessories
+        #     - self.subsidies
+        #     + self.misc
+        # )
+        # self.save()
+        pass
 
     def upvote(self, trigger_save=True):
         self.upvotes = max(0, self.upvotes + 1)
@@ -234,6 +236,22 @@ class Contribution(UUIDPrimaryKey, AbstractTimestamp):
 
     def __str__(self):
         return f"{self.variant}/{self.quoted_on}/{self.city}/{self.total}"
+
+
+class ContributionPriceItem(UUIDPrimaryKey, AbstractTimestamp):
+    serial_no = models.PositiveSmallIntegerField(default=1)
+    contribution = models.ForeignKey(Contribution, on_delete=models.CASCADE)
+    price_item = models.ForeignKey(PriceItem, on_delete=models.CASCADE)
+    value = models.DecimalField(max_digits=10, decimal_places=2)
+
+    class Meta:
+        db_table = "contribution_price_items"
+        unique_together = ["contribution", "price_item", "serial_no"]
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(value__gte="0"), name="contribution_value_non_negative"
+            ),
+        ]
 
 
 class Vote(UUIDPrimaryKey, AbstractTimestamp):
