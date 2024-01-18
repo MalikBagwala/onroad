@@ -166,5 +166,21 @@
       "name": "Fiat",
       "estb_year": 1899
     }
+  },
+  {
+    "model": "core.Make",
+    "pk": "09365eaa-c764-424d-a5a3-b8a65f859356",
+    "fields": {
+      "name": "Force Motors",
+      "estb_year": 1958
+    }
+  },
+  {
+    "model": "core.Make",
+    "pk": "d0763beb-6cac-45ae-b21c-e3b12d64bb70",
+    "fields": {
+      "name": "Okinawa",
+      "estb_year": 2015
+    }
   }
 ]
