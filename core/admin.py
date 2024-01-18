@@ -121,6 +121,8 @@ class VehicleAdmin(ImportExportModelAdmin):
 @admin.register(models.Variant)
 class VariantAdmin(ImportExportModelAdmin):
     search_fields = ("name",)
+    autocomplete_fields = ("vehicle",)
+    
     pass
 
 
