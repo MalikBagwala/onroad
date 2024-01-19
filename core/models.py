@@ -16,7 +16,10 @@ from .enums import (
     FluelTypes,
     ContributionStatus,
 )
-
+from io import BytesIO
+import sys
+from PIL import Image
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from .utils import jwt
 
 # Create your models here.
@@ -97,6 +100,58 @@ class Media(UUIDPrimaryKey):
 
     def __str__(self):
         return f"{self.url}"
+
+
+print("Models")
+
+
+def custom_filename(instance, filename):
+    """
+    Generate a unique filename for the uploaded image.
+    """
+    # Get the file extension
+    ext = filename.split(".")[-1]
+    # Generate a unique filename using UUID4
+    new_filename = f"{instance.pk}.{ext}"
+    # Return the new filename
+    return new_filename
+
+
+class Attachment(UUIDPrimaryKey):
+    file = models.ImageField(
+        upload_to=custom_filename, height_field="height", width_field="width"
+    )
+    height = models.PositiveIntegerField(null=True, blank=True)
+    width = models.PositiveIntegerField(null=True, blank=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def save(self):
+        # Opening the uploaded image
+        im = Image.open(self.file)
+
+        output = BytesIO()
+        # after modifications, save it to the output
+        im.save(output, format="WEBP", quality=80)
+        output.seek(0)
+
+        # change the imagefield value to be the newley modifed image value
+        self.file = InMemoryUploadedFile(
+            output,
+            "ImageField",
+            f"{self.pk}.webp",
+            "image/webp",
+            sys.getsizeof(output),
+            None,
+        )   
+
+        super(Attachment, self).save()
+
+    class Meta:
+        db_table = "attachments"
+        verbose_name_plural = "Attachments"
+
+    def __str__(self):
+        return f"{self.file}"
 
 
 class Make(UUIDPrimaryKey):

@@ -27,6 +27,7 @@ services:
     restart: unless-stopped
     volumes:
       - static:/app/static
+      - media:/app/media
       - .:/app
     env_file:
       - ./.env
@@ -62,6 +63,7 @@ services:
     image: caddy
     volumes:
       - static:/static/djstatic
+      - media:/static/djmedia
       - ./Caddyfile:/etc/caddy/Caddyfile
       - ./cert.crt:/etc/pki/tls/certs/cert.crt
       - ./cert.key:/etc/pki/tls/private/cert.key
@@ -152,3 +154,4 @@ volumes:
   pgadmin:
   rabbitmq:
   static:
+  media:

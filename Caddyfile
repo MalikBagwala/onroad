@@ -3,6 +3,11 @@ tls m.bagwala@gmail.com
 # Certificates
 tls /etc/pki/tls/certs/cert.crt /etc/pki/tls/private/cert.key
 
+handle_path /media* {
+	root * /static/djmedia
+	file_server
+}
+
 # Django Staticfiles
 handle_path /static* {
 	root * /static/djstatic

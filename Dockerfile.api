@@ -8,11 +8,12 @@ ENV PYTHONUNBUFFERED 1
 # Set the working directory in the container
 WORKDIR /app
 
+# Get all the necessary deps
+RUN apt-get update && apt-get install libpq-dev gcc gdal-bin -y
+
 # Copy the Pipfile and Pipfile.lock to the container
 COPY Pipfile Pipfile.lock /app/
 
-# Get all the necessary deps
-RUN apt-get update && apt-get install libpq-dev gcc gdal-bin -y
 
 # Install project dependencies
 RUN pip install pipenv \

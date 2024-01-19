@@ -77,6 +77,9 @@ class MediaAdmin(ImportExportModelAdmin):
     list_filter = ("mime_type",)
     pass
 
+@admin.register(models.Attachment)
+class AttachmentAdmin(ImportExportModelAdmin):
+    pass
 
 @admin.register(models.Country)
 class CountryAdmin(ImportExportModelAdmin):

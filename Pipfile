@@ -18,6 +18,7 @@ pyjwt = "*"
 dramatiq = {extras = ["rabbitmq", "watch"], version = "*"}
 django-dramatiq = "*"
 python-dotenv = "*"
+pillow = "*"
 
 [dev-packages]
 black = "*"
