@@ -21,6 +21,7 @@ import sys
 from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from .utils import jwt
+import mimetypes
 
 # Create your models here.
 
@@ -85,26 +86,6 @@ class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
     pass
 
 
-class Media(UUIDPrimaryKey):
-    url = models.URLField(max_length=255)
-    mime_type = models.CharField(max_length=255)
-    etag = models.CharField(max_length=255)
-    size = models.IntegerField()
-    bucket = models.CharField(max_length=255)
-    key = models.CharField(max_length=255)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
-
-    class Meta:
-        db_table = "media"
-        verbose_name_plural = "Media"
-
-    def __str__(self):
-        return f"{self.url}"
-
-
-print("Models")
-
-
 def custom_filename(instance, filename):
     """
     Generate a unique filename for the uploaded image.
@@ -118,31 +99,36 @@ def custom_filename(instance, filename):
 
 
 class Attachment(UUIDPrimaryKey):
-    file = models.ImageField(
-        upload_to=custom_filename, height_field="height", width_field="width"
-    )
-    height = models.PositiveIntegerField(null=True, blank=True)
-    width = models.PositiveIntegerField(null=True, blank=True)
+    file = models.FileField()
+    mime_type = models.CharField(max_length=50, blank=True)
+    size = models.PositiveIntegerField(blank=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def save(self):
-        # Opening the uploaded image
-        im = Image.open(self.file)
+        mt = mimetypes.guess_type(self.file.name)
+        if mt[0] and mt[0].startswith("image"):
+            im = Image.open(self.file)
+            output = BytesIO()
+            # after modifications, save it to the output
+            im.save(output, format="WEBP", quality=80)
+            output.seek(0)
 
-        output = BytesIO()
-        # after modifications, save it to the output
-        im.save(output, format="WEBP", quality=80)
-        output.seek(0)
-
-        # change the imagefield value to be the newley modifed image value
-        self.file = InMemoryUploadedFile(
-            output,
-            "ImageField",
-            f"{self.pk}.webp",
-            "image/webp",
-            sys.getsizeof(output),
-            None,
-        )   
+            self.size = sys.getsizeof(output)
+            self.mime_type = "image/webp"
+            # change the imagefield value to be the newley modifed image value
+            self.file = InMemoryUploadedFile(
+                output,
+                "ImageField",
+                f"{self.pk}.webp",
+                self.mime_type,
+                self.size,
+                None,
+            )
+        else:
+            self.mime_type = mt[0]
+            self.size = self.file.size
+            self.file.name = custom_filename(self, self.file.name)
+            pass
 
         super(Attachment, self).save()
 
@@ -203,7 +189,7 @@ class Variant(UUIDPrimaryKey):
     )
     description = models.TextField()
     specifications = models.JSONField(null=True, blank=True, default=dict)
-    attachments = models.ManyToManyField(Media, blank=True)
+    attachments = models.ManyToManyField(Attachment, blank=True)
     manufacturer_link = models.URLField(max_length=255, null=True, blank=True)
 
     class Meta:
@@ -217,7 +203,7 @@ class VariantColor(UUIDPrimaryKey):
     variant = models.ForeignKey(Variant, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     hex_code = models.CharField(max_length=7, null=True, blank=True)
-    attachments = models.ManyToManyField(Media, blank=True)
+    attachments = models.ManyToManyField(Attachment, blank=True)
 
     class Meta:
         db_table = "variant_colors"
@@ -259,7 +245,7 @@ class Contribution(UUIDPrimaryKey, AbstractTimestamp):
     total = models.DecimalField(
         max_digits=10, decimal_places=2, default=decimal.Decimal(0)
     )
-    attachments = models.ManyToManyField(Media, blank=True)
+    attachments = models.ManyToManyField(Attachment, blank=True)
     upvotes = models.IntegerField(default=0)
     downvotes = models.IntegerField(default=0)
     remark = models.TextField(null=True, blank=True)

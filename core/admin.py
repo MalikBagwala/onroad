@@ -3,7 +3,6 @@ from import_export.admin import ImportExportModelAdmin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
-from core.serializers import CustomTokenObtainPairSerializer
 from . import models
 from django.conf import settings
 from django_dramatiq.admin import TaskAdmin
@@ -70,15 +69,10 @@ class PasswordChangeRequestAdmin(ImportExportModelAdmin):
     list_display = ("id", "user", "expires_at", "used")
     pass
 
-
-@admin.register(models.Media)
-class MediaAdmin(ImportExportModelAdmin):
-    search_fields = ("url", "etag", "key")
-    list_filter = ("mime_type",)
-    pass
-
 @admin.register(models.Attachment)
 class AttachmentAdmin(ImportExportModelAdmin):
+    search_fields = ("file",)
+    list_filter = ("mime_type",)
     pass
 
 @admin.register(models.Country)
