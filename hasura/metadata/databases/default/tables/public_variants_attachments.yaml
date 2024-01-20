@@ -2,9 +2,9 @@ table:
   name: variants_attachments
   schema: public
 object_relationships:
-  - name: media
+  - name: attachment
     using:
-      foreign_key_constraint_on: media_id
+      foreign_key_constraint_on: attachment_id
   - name: variant
     using:
       foreign_key_constraint_on: variant_id
@@ -13,7 +13,7 @@ select_permissions:
     permission:
       columns:
         - id
-        - media_id
+        - attachment_id
         - variant_id
       filter: {}
     comment: ""
@@ -21,7 +21,7 @@ select_permissions:
     permission:
       columns:
         - id
-        - media_id
+        - attachment_id
         - variant_id
       filter: {}
     comment: ""

@@ -8,7 +8,6 @@
 - "!include public_contributions_attachments.yaml"
 - "!include public_countries.yaml"
 - "!include public_makes.yaml"
-- "!include public_media.yaml"
 - "!include public_price_items.yaml"
 - "!include public_states.yaml"
 - "!include public_users.yaml"
