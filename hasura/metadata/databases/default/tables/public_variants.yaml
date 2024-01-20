@@ -13,6 +13,13 @@ array_relationships:
         table:
           name: variants_attachments
           schema: public
+  - name: colors
+    using:
+      foreign_key_constraint_on:
+        column: variant_id
+        table:
+          name: variant_colors
+          schema: public
   - name: contributions
     using:
       foreign_key_constraint_on:

@@ -5,6 +5,21 @@ object_relationships:
   - name: variant
     using:
       foreign_key_constraint_on: variant_id
+array_relationships:
+  - name: attachments
+    using:
+      foreign_key_constraint_on:
+        column: variantcolor_id
+        table:
+          name: variant_colors_attachments
+          schema: public
+  - name: contributions
+    using:
+      foreign_key_constraint_on:
+        column: color_id
+        table:
+          name: contributions
+          schema: public
 select_permissions:
   - role: anonymous
     permission:
