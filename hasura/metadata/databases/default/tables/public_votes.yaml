@@ -48,21 +48,3 @@ delete_permissions:
         user_id:
           _eq: X-Hasura-User-Id
     comment: ""
-event_triggers:
-  - name: update_votes
-    definition:
-      delete:
-        columns: '*'
-      enable_manual: false
-      insert:
-        columns: '*'
-      update:
-        columns:
-          - contribution_id
-          - user_id
-          - type
-    retry_conf:
-      interval_sec: 10
-      num_retries: 0
-      timeout_sec: 60
-    webhook: '{{API_HOST}}/api/trigger/update_votes/'

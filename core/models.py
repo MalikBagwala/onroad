@@ -250,28 +250,6 @@ class Contribution(UUIDPrimaryKey, AbstractTimestamp):
     downvotes = models.IntegerField(default=0)
     remark = models.TextField(null=True, blank=True)
 
-    def update_total(self):
-        # self.total = (
-        #     self.ex_showroom
-        #     + self.rto
-        #     + self.insurance
-        #     + self.accessories
-        #     - self.subsidies
-        #     + self.misc
-        # )
-        # self.save()
-        pass
-
-    def upvote(self, trigger_save=True):
-        self.upvotes = max(0, self.upvotes + 1)
-        if trigger_save:
-            self.save()
-
-    def downvote(self, trigger_save=True):
-        self.downvotes = max(0, self.downvotes + 1)
-        if trigger_save:
-            self.save()
-
     class Meta:
         db_table = "contributions"
 
@@ -287,10 +265,17 @@ class ContributionPriceItem(UUIDPrimaryKey, AbstractTimestamp):
 
     class Meta:
         db_table = "contribution_price_items"
-        unique_together = ["contribution", "price_item", "serial_no"]
         constraints = [
             models.CheckConstraint(
                 check=models.Q(value__gte="0"), name="contribution_value_non_negative"
+            ),
+            models.UniqueConstraint(
+                fields=["contribution", "serial_no"],
+                name="contribution_serial_no_unique",
+            ),
+            models.UniqueConstraint(
+                fields=["contribution", "price_item"],
+                name="contribution_price_item_unique",
             ),
         ]
 

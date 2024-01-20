@@ -22,7 +22,6 @@ from django.shortcuts import redirect
 from core.views import (
     verify_otp,
 )
-from core.triggers import update_contribution_total, update_votes
 from core.schema import schema
 
 admin.site.site_header = "Onroad Admin"
@@ -31,11 +30,5 @@ urlpatterns = [
     path("api/", lambda _: redirect("/api/admin/", permanent=False)),
     path("api/admin/", admin.site.urls),
     path("api/verify/otp/<str:user_id>/<str:otp>/", verify_otp, name="verify_otp"),
-    path(
-        "api/trigger/update_contribution_total/",
-        update_contribution_total,
-        name="update_contribution_total",
-    ),
-    path("api/trigger/update_votes/", update_votes, name="update_votes"),
     path("api/graphql/", GraphQLView.as_view(schema=schema)),
 ]
