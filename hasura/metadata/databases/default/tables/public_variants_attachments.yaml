@@ -9,7 +9,7 @@ object_relationships:
     using:
       foreign_key_constraint_on: variant_id
 select_permissions:
-  - role: anonymous
+  - role: contributor
     permission:
       columns:
         - id

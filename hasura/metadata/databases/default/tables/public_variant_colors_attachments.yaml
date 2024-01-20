@@ -9,14 +9,6 @@ object_relationships:
     using:
       foreign_key_constraint_on: variantcolor_id
 select_permissions:
-  - role: anonymous
-    permission:
-      columns:
-        - id
-        - attachment_id
-        - variantcolor_id
-      filter: {}
-    comment: ""
   - role: contributor
     permission:
       columns:

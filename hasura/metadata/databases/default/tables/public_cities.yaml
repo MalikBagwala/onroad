@@ -23,6 +23,15 @@ select_permissions:
         - state_id
       filter: {}
     comment: ""
+  - role: contributor
+    permission:
+      columns:
+        - code
+        - name
+        - id
+        - state_id
+      filter: {}
+    comment: ""
   - role: user
     permission:
       columns:

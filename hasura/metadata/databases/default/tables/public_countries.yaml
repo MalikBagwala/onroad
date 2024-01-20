@@ -18,6 +18,14 @@ select_permissions:
         - id
       filter: {}
     comment: ""
+  - role: contributor
+    permission:
+      columns:
+        - code
+        - name
+        - id
+      filter: {}
+    comment: ""
   - role: user
     permission:
       columns:

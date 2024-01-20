@@ -17,15 +17,6 @@ array_relationships:
           name: variants
           schema: public
 select_permissions:
-  - role: anonymous
-    permission:
-      columns:
-        - name
-        - id
-        - make_id
-        - vehicle_type_id
-      filter: {}
-    comment: ""
   - role: contributor
     permission:
       columns:

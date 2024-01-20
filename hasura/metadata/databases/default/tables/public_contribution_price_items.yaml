@@ -31,11 +31,28 @@ select_permissions:
     permission:
       columns:
         - contribution_id
+        - created_at
         - id
         - price_item_id
         - serial_no
+        - updated_at
         - value
       filter: {}
+    comment: ""
+  - role: user
+    permission:
+      columns:
+        - value
+        - serial_no
+        - created_at
+        - updated_at
+        - contribution_id
+        - id
+        - price_item_id
+      filter:
+        contribution:
+          user_id:
+            _eq: X-Hasura-User-Id
     comment: ""
 update_permissions:
   - role: contributor

@@ -21,15 +21,6 @@ array_relationships:
           name: contributions
           schema: public
 select_permissions:
-  - role: anonymous
-    permission:
-      columns:
-        - hex_code
-        - name
-        - id
-        - variant_id
-      filter: {}
-    comment: ""
   - role: contributor
     permission:
       columns:

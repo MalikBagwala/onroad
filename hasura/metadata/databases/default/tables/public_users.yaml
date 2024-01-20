@@ -28,6 +28,22 @@ array_relationships:
           name: users_user_permissions
           schema: public
 select_permissions:
+  - role: contributor
+    permission:
+      columns:
+        - city_id
+        - created_at
+        - email
+        - email_verified
+        - first_name
+        - id
+        - last_name
+        - updated_at
+        - username
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+    comment: ""
   - role: user
     permission:
       columns:
@@ -45,6 +61,19 @@ select_permissions:
           _eq: X-Hasura-User-Id
     comment: ""
 update_permissions:
+  - role: contributor
+    permission:
+      columns:
+        - city_id
+        - email
+        - first_name
+        - last_name
+        - username
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null
+    comment: ""
   - role: user
     permission:
       columns:
@@ -52,7 +81,6 @@ update_permissions:
         - email
         - first_name
         - last_name
-        - password
         - username
       filter:
         id:

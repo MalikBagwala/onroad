@@ -28,20 +28,6 @@ array_relationships:
           name: contributions
           schema: public
 select_permissions:
-  - role: anonymous
-    permission:
-      columns:
-        - fuel_type
-        - manufacturer_link
-        - name
-        - transmission
-        - launch_date
-        - specifications
-        - description
-        - id
-        - vehicle_id
-      filter: {}
-    comment: ""
   - role: contributor
     permission:
       columns:
