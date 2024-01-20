@@ -7,6 +7,7 @@ from core.mutations.forgot_password_confirm import (
 )
 from core.mutations.forgot_password import ForgotPasswordResponse, forgot_password
 from core.mutations.login import login, LoginResponse
+from core.mutations.refresh_token import RefreshTokenResponse, refresh_token
 from core.mutations.register import register, RegisterResponse
 from core.mutations.login_with_magic_link import (
     login_with_magic_link,
@@ -35,6 +36,7 @@ class Query:
 @strawberry.type
 class Mutation:
     login: LoginResponse = strawberry.field(resolver=login)
+    refresh_token: RefreshTokenResponse = strawberry.field(resolver=refresh_token)
     register: RegisterResponse = strawberry.field(resolver=register)
     login_with_magic_link: LoginWithMagicLinkResponse = strawberry.field(
         resolver=login_with_magic_link
