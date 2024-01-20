@@ -1,24 +1,14 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.forms import ValidationError
-from rest_framework.response import Response
-from rest_framework import status
 from core.enums import OtpTypes
-from core.models import Otp, PasswordChangeRequest
-from .serializers import ChangePasswordSerializer
+from core.models import Otp
 from rest_framework.decorators import (
     api_view,
     authentication_classes,
     permission_classes,
-    throttle_classes,
 )
 from django.utils import timezone
 from django.shortcuts import render
 from django.db.models import Q
-from rest_framework.throttling import (
-    AnonRateThrottle,
-    UserRateThrottle,
-)
-
 
 @api_view(["GET"])
 @authentication_classes([])
