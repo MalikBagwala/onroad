@@ -75,7 +75,7 @@ class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
     def get_tokens(self):
         return {
             "refreshToken": jwt.get_auth_token(self, 1440, "refresh"),
-            "accessToken": jwt.get_auth_token(self, 1440, "access"),  # type: ignore
+            "accessToken": jwt.get_auth_token(self, 30, "access"),
         }
 
     def __str__(self):

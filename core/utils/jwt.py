@@ -12,6 +12,13 @@ def decode(token):
 
 
 def get_auth_token(user, expire_in: int = 1440, type: str = "access"):
+    roles = []
+    if user.is_superuser:
+        roles = ["admin", "user"]
+    elif user.has_contributed:
+        roles = ["contributor", "user"]
+    else:
+        roles = ["user"]
     return encode(
         {
             "token_type": type,
@@ -19,11 +26,9 @@ def get_auth_token(user, expire_in: int = 1440, type: str = "access"):
             "iat": timezone.now(),
             "sub": str(user.id),
             "user_claims": {
-                "x-hasura-allowed-roles": ["admin", "user"]
-                if user.is_superuser
-                else ["user"],
+                "x-hasura-allowed-roles": roles,
                 "x-hasura-user-id": str(user.id),
-                "x-hasura-default-role": "admin" if user.is_superuser else "user",
+                "x-hasura-default-role": roles[0],
             },
         }
     )
