@@ -1,12 +1,19 @@
-import '@mantine/core/styles.css';
 import { MantineProvider } from '@mantine/core';
-import { Router } from './Router';
+import '@mantine/core/styles.css';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { theme } from './theme';
+import Root from './routes/root';
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Root />,
+  },
+]);
 
 export default function App() {
   return (
     <MantineProvider theme={theme}>
-      <Router />
+      <RouterProvider router={router} />
     </MantineProvider>
   );
 }
