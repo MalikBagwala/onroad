@@ -790,5 +790,14 @@
       "vehicle_type_id": "5f60c271-9214-4d5f-9b8a-684c9181e490",
       "make_id": "11cd6871-d9a0-4632-a45a-b2f27455719c"
     }
+  },
+  {
+    "model": "core.Vehicle",
+    "pk": "b4680840-0baa-47c4-9226-ac1f38b17037",
+    "fields": {
+      "make_id": "d0763beb-6cac-45ae-b21c-e3b12d64bb70",
+      "vehicle_type_id": "a1f60e7c-398f-4a59-9f2f-334c3ae5bda2",
+      "name": "Praise"
+    }
   }
 ]
