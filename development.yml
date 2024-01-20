@@ -1,23 +1,23 @@
 version: "3.9"
 
 services:
-  # client:
-  #   image: onroadclient:dev
-  #   container_name: or_client_dev
-  #   build:
-  #     context: ./client
-  #     dockerfile: Dockerfile.dev
-  #   restart: unless-stopped
-  #   volumes:
-  #     - ./client:/app
-  #     - /app/node_modules/
-  #   environment:
-  #     GQL_HOST: ${GQL_HOST}
-  #   depends_on:
-  #     - django
-  #     - hasura
-  #   networks:
-  #     - db_network
+  client:
+    image: onroadclient:dev
+    container_name: or_client_dev
+    build:
+      context: ./client
+      dockerfile: Dockerfile.client.dev
+    restart: unless-stopped
+    volumes:
+      - ./client:/app
+      - /app/node_modules/
+    environment:
+      VITE_API_DOMAIN: ${DOMAIN_NAME}
+    depends_on:
+      - django
+      - hasura
+    networks:
+      - db_network
 
   django:
     image: onroadapi:dev

@@ -31,6 +31,5 @@ handle_path /rabbitmq* {
 
 # Main Web Application (Client)
 handle_path /* {
-	root * /static/client
-	file_server
+	reverse_proxy client:5000
 }

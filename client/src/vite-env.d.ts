@@ -2,7 +2,7 @@
 
 interface ImportMetaEnv {
   readonly VITE_APP_VERSION: string;
-  readonly VITE_API_HOST: string;
+  readonly VITE_API_DOMAIN: string;
   // more env variables...
 }
 
