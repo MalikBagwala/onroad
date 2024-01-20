@@ -67,6 +67,7 @@ class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
     email = models.EmailField(unique=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True)
     email_verified = models.BooleanField(default=False)
+    has_contributed = models.BooleanField(default=False)
 
     class Meta:
         db_table = "users"

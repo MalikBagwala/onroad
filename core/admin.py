@@ -8,7 +8,7 @@ from django.conf import settings
 from django_dramatiq.admin import TaskAdmin
 from django_dramatiq.models import Task
 # Register your models here.
-UserAdmin.fieldsets += (("Extra Fields", {"fields": ("city", "email_verified")}),)  # type: ignore
+UserAdmin.fieldsets += (("Extra Fields", {"fields": ("city", "email_verified","has_contributed")}),)  # type: ignore
 
 
 class CustomUserCreationForm(UserCreationForm):
