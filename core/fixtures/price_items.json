@@ -1,0 +1,98 @@
+[
+  {
+    "model": "core.PriceItem",
+    "pk": "d4b67ec9-c2c9-4f6b-964e-f03e389c8c2f",
+    "fields": {
+      "name": "Ex-Showroom",
+      "description": "",
+      "category": "EX",
+      "type": "DB",
+      "created_at": "2024-01-20T03:45:34.442Z",
+      "updated_at": "2024-01-20T03:45:34.446Z"
+    }
+  },
+  {
+    "model": "core.PriceItem",
+    "pk": "bee9b5c2-6e97-494d-9cd9-140380c78c16",
+    "fields": {
+      "name": "Road Tax",
+      "description": "",
+      "category": "MI",
+      "type": "DB",
+      "created_at": "2024-01-20T03:45:34.446Z",
+      "updated_at": "2024-01-20T03:45:34.446Z"
+    }
+  },
+  {
+    "model": "core.PriceItem",
+    "pk": "a94cde51-511e-414b-8c2b-afb4e1cc9a40",
+    "fields": {
+      "name": "FAME II Subsidy",
+      "description": "",
+      "category": "SU",
+      "type": "CR",
+      "created_at": "2024-01-20T03:45:34.446Z",
+      "updated_at": "2024-01-20T03:45:34.446Z"
+    }
+  },
+  {
+    "model": "core.PriceItem",
+    "pk": "a832dd83-3ec5-47ed-946a-06d7905a07cd",
+    "fields": {
+      "name": "Discount",
+      "description": "",
+      "category": "DI",
+      "type": "CR",
+      "created_at": "2024-01-20T03:45:34.446Z",
+      "updated_at": "2024-01-20T03:45:34.446Z"
+    }
+  },
+  {
+    "model": "core.PriceItem",
+    "pk": "9edf5329-d563-49ae-b1b7-f18e6bfbc15d",
+    "fields": {
+      "name": "Insurance",
+      "description": "",
+      "category": "IN",
+      "type": "DB",
+      "created_at": "2024-01-20T03:45:34.446Z",
+      "updated_at": "2024-01-20T03:45:34.446Z"
+    }
+  },
+  {
+    "model": "core.PriceItem",
+    "pk": "8ae525cc-9b34-42a5-b33b-c8cd2caba1f1",
+    "fields": {
+      "name": "Accessories",
+      "description": "",
+      "category": "OA",
+      "type": "DB",
+      "created_at": "2024-01-20T03:45:34.446Z",
+      "updated_at": "2024-01-20T03:45:34.446Z"
+    }
+  },
+  {
+    "model": "core.PriceItem",
+    "pk": "60ea232c-467d-451c-ba35-c7b5b4e438da",
+    "fields": {
+      "name": "RTO",
+      "description": "",
+      "category": "RTO",
+      "type": "DB",
+      "created_at": "2024-01-20T03:45:34.446Z",
+      "updated_at": "2024-01-20T03:45:34.446Z"
+    }
+  },
+  {
+    "model": "core.PriceItem",
+    "pk": "523ade17-98eb-43f8-8040-608b60324f4b",
+    "fields": {
+      "name": "State Subsidy",
+      "description": "",
+      "category": "SU",
+      "type": "CR",
+      "created_at": "2024-01-20T03:45:34.446Z",
+      "updated_at": "2024-01-20T03:45:34.446Z"
+    }
+  }
+]
