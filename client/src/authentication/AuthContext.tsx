@@ -28,9 +28,9 @@ const AuthProvider = ({ children }: AuthProviderType) => {
   useEffect(() => {
     const access = params.get('access');
     const refresh = params.get('refresh');
-    if (access && refresh) {
+    if (access) {
       setAccessToken(access);
-      setRefreshToken(refresh);
+      if (refresh) setRefreshToken(refresh);
       refreshClient();
       //   Remove Tokens from URL
       navigate('/', { replace: true });

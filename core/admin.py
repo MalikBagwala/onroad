@@ -7,8 +7,9 @@ from . import models
 from django.conf import settings
 from django_dramatiq.admin import TaskAdmin
 from django_dramatiq.models import Task
+
 # Register your models here.
-UserAdmin.fieldsets += (("Extra Fields", {"fields": ("city", "email_verified","has_contributed")}),)  # type: ignore
+UserAdmin.fieldsets += (("Extra Fields", {"fields": ("city", "email_verified", "has_contributed")}),)  # type: ignore
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -54,10 +55,10 @@ class UserAdmin(UserAdmin, ImportExportModelAdmin):
 
     @admin.action(description="Login as user")
     def login_as_user(self, _, queryset):
-        if queryset.count != 1:
+        if queryset.count() != 1:
             return
-        tokens = queryset.first().get_tokens()
-        url = f"https://{settings.DOMAIN_NAME}?access={tokens["accessToken"]}&refresh={tokens["refreshToken"]}"  # type: ignore
+        access_token = queryset.first().get_access_token()
+        url = f"https://{settings.DOMAIN_NAME}/?access={access_token}"
         return redirect(url)
 
     pass
@@ -69,11 +70,13 @@ class PasswordChangeRequestAdmin(ImportExportModelAdmin):
     list_display = ("id", "user", "expires_at", "used")
     pass
 
+
 @admin.register(models.Attachment)
 class AttachmentAdmin(ImportExportModelAdmin):
     search_fields = ("file",)
     list_filter = ("mime_type",)
     pass
+
 
 @admin.register(models.Country)
 class CountryAdmin(ImportExportModelAdmin):
@@ -111,7 +114,10 @@ class VehicleTypeAdmin(ImportExportModelAdmin):
 @admin.register(models.Vehicle)
 class VehicleAdmin(ImportExportModelAdmin):
     search_fields = ("name",)
-    list_filter = ("make__name","vehicle_type__name",)
+    list_filter = (
+        "make__name",
+        "vehicle_type__name",
+    )
     pass
 
 
@@ -119,7 +125,7 @@ class VehicleAdmin(ImportExportModelAdmin):
 class VariantAdmin(ImportExportModelAdmin):
     search_fields = ("name",)
     autocomplete_fields = ("vehicle",)
-    
+
     pass
 
 
@@ -134,9 +140,10 @@ class VariantColorAdmin(ImportExportModelAdmin):
 @admin.register(models.PriceItem)
 class PriceItemAdmin(ImportExportModelAdmin):
     search_fields = ("name",)
-    list_display = ("name", "description","category","type")
+    list_display = ("name", "description", "category", "type")
     list_filter = ("category",)
     pass
+
 
 @admin.register(models.Contribution)
 class ContributionAdmin(ImportExportModelAdmin):
@@ -146,6 +153,7 @@ class ContributionAdmin(ImportExportModelAdmin):
     autocomplete_fields = ("user", "color", "variant", "city")
     pass
 
+
 @admin.register(models.ContributionPriceItem)
 class ContributionPriceItemAdmin(ImportExportModelAdmin):
     search_fields = ("contribution__variant__name", "price_item__name")
@@ -153,6 +161,7 @@ class ContributionPriceItemAdmin(ImportExportModelAdmin):
     list_filter = ("contribution__variant__name", "price_item__name")
     autocomplete_fields = ("contribution", "price_item")
     pass
+
 
 @admin.register(models.Vote)
 class VotesAdmin(ImportExportModelAdmin):
@@ -165,13 +174,17 @@ class OtpAdmin(ImportExportModelAdmin):
     list_display = ("user", "otp", "expires_at", "used")
     pass
 
+
 @admin.register(models.RefreshToken)
 class RefreshTokenAdmin(ImportExportModelAdmin):
     search_fields = ("user__username",)
     list_display = ("user", "expires_at")
     pass
 
+
 admin.site.unregister(Task)
+
+
 @admin.register(Task)
 class CustomTaskAdmin(TaskAdmin):
     list_display = (
