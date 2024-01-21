@@ -35,24 +35,7 @@ const AuthProvider = ({ children }: AuthProviderType) => {
       navigate('/', { replace: true });
     }
   }, [params, refreshClient]);
-  // const client = useMemo(() => {
-  //   return createClient({
-  //     url: `https://${import.meta.env.VITE_API_DOMAIN}/hasura/v1/graphql`,
-  //     exchanges: [
-  //       cacheExchange({}),
-  //       authExchange(async (utils) => {
-  //         return {
-  //           addAuthToOperation(operation) {
-  //             return utils.appendHeaders(operation, {
-  //               Authorization: `Bearer ${tokens.accessToken}`,
-  //             });
-  //           },
-  //         };
-  //       }),
-  //       fetchExchange,
-  //     ],
-  //   });
-  // }, [tokens]);
+
   return (
     <AuthContext.Provider value={{ logout }}>
       <Provider value={client}>{children}</Provider>
