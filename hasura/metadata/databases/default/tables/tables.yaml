@@ -9,6 +9,7 @@
 - "!include public_countries.yaml"
 - "!include public_makes.yaml"
 - "!include public_price_items.yaml"
+- "!include public_refresh_tokens.yaml"
 - "!include public_states.yaml"
 - "!include public_users.yaml"
 - "!include public_users_groups.yaml"
