@@ -19,6 +19,7 @@ export const AUTH_OPERATIONS = [
   'verifyOtp',
   'forgotPassword',
   'forgotPasswordConfirm',
+  'membershipTypeByEmail',
 ];
 function makeClient() {
   return createClient({
@@ -40,16 +41,21 @@ function makeClient() {
             return error.graphQLErrors.some((e) => e.extensions?.code === 'invalid-jwt');
           },
           async refreshAuth() {
-            const refreshToken = getRefreshToken();
-            const { data } = await utils.mutate(REFRESH_TOKEN, { refreshToken });
-            const newAccessToken = data?.refreshToken?.data;
-            if (newAccessToken) {
-              // Update our local variables and write to our storage
-              setAccessToken(newAccessToken);
-            } else {
-              removeAccessToken();
+            try {
+              const refreshToken = getRefreshToken();
+              if (!refreshToken) throw new Error('No refresh token');
+              const { data } = await utils.mutate(REFRESH_TOKEN, { refreshToken });
+              const newAccessToken = data?.refreshToken?.data;
+              if (newAccessToken) {
+                // Update our local variables and write to our storage
+                setAccessToken(newAccessToken);
+              } else {
+                removeAccessToken();
+                removeRefreshToken();
+                // This is where auth has gone wrong and we need to clean up and redirect to a login page
+              }
+            } catch {
               removeRefreshToken();
-              // This is where auth has gone wrong and we need to clean up and redirect to a login page
             }
           },
           willAuthError(operation) {

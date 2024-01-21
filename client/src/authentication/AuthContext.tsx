@@ -1,6 +1,5 @@
 import { setAccessToken, setRefreshToken } from '@/utils/tokens';
 import makeClient from '@/utils/urqlClient';
-import client from '@/utils/urqlClient';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Client, Provider } from 'urql';
@@ -11,6 +10,7 @@ type AuthProviderType = {
 
 type AuthContextProps = {
   logout: () => void;
+  refreshClient: () => void;
 };
 const AuthContext = createContext<AuthContextProps>(null as any);
 
@@ -38,7 +38,7 @@ const AuthProvider = ({ children }: AuthProviderType) => {
   }, [params, refreshClient]);
 
   return (
-    <AuthContext.Provider value={{ logout }}>
+    <AuthContext.Provider value={{ logout, refreshClient }}>
       <Provider value={client}>{children}</Provider>
     </AuthContext.Provider>
   );
