@@ -1,11 +1,22 @@
-import { Box, Button, Container, Group, Text } from '@mantine/core';
-import styles from './GlobalNavbar.module.css';
-import { CurrentUserQuery } from '@/gql/graphql';
 import { UserMenu } from '@/components/UserMenu/UserMenu';
+import { CurrentUserQuery } from '@/gql/graphql';
+import { Box, Button, Container, Group, Text } from '@mantine/core';
+import { modals } from '@mantine/modals';
+import styles from './GlobalNavbar.module.css';
+import { UserOnboard } from '../UserOnboard/UserOnboard';
 type GlobalNavbarType = {
   user?: CurrentUserQuery['users'][0];
 };
 export function GlobalNavbar({ user }: GlobalNavbarType) {
+  const openModal = () =>
+    modals.open({
+      centered: true,
+      withCloseButton: false,
+      overlayProps: {
+        blur: 3,
+      },
+      children: <UserOnboard />,
+    });
   return (
     <Box className={styles.base}>
       <Container py={'md'}>
@@ -14,7 +25,13 @@ export function GlobalNavbar({ user }: GlobalNavbarType) {
             OnRoad
           </Text>
           <Group visibleFrom="sm">
-            {user ? <UserMenu user={user} /> : <Button variant="default">Sign In</Button>}
+            {user ? (
+              <UserMenu user={user} />
+            ) : (
+              <Button onClick={openModal} variant="default">
+                Sign In
+              </Button>
+            )}
           </Group>
         </Group>
       </Container>

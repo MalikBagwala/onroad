@@ -3125,6 +3125,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mantine/modals@npm:^7.4.2":
+  version: 7.4.2
+  resolution: "@mantine/modals@npm:7.4.2"
+  peerDependencies:
+    "@mantine/core": 7.4.2
+    "@mantine/hooks": 7.4.2
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  checksum: 87c69b704fc685d335474d8da2a6725bdcf488a8e884fd226778346d8d08b602a667667ce7ebe7d1cbae2fed5026fd6fa23ae1069ec17c803a0147123506a677
+  languageName: node
+  linkType: hard
+
 "@mdx-js/react@npm:^2.1.5":
   version: 2.3.0
   resolution: "@mdx-js/react@npm:2.3.0"
@@ -10661,6 +10673,7 @@ __metadata:
     "@graphql-codegen/client-preset": "npm:4.1.0"
     "@mantine/core": "npm:7.4.1"
     "@mantine/hooks": "npm:7.4.1"
+    "@mantine/modals": "npm:^7.4.2"
     "@storybook/addon-essentials": "npm:^7.6.6"
     "@storybook/addon-interactions": "npm:^7.6.6"
     "@storybook/addon-links": "npm:^7.6.6"
