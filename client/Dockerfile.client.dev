@@ -15,5 +15,5 @@ RUN  yarn install
 # copy all other project files to working directory
 COPY . ./
 
-# build the nuxt project to generate the artifacts in .output directory
-CMD [ "yarn", "dev" ]
+# Run codegen and start the dev server
+CMD ["sh", "-c", "yarn codegen && yarn dev"]

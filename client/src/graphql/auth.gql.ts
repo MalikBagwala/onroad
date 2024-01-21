@@ -1,14 +1,16 @@
-export const REFRESH_TOKEN = /* GraphQL */ `
-  mutation refreshToken($refreshToken: String!) {
+import { graphql } from '@/gql';
+
+export const REFRESH_TOKEN = graphql(/* GraphQL */ `
+  mutation refreshToken($refreshToken: UUID!) {
     refreshToken(refreshToken: $refreshToken) {
       code
       data
       message
     }
   }
-`;
+`);
 
-export const CURRENT_USER = /* GraphQL */ `
+export const CURRENT_USER = graphql(/* GraphQL */ `
   query currentUser {
     users {
       id
@@ -17,4 +19,4 @@ export const CURRENT_USER = /* GraphQL */ `
       last_name
     }
   }
-`;
+`);

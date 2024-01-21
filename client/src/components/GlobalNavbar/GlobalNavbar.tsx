@@ -1,6 +1,11 @@
 import { Box, Button, Container, Group, Text } from '@mantine/core';
 import styles from './GlobalNavbar.module.css';
-export function GlobalNavbar() {
+import { CurrentUserQuery } from '@/gql/graphql';
+import { UserMenu } from '@/components/UserMenu/UserMenu';
+type GlobalNavbarType = {
+  user?: CurrentUserQuery['users'][0];
+};
+export function GlobalNavbar({ user }: GlobalNavbarType) {
   return (
     <Box className={styles.base}>
       <Container py={'md'}>
@@ -8,10 +13,8 @@ export function GlobalNavbar() {
           <Text fw={'bold'} size="xl">
             OnRoad
           </Text>
-
           <Group visibleFrom="sm">
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
+            {user ? <UserMenu user={user} /> : <Button variant="default">Sign In</Button>}
           </Group>
         </Group>
       </Container>
