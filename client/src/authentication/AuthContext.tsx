@@ -1,3 +1,4 @@
+import { setAccessToken, setRefreshToken } from '@/utils/tokens';
 import makeClient from '@/utils/urqlClient';
 import client from '@/utils/urqlClient';
 import { createContext, useContext, useEffect, useState } from 'react';
@@ -28,8 +29,8 @@ const AuthProvider = ({ children }: AuthProviderType) => {
     const access = params.get('access');
     const refresh = params.get('refresh');
     if (access && refresh) {
-      localStorage.setItem('token', access);
-      localStorage.setItem('refreshToken', refresh);
+      setAccessToken(access);
+      setRefreshToken(refresh);
       refreshClient();
       //   Remove Tokens from URL
       navigate('/', { replace: true });
