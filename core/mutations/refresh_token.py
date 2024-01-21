@@ -1,3 +1,4 @@
+import uuid
 import strawberry
 import core.models as models
 from django.core.exceptions import ObjectDoesNotExist
@@ -12,17 +13,15 @@ class RefreshTokenResponse(BaseResponse):
     data: str | None
 
 
-def refresh_token(self, refreshToken: str) -> RefreshTokenResponse:
+def refresh_token(self, refreshToken: uuid.UUID) -> RefreshTokenResponse:
     try:
-        decoded = decode(refreshToken)
-        if decoded["token_type"] != "refresh":
-            raise Exception("Invalid token type")
-        user = models.User.objects.get(id=decoded["sub"], is_active=True)
-        access_token = user.get_access_token()
+        token = models.RefreshToken.objects.get(
+            token=refreshToken, expires_at__gt=timezone.now(), user__is_active=True
+        )
         return RefreshTokenResponse(
             success=True,
             message=f"Access token refreshed",
-            data=access_token,
+            data=token.user.get_access_token(),
             code=200,
         )
     except ObjectDoesNotExist as e:

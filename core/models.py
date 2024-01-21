@@ -1,7 +1,11 @@
 import decimal
 from django.contrib.auth.models import AbstractUser
 
-from core.utils.time import get_otp_expires_at, get_password_change_request_expires_at
+from core.utils.time import (
+    get_otp_expires_at,
+    get_password_change_request_expires_at,
+    get_refresh_token_expires_in,
+)
 from .abstracts import AbstractTimestamp, UUIDPrimaryKey
 from django.db import models
 from .utils.random import generate_otp
@@ -22,6 +26,7 @@ from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from .utils import jwt
 import mimetypes
+from uuid import uuid4
 
 # Create your models here.
 
@@ -72,14 +77,25 @@ class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
     class Meta:
         db_table = "users"
 
+    def get_access_token(self):
+        return jwt.get_access_token(self)
+
+    def get_refresh_token(self, client="web"):
+        try:
+            token_instance, _ = RefreshToken.objects.get_or_create(
+                user=self, client=client, expires_at__gt=timezone.now()
+            )
+            # Get refresh tokens if an un-expired token already exists, else create a new one
+            return token_instance.token
+        except Exception as e:
+            print("get_refresh_token", str(e))
+            return None
+
     def get_tokens(self):
         return {
-            "refreshToken": jwt.get_auth_token(self, "refresh"),
-            "accessToken": jwt.get_auth_token(self, "access"),
+            "refreshToken": self.get_refresh_token(),
+            "accessToken": self.get_access_token(),
         }
-
-    def get_access_token(self):
-        return jwt.get_auth_token(self, "access")
 
     def __str__(self):
         if self.first_name:
@@ -336,3 +352,26 @@ class PasswordChangeRequest(UUIDPrimaryKey, AbstractTimestamp):
     @property
     def is_expired(self):
         return timezone.now() > self.expires_at
+
+
+class RefreshToken(UUIDPrimaryKey, AbstractTimestamp):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    token = models.UUIDField(default=uuid4)
+    expires_at = models.DateTimeField(default=get_refresh_token_expires_in)
+    client = models.CharField(max_length=255, default="web")
+
+    class Meta:
+        db_table = "refresh_tokens"
+        ordering = ["-created_at"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user", "client"],
+                condition=models.Q(expires_at__gt=timezone.now()),
+                name="unique_user_client_refresh_token",
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.user} - {self.expires_at}"
+
+    pass

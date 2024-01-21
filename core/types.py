@@ -24,4 +24,4 @@ class UserType:
 @strawberry.type
 class Tokens:
     accessToken: str
-    refreshToken: str
+    refreshToken: uuid.UUID

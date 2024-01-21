@@ -165,6 +165,12 @@ class OtpAdmin(ImportExportModelAdmin):
     list_display = ("user", "otp", "expires_at", "used")
     pass
 
+@admin.register(models.RefreshToken)
+class RefreshTokenAdmin(ImportExportModelAdmin):
+    search_fields = ("user__username",)
+    list_display = ("user", "expires_at")
+    pass
+
 admin.site.unregister(Task)
 @admin.register(Task)
 class CustomTaskAdmin(TaskAdmin):
