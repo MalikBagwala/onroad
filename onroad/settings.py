@@ -63,12 +63,7 @@ STRAWBERRY_DJANGO = {
     "TYPE_DESCRIPTION_FROM_MODEL_DOCSTRING": True,
 }
 # Application definition
-SIMPLE_JWT = {
-    # It will work instead of the default serializer(TokenObtainPairSerializer).
-    "TOKEN_OBTAIN_SERIALIZER": "core.serializers.CustomTokenObtainPairSerializer",
-    "USER_ID_CLAIM": "sub",
-    "ACCESS_TOKEN_LIFETIME": timezone.timedelta(days=1),
-}
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -104,9 +99,6 @@ REST_FRAMEWORK = {
         "anon": "10000000/hour",  # Adjust as needed
         "user": "10000000/hour",  # Adjust as needed
     },
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ],
 }
 ROOT_URLCONF = "onroad.urls"
 
