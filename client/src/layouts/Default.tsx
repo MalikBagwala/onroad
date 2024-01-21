@@ -1,5 +1,8 @@
 import { useAuth } from '@/authentication/AuthContext';
+import { GlobalFooter } from '@/components/GlobalFooter/GlobalFooter';
+import { GlobalNavbar } from '@/components/GlobalNavbar/GlobalNavbar';
 import { CURRENT_USER } from '@/graphql/auth.gql';
+import { Box, Container, Flex, Stack } from '@mantine/core';
 import { useQuery } from 'urql';
 
 type DefaultLayoutType = {
@@ -11,12 +14,11 @@ const DefaultLayout = ({ children }: DefaultLayoutType) => {
 
   if (fetching) return null;
   return (
-    <div>
-      This is default layout
-      <p>{data?.users?.[0]?.email || 'na'} Auth User</p>
-      {children}
-      <button onClick={logout}>Logout</button>
-    </div>
+    <Flex mih={'100vh'} direction={'column'}>
+      <GlobalNavbar />
+      <Container flex={'1'}>Main Section</Container>
+      <GlobalFooter />
+    </Flex>
   );
 };
 
