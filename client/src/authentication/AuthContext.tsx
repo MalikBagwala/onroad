@@ -1,10 +1,8 @@
-import { REFRESH_TOKEN } from '@/graphql/auth.gql';
-import { useLocalStorage } from '@mantine/hooks';
-import { authExchange } from '@urql/exchange-auth';
-import { cacheExchange } from '@urql/exchange-graphcache';
-import { createContext, useContext, useEffect, useMemo } from 'react';
+import makeClient from '@/utils/urqlClient';
+import client from '@/utils/urqlClient';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Provider, createClient, fetchExchange, makeOperation } from 'urql';
+import { Client, Provider } from 'urql';
 
 type AuthProviderType = {
   children: React.ReactNode;
@@ -15,41 +13,46 @@ type AuthContextProps = {
 };
 const AuthContext = createContext<AuthContextProps>(null as any);
 
-type Tokens = {
-  accessToken: string;
-  refreshToken: string;
-};
-
 const AuthProvider = ({ children }: AuthProviderType) => {
   const [params] = useSearchParams();
   const navigate = useNavigate();
-  const [tokens, setTokens] = useLocalStorage<Partial<Tokens>>({ key: 'tokens', defaultValue: {} });
-
-  const logout = () => setTokens({});
+  const [client, setClient] = useState<Client>(makeClient());
+  const refreshClient = () => setClient(makeClient());
+  const logout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+    refreshClient();
+  };
 
   useEffect(() => {
     const access = params.get('access');
     const refresh = params.get('refresh');
     if (access && refresh) {
-      setTokens({ accessToken: access, refreshToken: refresh });
+      localStorage.setItem('token', access);
+      localStorage.setItem('refreshToken', refresh);
+      refreshClient();
       //   Remove Tokens from URL
       navigate('/', { replace: true });
     }
-  }, [params]);
-  const client = useMemo(() => {
-    return createClient({
-      url: `https://${import.meta.env.VITE_API_DOMAIN}/hasura/v1/graphql`,
-
-      fetchOptions: () => {
-        return {
-          headers: {
-            Authorization: `Bearer ${tokens.accessToken}`,
-          },
-        };
-      },
-      exchanges: [cacheExchange({}), fetchExchange],
-    });
-  }, [tokens]);
+  }, [params, refreshClient]);
+  // const client = useMemo(() => {
+  //   return createClient({
+  //     url: `https://${import.meta.env.VITE_API_DOMAIN}/hasura/v1/graphql`,
+  //     exchanges: [
+  //       cacheExchange({}),
+  //       authExchange(async (utils) => {
+  //         return {
+  //           addAuthToOperation(operation) {
+  //             return utils.appendHeaders(operation, {
+  //               Authorization: `Bearer ${tokens.accessToken}`,
+  //             });
+  //           },
+  //         };
+  //       }),
+  //       fetchExchange,
+  //     ],
+  //   });
+  // }, [tokens]);
   return (
     <AuthContext.Provider value={{ logout }}>
       <Provider value={client}>{children}</Provider>
