@@ -1,132 +1,57 @@
-import { useAuth } from '@/authentication/AuthContext';
-import { LOGIN, LOGIN_WITH_MAGIC_LINK, MEMBERSHIP_TYPE } from '@/graphql/auth.gql';
-import { setAccessToken, setRefreshToken } from '@/utils/tokens';
-import { Box, Button, CloseButton, Divider, PasswordInput, Text, TextInput } from '@mantine/core';
+import { MEMBERSHIP_TYPE } from '@/graphql/auth.gql';
+import { Button, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { modals } from '@mantine/modals';
-import { notifications } from '@mantine/notifications';
-import { useMutation, useQuery } from 'urql';
+import { useState } from 'react';
+import { useClient } from 'urql';
+import NewUser from '../NewUser/NewUser';
+import ReturningUser from '../ReturningUser/ReturningUser';
+import UserOnboardWrapper from './UserOnboardWrapper';
 
 export const UserOnboard = () => {
-  const { refreshClient } = useAuth();
+  const client = useClient();
   const form = useForm({
     initialValues: {
       email: '',
-      password: '',
     },
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Please enter a valid email address.'),
     },
   });
+  const [membershipType, setMembershipType] = useState<null | 'NEW_USER' | 'RETURNING_USER'>(null);
+  const [loading, setLoading] = useState(false);
 
-  const [{ fetching, data }, fetchMembershipType] = useQuery({
-    query: MEMBERSHIP_TYPE,
-    pause: true,
-    variables: { email: form.values.email },
-    requestPolicy: 'network-only',
-  });
-  const [{ fetching: lFetching }, login] = useMutation(LOGIN);
-  const [{ fetching: lmFetching }, loginWithMagicLink] = useMutation(LOGIN_WITH_MAGIC_LINK);
-  const membershipType = data?.membershipTypeByEmail?.data;
+  function handleAbort() {
+    form.reset();
+    setMembershipType(null);
+  }
 
-  console.log(membershipType);
   if (membershipType === 'RETURNING_USER') {
-    return (
-      <Box pos={'relative'} py={'xl'} px={'lg'}>
-        <Text size="lg" mb={'md'} ta={'center'} fw={'bold'}>
-          Welcome back to OnRoad
-        </Text>
-        <Button
-          onClick={async () => {
-            const { data } = await loginWithMagicLink({
-              email: form.values.email,
-            });
-            if (data?.loginWithMagicLink?.message) {
-              notifications.show({
-                message: data?.loginWithMagicLink?.message,
-                color: 'green',
-                withBorder: true,
-              });
-              modals.closeAll();
-            }
-          }}
-          loading={lFetching || lmFetching}
-          variant="default"
-          type="submit"
-          fullWidth
-          mt="md"
-        >
-          Login With Magic Link
-        </Button>
-        <Text
-          style={{
-            cursor: 'pointer',
-          }}
-          onClick={() => {
-            form.reset();
-            fetchMembershipType({ email: '' });
-          }}
-          c="purple"
-          mt={'0.5rem'}
-          ta={'center'}
-          size="s"
-        >
-          Use different email
-        </Text>
-        <Divider my="xs" label="Or" labelPosition="center" />
-        <PasswordInput
-          withAsterisk
-          label="Password"
-          type="password"
-          {...form.getInputProps('password')}
-        />
-        <Button
-          loading={lFetching || lmFetching}
-          onClick={async () => {
-            const { data } = await login({
-              email: form.values.email,
-              password: form.values.password,
-            });
-            if (data?.login?.data?.accessToken) {
-              setAccessToken(data?.login?.data?.accessToken);
-              setRefreshToken(data?.login?.data?.refreshToken);
-              refreshClient();
-              notifications.show({
-                message: data?.login?.message,
-                color: 'green',
-                withBorder: true,
-                autoClose: 1500,
-              });
-              modals.closeAll();
-            }
-          }}
-          type="submit"
-          fullWidth
-          mt="md"
-        >
-          Login With Password
-        </Button>
-        <CloseButton onClick={modals.closeAll} pos={'absolute'} top={0} right={0} />
-      </Box>
-    );
+    return <ReturningUser email={form.values.email} abort={handleAbort} />;
+  }
+
+  if (membershipType === 'NEW_USER') {
+    return <NewUser email={form.values.email} abort={handleAbort} />;
   }
   return (
-    <Box pos={'relative'} py={'xl'} px={'lg'}>
-      <Text size="lg" mb={'md'} ta={'center'} fw={'bold'}>
-        Create an Account Or Sign In
-      </Text>
-      <form onSubmit={form.onSubmit((values) => fetchMembershipType({ email: values.email }))}>
+    <UserOnboardWrapper title="Create an Account Or Sign In">
+      <form
+        onSubmit={form.onSubmit(async (values) => {
+          setLoading(true);
+          const { data } = await client.query(MEMBERSHIP_TYPE, { email: values.email }).toPromise();
+          setMembershipType(data?.membershipTypeByEmail?.data as any);
+          setLoading(false);
+        })}
+      >
         <TextInput
           withAsterisk
           label="Email"
           placeholder="Your email"
           {...form.getInputProps('email')}
         />
-        <Button loading={fetching} type="submit" fullWidth mt="md">
+        <Button loading={loading} type="submit" fullWidth mt="md">
           Continue With Email
         </Button>
       </form>
-      <CloseButton onClick={modals.closeAll} pos={'absolute'} top={0} right={0} />
-    </Box>
+    </UserOnboardWrapper>
   );
 };

@@ -19,6 +19,19 @@ from core.queries.membership_type import (
     membership_type_by_email,
 )
 from core.queries.verify_otp import VerifyOtpResponse, verify_otp
+from strawberry.permission import BasePermission
+from strawberry.types import Info
+from core.types import UserType
+
+
+class IsAuthenticated(BasePermission):
+    message = "User is not authenticated"
+
+    def has_permission(self, _, info: Info, **kwargs) -> bool:
+        usr = info.context.request.user
+        if usr and usr.id and usr.is_active:
+            return True
+        return False
 
 
 @strawberry.type
@@ -26,6 +39,21 @@ class Query:
     @strawberry.field
     def version() -> str:
         return settings.APP_VERSION
+
+    @strawberry.field
+    def me(self, info: Info) -> UserType | None:
+        try:
+            user = info.context.request.user
+            return UserType(
+                id=user.id,
+                username=user.username,
+                email=user.email,
+                first_name=user.first_name,
+                last_name=user.last_name,
+                city=user.city_id,
+            )
+        except:
+            return None
 
     membership_type_by_email: MembershipTypeByEmailResponse = strawberry.field(
         resolver=membership_type_by_email
@@ -46,7 +74,9 @@ class Mutation:
         resolver=forgot_password_confirm
     )
     send_email_otp: SendEmailOtpResponse = strawberry.field(resolver=send_email_otp)
-    verify_otp: VerifyOtpResponse = strawberry.field(resolver=verify_otp)
+    verify_otp: VerifyOtpResponse = strawberry.field(
+        resolver=verify_otp, permission_classes=[IsAuthenticated]
+    )
     pass
 
 

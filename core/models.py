@@ -69,6 +69,8 @@ class City(UUIDPrimaryKey):
 
 
 class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
+    first_name = models.CharField(max_length=255, null=True, blank=True)
+    last_name = models.CharField(max_length=255, null=True, blank=True)
     email = models.EmailField(unique=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True)
     email_verified = models.BooleanField(default=False)
@@ -96,6 +98,16 @@ class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
             "refreshToken": self.get_refresh_token(),
             "accessToken": self.get_access_token(),
         }
+
+    @classmethod
+    def get_user_from_access_token(cls, token):
+        try:
+            decoded_token = jwt.decode(token)
+            user_id = decoded_token["sub"]
+            return cls.objects.get(id=user_id)
+        except Exception as e:
+            print("get_user_from_access_token", str(e))
+            return None
 
     def __str__(self):
         if self.first_name:
@@ -366,12 +378,11 @@ class RefreshToken(UUIDPrimaryKey, AbstractTimestamp):
         constraints = [
             models.UniqueConstraint(
                 fields=["user", "client"],
-                condition=models.Q(expires_at__gt=timezone.now()),
-                name="unique_user_client_refresh_token",
+                name="one_token_per_client_per_user",
             ),
         ]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.user} - {self.expires_at}"
 
     pass

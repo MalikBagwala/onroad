@@ -15,8 +15,6 @@ export const AUTH_OPERATIONS = [
   'login',
   'loginWithMagicLink',
   'refreshToken',
-  'sendEmailOtp',
-  'verifyOtp',
   'forgotPassword',
   'forgotPasswordConfirm',
   'membershipTypeByEmail',

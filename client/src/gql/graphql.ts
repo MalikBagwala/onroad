@@ -108,9 +108,8 @@ export type MembershipTypeByEmailResponse = {
 
 /** Otp(created_at, updated_at, id, otp, user, expires_at, used, type) */
 export type OtpInput = {
-  otp?: InputMaybe<Scalars['String']['input']>;
+  otp: Scalars['String']['input'];
   type: Scalars['String']['input'];
-  userId: Scalars['UUID']['input'];
 };
 
 export type RefreshTokenResponse = {
@@ -131,6 +130,8 @@ export type RegisterDataType = {
 export type RegisterInput = {
   confirmPassword: Scalars['String']['input'];
   email: Scalars['String']['input'];
+  firstName?: InputMaybe<Scalars['String']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
   password: Scalars['String']['input'];
 };
 
@@ -193,11 +194,11 @@ export type Tokens = {
 
 export type UserType = {
   __typename?: 'UserType';
-  city: Scalars['String']['output'];
+  city?: Maybe<Scalars['UUID']['output']>;
   email: Scalars['String']['output'];
-  firstName: Scalars['String']['output'];
+  firstName?: Maybe<Scalars['String']['output']>;
   id: Scalars['UUID']['output'];
-  lastName: Scalars['String']['output'];
+  lastName?: Maybe<Scalars['String']['output']>;
   username: Scalars['String']['output'];
 };
 
@@ -4726,6 +4727,7 @@ export type Query_Root = {
   makes_aggregate: Makes_Aggregate;
   /** fetch data from the table: "makes" using primary key columns */
   makes_by_pk?: Maybe<Makes>;
+  me?: Maybe<UserType>;
   membershipTypeByEmail: MembershipTypeByEmailResponse;
   /** fetch data from the table: "price_items" */
   price_items: Array<Price_Items>;
@@ -6695,7 +6697,7 @@ export type Users = {
   date_joined: Scalars['timestamptz']['output'];
   email: Scalars['String']['output'];
   email_verified: Scalars['Boolean']['output'];
-  first_name: Scalars['String']['output'];
+  first_name?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   groups: Array<Users_Groups>;
   /** An aggregate relationship */
@@ -6706,7 +6708,7 @@ export type Users = {
   is_staff: Scalars['Boolean']['output'];
   is_superuser: Scalars['Boolean']['output'];
   last_login?: Maybe<Scalars['timestamptz']['output']>;
-  last_name: Scalars['String']['output'];
+  last_name?: Maybe<Scalars['String']['output']>;
   password: Scalars['String']['output'];
   /** An array relationship */
   permissions: Array<Users_User_Permissions>;
@@ -9587,7 +9589,7 @@ export type Votes_Updates = {
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CurrentUserQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: any, email: string, first_name: string, last_name: string }> };
+export type CurrentUserQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: any, email: string, first_name?: string | null, last_name?: string | null }> };
 
 export type MembershipTypeByEmailQueryVariables = Exact<{
   email: Scalars['String']['input'];

@@ -5,6 +5,7 @@ import '@mantine/notifications/styles.css';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { theme } from './theme';
 import Root from './routes/root';
+import { Welcome } from './components/Welcome/Welcome';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -12,7 +13,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <div>Home</div>,
+        element: <Welcome />,
       },
     ],
   },
