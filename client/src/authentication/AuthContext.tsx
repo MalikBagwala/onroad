@@ -23,6 +23,7 @@ const AuthProvider = ({ children }: AuthProviderType) => {
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
     refreshClient();
+    navigate('/', { replace: true });
   };
 
   useEffect(() => {

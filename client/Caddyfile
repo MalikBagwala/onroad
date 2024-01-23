@@ -1,0 +1,9 @@
+:5000
+
+# Main Web Application (Client)
+handle_path /* {
+	try {path} /
+	encode gzip
+	root * /static/client
+	file_server
+}

@@ -4,6 +4,7 @@ import { Box, Button, Container, Group, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import styles from './GlobalNavbar.module.css';
 import { UserOnboard } from '../UserOnboard/UserOnboard';
+import { IconLogin } from '@tabler/icons-react';
 type GlobalNavbarType = {
   user?: CurrentUserQuery['users'][0];
 };
@@ -13,7 +14,7 @@ export function GlobalNavbar({ user }: GlobalNavbarType) {
       centered: true,
       withCloseButton: false,
       overlayProps: {
-        blur: 3,
+        blur: 4,
       },
       children: <UserOnboard />,
     });
@@ -28,7 +29,7 @@ export function GlobalNavbar({ user }: GlobalNavbarType) {
             {user ? (
               <UserMenu user={user} />
             ) : (
-              <Button onClick={openModal} variant="default">
+              <Button leftSection={<IconLogin size={14} />} onClick={openModal} variant="default">
                 Sign In
               </Button>
             )}

@@ -4,7 +4,7 @@ import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import UserOnboardWrapper from '../UserOnboard/UserOnboardWrapper';
 import { useAuth } from '@/authentication/AuthContext';
-import { LOGIN, LOGIN_WITH_MAGIC_LINK } from '@/graphql/auth.gql';
+import { FORGOT_PASSWORD, LOGIN, LOGIN_WITH_MAGIC_LINK } from '@/graphql/auth.gql';
 import { useMutation } from 'urql';
 import { useForm } from '@mantine/form';
 
@@ -24,6 +24,7 @@ const ReturningUser = ({ email, abort }: ReturningUserType) => {
       password: (value) => (value.length > 0 ? null : 'Please enter a password.'),
     },
   });
+  const [{ fetching: pFetching }, forgot] = useMutation(FORGOT_PASSWORD);
   return (
     <UserOnboardWrapper title={'Welcome back to OnRoad'}>
       <Button
@@ -64,39 +65,61 @@ const ReturningUser = ({ email, abort }: ReturningUserType) => {
         Login with a different email
       </Text>
       <Divider my="xs" label="Or" labelPosition="center" />
-      <PasswordInput
-        withAsterisk
-        label="Password"
-        type="password"
-        autoFocus
-        {...form.getInputProps('password')}
-      />
-      <Button
-        loading={lFetching || lmFetching}
-        onClick={async () => {
+      <form
+        onSubmit={form.onSubmit(async (values) => {
           const { data } = await login({
             email,
-            password: form.values.password,
+            password: values.password,
           });
           if (data?.login?.data?.accessToken) {
             setAccessToken(data?.login?.data?.accessToken);
             setRefreshToken(data?.login?.data?.refreshToken);
             refreshClient();
-            notifications.show({
-              message: data?.login?.message,
-              color: 'green',
-              withBorder: true,
-              autoClose: 1500,
-            });
             modals.closeAll();
           }
-        }}
-        type="submit"
-        fullWidth
-        mt="md"
+          notifications.show({
+            message: data?.login?.message,
+            color: data?.login?.code === 200 ? 'green' : 'red',
+            withBorder: true,
+            autoClose: 1500,
+          });
+        })}
       >
-        Login With Password
-      </Button>
+        <PasswordInput
+          withAsterisk
+          label="Password"
+          type="password"
+          autoFocus
+          {...form.getInputProps('password')}
+        />
+        <Button loading={lFetching || lmFetching} type="submit" fullWidth mt="md">
+          Login With Password
+        </Button>
+        <Text
+          style={{
+            cursor: 'pointer',
+          }}
+          c={'gray.7'}
+          fw={600}
+          mt={'xs'}
+          onClick={async () => {
+            const { data } = await forgot({
+              identity: email,
+            });
+            if (data?.forgotPassword?.success) {
+              notifications.show({
+                message: data?.forgotPassword?.message,
+                color: 'green',
+                withBorder: true,
+                autoClose: 9000,
+              });
+              modals.closeAll();
+            }
+          }}
+        >
+          forgot password?{' '}
+        </Text>
+      </form>
       <CloseButton onClick={modals.closeAll} pos={'absolute'} top={0} right={0} />
     </UserOnboardWrapper>
   );

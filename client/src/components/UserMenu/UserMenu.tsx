@@ -40,7 +40,6 @@ export const UserMenu = ({ user }: UserMenuType) => {
         >
           My Contributions
         </Menu.Item>
-
         <Menu.Item
           leftSection={<IconSettings style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
         >

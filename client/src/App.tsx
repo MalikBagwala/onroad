@@ -6,6 +6,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { theme } from './theme';
 import Root from './routes/root';
 import { Welcome } from './components/Welcome/Welcome';
+import ResetPassword from './components/ResetPassword/ResetPassword';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Welcome />,
+      },
+      {
+        path: '/reset/:id',
+        element: <ResetPassword />,
       },
     ],
   },

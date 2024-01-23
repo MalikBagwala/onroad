@@ -21,6 +21,8 @@ const documents = {
     "\n  mutation sendEmailOtp($email: String!) {\n    sendEmailOtp(email: $email) {\n      code\n      data\n      message\n    }\n  }\n": types.SendEmailOtpDocument,
     "\n  mutation verifyOtp($input: OtpInput!) {\n    verifyOtp(input: $input) {\n      code\n      message\n      data\n    }\n  }\n": types.VerifyOtpDocument,
     "\n  mutation refreshToken($refreshToken: UUID!) {\n    refreshToken(refreshToken: $refreshToken) {\n      code\n      data\n      message\n    }\n  }\n": types.RefreshTokenDocument,
+    "\n  mutation forgotPassword($identity: String!) {\n    forgotPassword(identity: $identity) {\n      code\n      data\n      success\n      message\n    }\n  }\n": types.ForgotPasswordDocument,
+    "\n  mutation forgotPasswordConfirm($input: ForgotPasswordConfirmInput!) {\n    forgotPasswordConfirm(input: $input) {\n      data {\n        accessToken\n        refreshToken\n      }\n      success\n      code\n      message\n    }\n  }\n": types.ForgotPasswordConfirmDocument,
 };
 
 /**
@@ -69,6 +71,14 @@ export function graphql(source: "\n  mutation verifyOtp($input: OtpInput!) {\n  
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation refreshToken($refreshToken: UUID!) {\n    refreshToken(refreshToken: $refreshToken) {\n      code\n      data\n      message\n    }\n  }\n"): (typeof documents)["\n  mutation refreshToken($refreshToken: UUID!) {\n    refreshToken(refreshToken: $refreshToken) {\n      code\n      data\n      message\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation forgotPassword($identity: String!) {\n    forgotPassword(identity: $identity) {\n      code\n      data\n      success\n      message\n    }\n  }\n"): (typeof documents)["\n  mutation forgotPassword($identity: String!) {\n    forgotPassword(identity: $identity) {\n      code\n      data\n      success\n      message\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation forgotPasswordConfirm($input: ForgotPasswordConfirmInput!) {\n    forgotPasswordConfirm(input: $input) {\n      data {\n        accessToken\n        refreshToken\n      }\n      success\n      code\n      message\n    }\n  }\n"): (typeof documents)["\n  mutation forgotPasswordConfirm($input: ForgotPasswordConfirmInput!) {\n    forgotPasswordConfirm(input: $input) {\n      data {\n        accessToken\n        refreshToken\n      }\n      success\n      code\n      message\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

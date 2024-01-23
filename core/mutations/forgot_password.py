@@ -15,7 +15,7 @@ class ForgotPasswordResponse(BaseResponse):
     pass
 
 
-GENERIC_MESSAGE = "Please check your email for a link to reset your password. If it doesn’t appear within a few minutes, check your spam folder."
+GENERIC_MESSAGE = "Please check your email for a link to reset your password, once reset you will be logged in automatically!"
 
 
 def forgot_password(self, identity: str) -> ForgotPasswordResponse:

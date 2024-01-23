@@ -91,3 +91,28 @@ export const REFRESH_TOKEN = graphql(/* GraphQL */ `
     }
   }
 `);
+
+export const FORGOT_PASSWORD = graphql(/* GraphQL */ `
+  mutation forgotPassword($identity: String!) {
+    forgotPassword(identity: $identity) {
+      code
+      data
+      success
+      message
+    }
+  }
+`);
+
+export const FORGOT_PASSWORD_CONFIRM = graphql(/* GraphQL */ `
+  mutation forgotPasswordConfirm($input: ForgotPasswordConfirmInput!) {
+    forgotPasswordConfirm(input: $input) {
+      data {
+        accessToken
+        refreshToken
+      }
+      success
+      code
+      message
+    }
+  }
+`);

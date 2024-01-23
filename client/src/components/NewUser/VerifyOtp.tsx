@@ -43,7 +43,12 @@ const VerifyOtp = ({ email }: VerifyOtpType) => {
         })}
       >
         <Stack mt={'sm'}>
-          <PinInput {...form.getInputProps('otp')} style={{ alignSelf: 'center' }} length={6} />
+          <PinInput
+            autoFocus
+            {...form.getInputProps('otp')}
+            style={{ alignSelf: 'center' }}
+            length={6}
+          />
           <Button loading={fetching} type="submit" fullWidth mt="md">
             Verify
           </Button>

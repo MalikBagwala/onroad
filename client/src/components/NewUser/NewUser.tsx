@@ -80,6 +80,7 @@ const NewUser = ({ email, abort }: NewUserType) => {
       >
         <Stack>
           <TextInput
+            autoFocus
             description="This is optional and will not be displayed publicly."
             label="First Name"
             {...form.getInputProps('firstName')}
