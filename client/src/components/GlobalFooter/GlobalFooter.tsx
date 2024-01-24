@@ -1,5 +1,5 @@
-import { Text, Container, ActionIcon, Group, rem } from '@mantine/core';
-import { IconBrandTwitter, IconBrandYoutube, IconBrandInstagram } from '@tabler/icons-react';
+import { Text, Container, ActionIcon, Group, rem, Highlight } from '@mantine/core';
+import { IconBrandTwitter, IconBrandInstagram, IconBrandDiscord } from '@tabler/icons-react';
 import classes from './GlobalFooter.module.css';
 
 const data = [
@@ -9,16 +9,6 @@ const data = [
       { label: 'Features', link: '#' },
       { label: 'Pricing', link: '#' },
       { label: 'Support', link: '#' },
-      { label: 'Forums', link: '#' },
-    ],
-  },
-  {
-    title: 'Project',
-    links: [
-      { label: 'Contribute', link: '#' },
-      { label: 'Media assets', link: '#' },
-      { label: 'Changelog', link: '#' },
-      { label: 'Releases', link: '#' },
     ],
   },
   {
@@ -26,7 +16,6 @@ const data = [
     links: [
       { label: 'Join Discord', link: '#' },
       { label: 'Follow on Twitter', link: '#' },
-      { label: 'Email newsletter', link: '#' },
       { label: 'GitHub discussions', link: '#' },
     ],
   },
@@ -60,7 +49,9 @@ export function GlobalFooter() {
         <div className={classes.logo}>
           <div>OnRoad</div>
           <Text size="xs" c="dimmed" className={classes.description}>
-            Build fully functional accessible web applications faster than ever
+            Your trusted platform for{' '}
+            <Highlight highlight={'anonymous'}>anonymous vehicle price quoting</Highlight> Get real
+            prices with complete breakdown
           </Text>
         </div>
         <div className={classes.groups}>{groups}</div>
@@ -75,10 +66,11 @@ export function GlobalFooter() {
             <IconBrandTwitter style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
           </ActionIcon>
           <ActionIcon size="lg" color="gray" variant="subtle">
-            <IconBrandYoutube style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+            <IconBrandInstagram style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
           </ActionIcon>
           <ActionIcon size="lg" color="gray" variant="subtle">
-            <IconBrandInstagram style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+            <IconBrandDiscord style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+            {/* Add Discord icon and link here */}
           </ActionIcon>
         </Group>
       </Container>
