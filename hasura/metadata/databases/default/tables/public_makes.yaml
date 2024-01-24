@@ -10,7 +10,7 @@ array_relationships:
           name: vehicles
           schema: public
 select_permissions:
-  - role: anonymous
+  - role: contributor
     permission:
       columns:
         - name

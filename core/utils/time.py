@@ -1,8 +1,13 @@
 from onroad.settings import (
     OTP_EXPIRATION_MINUTES,
     PASSWORD_CHANGE_REQUEST_EXPIRATION_MINUTES,
+    REFRESH_TOKEN_EXPIRATION_MINUTES,
 )
 from django.utils import timezone
+
+
+def get_refresh_token_expires_in():
+    return timezone.now() + timezone.timedelta(minutes=REFRESH_TOKEN_EXPIRATION_MINUTES)
 
 
 def get_otp_expires_at():

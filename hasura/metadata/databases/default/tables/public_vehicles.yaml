@@ -17,7 +17,7 @@ array_relationships:
           name: variants
           schema: public
 select_permissions:
-  - role: anonymous
+  - role: contributor
     permission:
       columns:
         - name

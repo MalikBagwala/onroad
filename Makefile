@@ -9,3 +9,6 @@ migrate:
 
 showmigrations:
 	docker-compose -f development.yml exec django python manage.py showmigrations
+
+loaddata:
+	docker-compose -f development.yml exec django python manage.py loaddata initial_data.json

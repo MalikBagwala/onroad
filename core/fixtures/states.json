@@ -1,0 +1,326 @@
+[
+  {
+    "model": "core.State",
+    "pk": "9d282558-9e18-4c41-a0a7-08116e012a81",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Andaman and Nicobar Islands",
+      "code": "AN"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "d0a039df-6e75-4597-9f80-fa3a055b0bee",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Andhra Pradesh",
+      "code": "AP"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "2edcbd08-3238-4873-9bbd-55c79cdc71f3",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Arunachal Pradesh",
+      "code": "AR"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "694a90d0-c9a5-4835-95df-e9498c78c360",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Assam",
+      "code": "AS"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "aaeb6b5f-0633-47b5-9100-e9024700ece0",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Bihar",
+      "code": "BR"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "d306bac9-5e52-4af9-9c71-dec993c2baba",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Chandigarh",
+      "code": "CG"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "ea160870-ab8b-4cae-a772-0a80b566470f",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Chhattisgarh",
+      "code": "CH"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "ddcae2d2-c10e-451a-a418-744c4f447653",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Dadra and Nagar Haveli",
+      "code": "DH"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "86df600d-f67a-4b2a-8238-75b9880f9423",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Daman and Diu",
+      "code": "DD"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "d6b39040-4721-4313-aa69-733bf78b0214",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Delhi",
+      "code": "DL"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "3f7d7055-8b25-4f89-9765-0cd37dd0a99c",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Goa",
+      "code": "GA"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "e1721c20-ab9c-44ca-a4f8-5cab6cc36ad6",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Gujarat",
+      "code": "GJ"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "1cb5bf87-e09b-4605-86bb-f11df93794b6",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Haryana",
+      "code": "HR"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "616becf7-866b-4cb6-aa57-0afa29cac4f4",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Himachal Pradesh",
+      "code": "HP"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "8889d547-3ba6-469e-bcf6-4329aede50b1",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Jammu and Kashmir",
+      "code": "JK"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "6c763981-576b-450b-8db6-778b1c243803",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Jharkhand",
+      "code": "JH"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "cccb653d-fb71-4cc1-bfd3-f0737de22ae3",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Karnataka",
+      "code": "KA"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "f8911f17-19b1-46d9-b708-a727912638c8",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Kerala",
+      "code": "KL"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "7d06e07f-73e2-4fbb-9ee8-2ffa9570eeda",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Lakshadweep",
+      "code": "LD"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "7b7382f9-b9dc-42b4-8a2d-264a731fe7cb",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Madhya Pradesh",
+      "code": "MP"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "afa1a4c7-c742-4deb-ba10-79d131bf2a10",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Maharashtra",
+      "code": "MH"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "d7c7eee9-db08-4e00-a306-55790fbb52b5",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Manipur",
+      "code": "MN"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "e0173d54-80cd-48c0-9c92-61853ebef7b9",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Meghalaya",
+      "code": "ML"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "d0a2b263-0189-4e7b-9422-74d3e3915294",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Mizoram",
+      "code": "MZ"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "1e973ad2-b99d-4bc8-b688-8e9c8d84acdf",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Nagaland",
+      "code": "NL"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "57eb2330-c405-46f3-a60a-0622d0086b77",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Odisha",
+      "code": "OR"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "fdc8eeae-14e2-45bb-b91c-88f586bde4eb",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Puducherry",
+      "code": "PY"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "82ebab7f-eeaf-4a1d-9d1d-31780a997ced",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Punjab",
+      "code": "PB"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "7b0ea670-6161-44cf-85e4-98e2d2f37975",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Rajasthan",
+      "code": "RJ"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "983e6bf6-bb24-40f1-a07f-0d846b8d9bae",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Sikkim",
+      "code": "SK"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "99c94553-c81e-4dfb-98b1-377247c307bb",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Tamil Nadu",
+      "code": "TN"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "b65398bc-aa42-475d-bc07-a6730719da86",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Telangana",
+      "code": "TS"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "1d8e1820-480f-4c27-a44f-198d7063010f",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Tripura",
+      "code": "TR"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "ee5968f1-81d8-40b2-982e-4b4c5d5205bc",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Uttarakhand",
+      "code": "UK"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "d72eae33-d05a-4350-aebf-08cef4fbf34d",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "Uttar Pradesh",
+      "code": "UP"
+    }
+  },
+  {
+    "model": "core.State",
+    "pk": "4d66d7f3-42f7-4fb7-945b-5093e9902b93",
+    "fields": {
+      "country_id": "d30001cb-0e7f-4989-a2e0-1705e5e1fe18",
+      "name": "West Bengal",
+      "code": "WB"
+    }
+  }
+]

@@ -6,14 +6,14 @@ services:
     container_name: or_client_dev
     build:
       context: ./client
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.client.dev
     restart: unless-stopped
     volumes:
       - ./client:/app
       - /app/node_modules/
-      - /app/.nuxt/
     environment:
-      GQL_HOST: ${GQL_HOST}
+      VITE_API_DOMAIN: ${DOMAIN_NAME}
+      VITE_GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
     depends_on:
       - django
       - hasura
@@ -24,9 +24,11 @@ services:
     image: onroadapi:dev
     container_name: or_django_dev
     build:
-      dockerfile: ./Dockerfile.dev
+      dockerfile: ./Dockerfile.api.dev
     restart: unless-stopped
     volumes:
+      - static:/app/static
+      - media:/app/media
       - .:/app
     env_file:
       - ./.env
@@ -41,10 +43,11 @@ services:
     image: onroadapi:dev
     container_name: or_worker_dev
     build:
-      dockerfile: ./Dockerfile.dev
+      dockerfile: ./Dockerfile.api.dev
     command: python manage.py rundramatiq
     restart: unless-stopped
     volumes:
+      - static:/app/static
       - .:/app
     env_file:
       - ./.env
@@ -60,8 +63,9 @@ services:
     restart: always
     image: caddy
     volumes:
+      - static:/static/djstatic
+      - media:/static/djmedia
       - ./Caddyfile:/etc/caddy/Caddyfile
-      - ./static:/var/www/static
       - ./cert.crt:/etc/pki/tls/certs/cert.crt
       - ./cert.key:/etc/pki/tls/private/cert.key
     container_name: or_caddy
@@ -71,7 +75,6 @@ services:
     depends_on:
       - django
       - hasura
-      - client
     networks:
       - db_network
 
@@ -151,3 +154,5 @@ volumes:
   postgres:
   pgadmin:
   rabbitmq:
+  static:
+  media:

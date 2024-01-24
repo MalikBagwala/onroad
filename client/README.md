@@ -1,75 +1,34 @@
-# Nuxt 3 Minimal Starter
+# Mantine Vite template
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## Features
 
-## Setup
+This template comes with the following features:
 
-Make sure to install the dependencies:
+- [PostCSS](https://postcss.org/) with [mantine-postcss-preset](https://mantine.dev/styles/postcss-preset)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Storybook](https://storybook.js.org/)
+- [Vitest](https://vitest.dev/) setup with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
+- ESLint setup with [eslint-config-mantine](https://github.com/mantinedev/eslint-config-mantine)
 
-```bash
-# npm
-npm install
+## npm scripts
 
-# pnpm
-pnpm install
+## Build and dev scripts
 
-# yarn
-yarn install
+- `dev` – start development server
+- `build` – build production version of the app
+- `preview` – locally preview production build
 
-# bun
-bun install
-```
+### Testing scripts
 
-## Development Server
+- `typecheck` – checks TypeScript types
+- `lint` – runs ESLint
+- `prettier:check` – checks files with Prettier
+- `vitest` – runs vitest tests
+- `vitest:watch` – starts vitest watch
+- `test` – runs `vitest`, `prettier:check`, `lint` and `typecheck` scripts
 
-Start the development server on `http://localhost:3000`:
+### Other scripts
 
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- `storybook` – starts storybook dev server
+- `storybook:build` – build production storybook bundle to `storybook-static`
+- `prettier:write` – formats all files with Prettier

@@ -20,9 +20,8 @@ GENERIC_MESSAGE = "If the email address you provided is associated with an accou
 def login_with_magic_link(self, email: str) -> LoginWithMagicLinkResponse:
     try:
         user = models.User.objects.get(email=email, email_verified=True, is_active=True)
-        tokens = user.get_tokens()
         html_message = render_to_string(
-            "magic_link.html", {"magic_link": f"https://{settings.DOMAIN_NAME}?access={str(tokens['accessToken'])}&refresh={str(tokens["refreshToken"])}", "username": str(user)}
+            "magic_link.html", {"magic_link": user.get_login_link()}
         )
         send_email.send(
             "Sign in to OnRoad",

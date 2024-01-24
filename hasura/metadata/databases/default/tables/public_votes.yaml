@@ -14,6 +14,19 @@ insert_permissions:
         - user_id
     comment: ""
 select_permissions:
+  - role: contributor
+    permission:
+      columns:
+        - type
+        - created_at
+        - updated_at
+        - contribution_id
+        - id
+        - user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+    comment: ""
   - role: user
     permission:
       columns:
@@ -30,6 +43,15 @@ select_permissions:
       allow_aggregations: true
     comment: ""
 update_permissions:
+  - role: contributor
+    permission:
+      columns:
+        - type
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      check: null
+    comment: ""
   - role: user
     permission:
       columns:
@@ -42,27 +64,15 @@ update_permissions:
         updated_at: NOW()
     comment: ""
 delete_permissions:
+  - role: contributor
+    permission:
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+    comment: ""
   - role: user
     permission:
       filter:
         user_id:
           _eq: X-Hasura-User-Id
     comment: ""
-event_triggers:
-  - name: update_votes
-    definition:
-      delete:
-        columns: '*'
-      enable_manual: false
-      insert:
-        columns: '*'
-      update:
-        columns:
-          - contribution_id
-          - user_id
-          - type
-    retry_conf:
-      interval_sec: 10
-      num_retries: 0
-      timeout_sec: 60
-    webhook: '{{API_HOST}}/api/trigger/update_votes/'

@@ -1,12 +1,18 @@
 import decimal
 from django.contrib.auth.models import AbstractUser
 
-from core.utils.time import get_otp_expires_at, get_password_change_request_expires_at
+from core.utils.time import (
+    get_otp_expires_at,
+    get_password_change_request_expires_at,
+    get_refresh_token_expires_in,
+)
 from .abstracts import AbstractTimestamp, UUIDPrimaryKey
 from django.db import models
 from .utils.random import generate_otp
 from django.utils import timezone
 from .enums import (
+    PriceCategoryTypes,
+    TransactionTypes,
     VoteTypes,
     OtpTypes,
     VehicleCategories,
@@ -14,11 +20,16 @@ from .enums import (
     FluelTypes,
     ContributionStatus,
 )
-from onroad.settings import (
-    PASSWORD_CHANGE_REQUEST_EXPIRATION_MINUTES,
-    OTP_EXPIRATION_MINUTES,
-)
+from io import BytesIO
+import sys
+from PIL import Image
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from .utils import jwt
+import mimetypes
+from uuid import uuid4
+from django.conf import settings
+from django.contrib.postgres.functions import RandomUUID
+from django.db.models.functions import Now
 
 # Create your models here.
 
@@ -57,22 +68,56 @@ class City(UUIDPrimaryKey):
         verbose_name_plural = "Cities"
 
     def __str__(self):
-        return f"{self.name} ({self.code})"
+        return self.name
 
 
 class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
+    avatar = models.ImageField(null=True, blank=True)
+    google_id = models.CharField(max_length=255, null=True, blank=True, unique=True)
+    apple_id = models.CharField(max_length=255, null=True, blank=True, unique=True)
+    first_name = models.CharField(max_length=255, null=True, blank=True)
+    last_name = models.CharField(max_length=255, null=True, blank=True)
     email = models.EmailField(unique=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True)
     email_verified = models.BooleanField(default=False)
+    has_contributed = models.BooleanField(default=False)
 
     class Meta:
         db_table = "users"
 
+    def get_access_token(self):
+        return jwt.get_access_token(self)
+
+    def get_refresh_token(self, client="web"):
+        try:
+            token_instance, _ = RefreshToken.objects.get_or_create(
+                user=self, client=client, expires_at__gt=timezone.now()
+            )
+            # Get refresh tokens if an un-expired token already exists, else create a new one
+            return token_instance.token
+        except Exception as e:
+            print("get_refresh_token", str(e))
+            return None
+
     def get_tokens(self):
         return {
-            "refreshToken": jwt.get_auth_token(self, 1440, "refresh"),
-            "accessToken": jwt.get_auth_token(self, 1440, "access"),  # type: ignore
+            "refreshToken": self.get_refresh_token(),
+            "accessToken": self.get_access_token(),
         }
+
+    def get_login_link(self, include_refresh_token=True):
+        tokens = self.get_tokens()
+        return f"https://{settings.DOMAIN_NAME}?access={tokens['accessToken']}&refresh={tokens['refreshToken'] if include_refresh_token else ''}"
+
+    @classmethod
+    def get_user_from_access_token(cls, token):
+        try:
+            decoded_token = jwt.decode(token)
+            user_id = decoded_token["sub"]
+            return cls.objects.get(id=user_id)
+        except Exception as e:
+            print("get_user_from_access_token", str(e))
+            return None
 
     def __str__(self):
         if self.first_name:
@@ -83,21 +128,58 @@ class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
     pass
 
 
-class Media(UUIDPrimaryKey):
-    url = models.URLField(max_length=255)
-    mime_type = models.CharField(max_length=255)
-    etag = models.CharField(max_length=255)
-    size = models.IntegerField()
-    bucket = models.CharField(max_length=255)
-    key = models.CharField(max_length=255)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
+def custom_filename(instance, filename):
+    """
+    Generate a unique filename for the uploaded image.
+    """
+    # Get the file extension
+    ext = filename.split(".")[-1]
+    # Generate a unique filename using UUID4
+    new_filename = f"{instance.pk}.{ext}"
+    # Return the new filename
+    return new_filename
+
+
+class Attachment(UUIDPrimaryKey):
+    file = models.FileField()
+    mime_type = models.CharField(max_length=50, blank=True)
+    size = models.PositiveIntegerField(blank=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def save(self):
+        mt = mimetypes.guess_type(self.file.name)
+        if mt[0] and mt[0].startswith("image"):
+            im = Image.open(self.file)
+            output = BytesIO()
+            # after modifications, save it to the output
+            im.save(output, format="WEBP", quality=80)
+            output.seek(0)
+
+            self.size = sys.getsizeof(output)
+            self.mime_type = "image/webp"
+            # change the imagefield value to be the newley modifed image value
+            self.file = InMemoryUploadedFile(
+                output,
+                "ImageField",
+                f"{self.pk}.webp",
+                self.mime_type,
+                self.size,
+                None,
+            )
+        else:
+            self.mime_type = mt[0]
+            self.size = self.file.size
+            self.file.name = custom_filename(self, self.file.name)
+            pass
+
+        super(Attachment, self).save()
 
     class Meta:
-        db_table = "media"
-        verbose_name_plural = "Media"
+        db_table = "attachments"
+        verbose_name_plural = "Attachments"
 
     def __str__(self):
-        return f"{self.url}"
+        return f"{self.file}"
 
 
 class Make(UUIDPrimaryKey):
@@ -122,7 +204,7 @@ class VehicleType(UUIDPrimaryKey):
         db_table = "vehicle_types"
 
     def __str__(self):
-        return f"{self.name} ({self.category})"
+        return f"{self.name}"
 
 
 class Vehicle(UUIDPrimaryKey):
@@ -134,7 +216,7 @@ class Vehicle(UUIDPrimaryKey):
         db_table = "vehicles"
 
     def __str__(self):
-        return f"{self.make} {self.name} ({self.vehicle_type})"
+        return f"{self.name} ({self.vehicle_type})"
 
 
 class Variant(UUIDPrimaryKey):
@@ -149,7 +231,7 @@ class Variant(UUIDPrimaryKey):
     )
     description = models.TextField()
     specifications = models.JSONField(null=True, blank=True, default=dict)
-    attachments = models.ManyToManyField(Media, blank=True)
+    attachments = models.ManyToManyField(Attachment, blank=True)
     manufacturer_link = models.URLField(max_length=255, null=True, blank=True)
 
     class Meta:
@@ -163,7 +245,7 @@ class VariantColor(UUIDPrimaryKey):
     variant = models.ForeignKey(Variant, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     hex_code = models.CharField(max_length=7, null=True, blank=True)
-    attachments = models.ManyToManyField(Media, blank=True)
+    attachments = models.ManyToManyField(Attachment, blank=True)
 
     class Meta:
         db_table = "variant_colors"
@@ -171,6 +253,19 @@ class VariantColor(UUIDPrimaryKey):
 
     def __str__(self):
         return f"{self.name}"
+
+
+class PriceItem(UUIDPrimaryKey, AbstractTimestamp):
+    name = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True)
+    category = models.CharField(max_length=3, choices=PriceCategoryTypes.choices)
+    type = models.CharField(max_length=2, choices=TransactionTypes.choices)
+
+    def __str__(self) -> str:
+        return f"{self.name} - {self.type}"
+
+    class Meta:
+        db_table = "price_items"
 
 
 class Contribution(UUIDPrimaryKey, AbstractTimestamp):
@@ -188,55 +283,43 @@ class Contribution(UUIDPrimaryKey, AbstractTimestamp):
 
     quoted_on = models.DateField()
     dealership_name = models.CharField(max_length=255)
-    ex_showroom = models.DecimalField(max_digits=10, decimal_places=2)
-    rto = models.DecimalField(max_digits=10, decimal_places=2)
-    insurance = models.DecimalField(
-        max_digits=10, decimal_places=2, default=decimal.Decimal(0)
-    )
-    accessories = models.DecimalField(
-        max_digits=10, decimal_places=2, default=decimal.Decimal(0)
-    )
-    subsidies = models.DecimalField(
-        max_digits=10, decimal_places=2, default=decimal.Decimal(0)
-    )
-    misc = models.DecimalField(
-        max_digits=10, decimal_places=2, default=decimal.Decimal(0)
-    )
+
     total = models.DecimalField(
         max_digits=10, decimal_places=2, default=decimal.Decimal(0)
     )
-    metadata = models.JSONField(null=True, blank=True, default=dict)
-    attachments = models.ManyToManyField(Media, blank=True)
+    attachments = models.ManyToManyField(Attachment, blank=True)
     upvotes = models.IntegerField(default=0)
     downvotes = models.IntegerField(default=0)
     remark = models.TextField(null=True, blank=True)
-
-    def update_total(self):
-        self.total = (
-            self.ex_showroom
-            + self.rto
-            + self.insurance
-            + self.accessories
-            - self.subsidies
-            + self.misc
-        )
-        self.save()
-
-    def upvote(self, trigger_save=True):
-        self.upvotes = max(0, self.upvotes + 1)
-        if trigger_save:
-            self.save()
-
-    def downvote(self, trigger_save=True):
-        self.downvotes = max(0, self.downvotes + 1)
-        if trigger_save:
-            self.save()
 
     class Meta:
         db_table = "contributions"
 
     def __str__(self):
         return f"{self.variant}/{self.quoted_on}/{self.city}/{self.total}"
+
+
+class ContributionPriceItem(UUIDPrimaryKey, AbstractTimestamp):
+    serial_no = models.PositiveSmallIntegerField(default=1)
+    contribution = models.ForeignKey(Contribution, on_delete=models.CASCADE)
+    price_item = models.ForeignKey(PriceItem, on_delete=models.CASCADE)
+    value = models.DecimalField(max_digits=10, decimal_places=2)
+
+    class Meta:
+        db_table = "contribution_price_items"
+        constraints = [
+            models.CheckConstraint(
+                check=models.Q(value__gte="0"), name="contribution_value_non_negative"
+            ),
+            models.UniqueConstraint(
+                fields=["contribution", "serial_no"],
+                name="contribution_serial_no_unique",
+            ),
+            models.UniqueConstraint(
+                fields=["contribution", "price_item"],
+                name="contribution_price_item_unique",
+            ),
+        ]
 
 
 class Vote(UUIDPrimaryKey, AbstractTimestamp):
@@ -291,3 +374,29 @@ class PasswordChangeRequest(UUIDPrimaryKey, AbstractTimestamp):
     @property
     def is_expired(self):
         return timezone.now() > self.expires_at
+
+
+class RefreshToken(UUIDPrimaryKey, AbstractTimestamp):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    token = models.UUIDField(default=uuid4, editable=False, unique=True)  # type: ignore
+    expires_at = models.DateTimeField(
+        default=get_refresh_token_expires_in, null=True, blank=True
+    )
+    client = models.CharField(max_length=255, default="web")
+    test = models.UUIDField(unique=True, db_default=RandomUUID(), editable=False)  # type: ignore
+    xyz = models.DateTimeField(unique=True, db_default=Now(), editable=False)  # type: ignore
+
+    class Meta:
+        db_table = "refresh_tokens"
+        ordering = ["-created_at"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user", "client"],
+                name="one_token_per_user_client",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.user} - {self.expires_at}"
+
+    pass

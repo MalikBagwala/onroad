@@ -1,0 +1,28 @@
+table:
+  name: price_items
+  schema: public
+select_permissions:
+  - role: contributor
+    permission:
+      columns:
+        - category
+        - name
+        - type
+        - description
+        - created_at
+        - updated_at
+        - id
+      filter: {}
+    comment: ""
+  - role: user
+    permission:
+      columns:
+        - category
+        - name
+        - type
+        - description
+        - created_at
+        - updated_at
+        - id
+      filter: {}
+    comment: ""

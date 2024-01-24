@@ -1,0 +1,96 @@
+table:
+  name: contribution_price_items
+  schema: public
+object_relationships:
+  - name: contribution
+    using:
+      foreign_key_constraint_on: contribution_id
+  - name: price_item
+    using:
+      foreign_key_constraint_on: price_item_id
+insert_permissions:
+  - role: contributor
+    permission:
+      check: {}
+      columns:
+        - contribution_id
+        - price_item_id
+        - value
+    comment: ""
+  - role: user
+    permission:
+      check: {}
+      columns:
+        - contribution_id
+        - price_item_id
+        - serial_no
+        - value
+    comment: ""
+select_permissions:
+  - role: contributor
+    permission:
+      columns:
+        - contribution_id
+        - created_at
+        - id
+        - price_item_id
+        - serial_no
+        - updated_at
+        - value
+      filter: {}
+    comment: ""
+  - role: user
+    permission:
+      columns:
+        - value
+        - serial_no
+        - created_at
+        - updated_at
+        - contribution_id
+        - id
+        - price_item_id
+      filter:
+        contribution:
+          user_id:
+            _eq: X-Hasura-User-Id
+    comment: ""
+update_permissions:
+  - role: contributor
+    permission:
+      columns:
+        - price_item_id
+        - serial_no
+        - value
+      filter:
+        contribution:
+          user_id:
+            _eq: X-Hasura-User-Id
+      check: null
+    comment: ""
+  - role: user
+    permission:
+      columns:
+        - price_item_id
+        - serial_no
+        - value
+      filter:
+        contribution:
+          user_id:
+            _eq: X-Hasura-User-Id
+      check: null
+    comment: ""
+delete_permissions:
+  - role: contributor
+    permission:
+      filter:
+        contribution:
+          user_id:
+            _eq: X-Hasura-User-Id
+    comment: ""
+  - role: user
+    permission:
+      filter:
+        contribution:
+          user_id:
+            _eq: X-Hasura-User-Id
+    comment: ""

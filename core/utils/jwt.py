@@ -11,19 +11,27 @@ def decode(token):
     return jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
 
 
-def get_auth_token(user, expire_in: int = 1440, type: str = "access"):
+def get_access_token(user):
+    roles = []
+    if user.is_superuser:
+        roles = ["admin", "user"]
+    elif user.has_contributed:
+        roles = ["contributor", "user"]
+    else:
+        roles = ["user"]
+    current_time = timezone.now()
+    expiration_delta = timezone.timedelta(
+        minutes=settings.ACCESS_TOKEN_EXPIRATION_MINUTES
+    )
     return encode(
         {
-            "token_type": type,
-            "exp": timezone.now() + timezone.timedelta(minutes=expire_in),
-            "iat": timezone.now(),
+            "iat": current_time,
             "sub": str(user.id),
+            "exp": current_time + expiration_delta,
             "user_claims": {
-                "x-hasura-allowed-roles": ["admin", "user"]
-                if user.is_superuser
-                else ["user"],
+                "x-hasura-allowed-roles": roles,
                 "x-hasura-user-id": str(user.id),
-                "x-hasura-default-role": "admin" if user.is_superuser else "user",
+                "x-hasura-default-role": roles[0],
             },
         }
     )

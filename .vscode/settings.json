@@ -4,5 +4,12 @@
   },
   "python.analysis.autoImportCompletions": true,
   "python.analysis.typeCheckingMode": "basic",
+  "cssVariables.lookupFiles": [
+    "client/**/*.css",
+    "client/**/*.scss",
+    "client/**/*.sass",
+    "client/**/*.less",
+    "client/node_modules/@mantine/core/styles.css"
+  ],
   "typescript.tsdk": "./client/node_modules/typescript/lib"
 }

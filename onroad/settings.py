@@ -56,17 +56,14 @@ AUTH_USER_MODEL = "core.User"
 
 HASURA_ADMIN_ROLE = "admin"
 
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = f"https://{DOMAIN_NAME}/media/"
 STRAWBERRY_DJANGO = {
     "FIELD_DESCRIPTION_FROM_HELP_TEXT": True,
     "TYPE_DESCRIPTION_FROM_MODEL_DOCSTRING": True,
 }
 # Application definition
-SIMPLE_JWT = {
-    # It will work instead of the default serializer(TokenObtainPairSerializer).
-    "TOKEN_OBTAIN_SERIALIZER": "core.serializers.CustomTokenObtainPairSerializer",
-    "USER_ID_CLAIM": "sub",
-    "ACCESS_TOKEN_LIFETIME": timezone.timedelta(days=1),
-}
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -99,12 +96,9 @@ REST_FRAMEWORK = {
         # Add your custom throttling classes if needed
     ),
     "DEFAULT_THROTTLE_RATES": {
-        "anon": "10000000/hour",  # Adjust as needed
-        "user": "10000000/hour",  # Adjust as needed
+        "anon": "100/hour",  # Adjust as needed
+        "user": "500/hour",  # Adjust as needed
     },
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ],
 }
 ROOT_URLCONF = "onroad.urls"
 
@@ -207,8 +201,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 GDAL_LIBRARY_PATH = os.getenv("GDAL_LIBRARY_PATH")
 GEOS_LIBRARY_PATH = os.getenv("GEOS_LIBRARY_PATH")
 
-OTP_EXPIRATION_MINUTES = 5
+OTP_EXPIRATION_MINUTES = 5  # 5 minutes
 PASSWORD_CHANGE_REQUEST_EXPIRATION_MINUTES = 120  # 2 hours
+REFRESH_TOKEN_EXPIRATION_MINUTES = 10080  # 7 days
+ACCESS_TOKEN_EXPIRATION_MINUTES = 10  # 10 minutes
+
 
 EMAIL_HOST = "smtp.mail.me.com"
 EMAIL_HOST_USER = "malik.bagwala@icloud.com"

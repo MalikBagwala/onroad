@@ -1,0 +1,37 @@
+table:
+  name: attachments
+  schema: public
+select_permissions:
+  - role: contributor
+    permission:
+      columns:
+        - file
+        - id
+        - mime_type
+        - size
+      filter: {}
+    comment: ""
+  - role: user
+    permission:
+      columns:
+        - file
+        - id
+        - mime_type
+        - size
+      filter:
+        created_by_id:
+          _eq: X-Hasura-User-Id
+    comment: ""
+delete_permissions:
+  - role: contributor
+    permission:
+      filter:
+        created_by_id:
+          _eq: X-Hasura-User-Id
+    comment: ""
+  - role: user
+    permission:
+      filter:
+        created_by_id:
+          _eq: X-Hasura-User-Id
+    comment: ""

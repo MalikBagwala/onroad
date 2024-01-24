@@ -2,7 +2,7 @@ table:
   name: vehicle_types
   schema: public
 select_permissions:
-  - role: anonymous
+  - role: contributor
     permission:
       columns:
         - category

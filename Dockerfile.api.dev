@@ -1,0 +1,27 @@
+FROM python:3.12-slim
+LABEL maintainer="Malik Bagwala <hello@maalik.dev>"
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Get all the necessary deps
+RUN apt-get update && apt-get install libpq-dev gcc gdal-bin -y
+
+# Copy the Pipfile and Pipfile.lock to the container
+COPY Pipfile Pipfile.lock /app/
+
+# Install project dependencies
+RUN pip install pipenv \
+    && pipenv install --system
+
+# Copy the Django project to the container
+COPY . /app/
+
+# 1. Run migratios
+# 2. Create admin user
+# 3. Run the server
+CMD ["sh", "-c", "python manage.py migrate && python manage.py createadmin && python manage.py runserver 0.0.0.0:9000"]
+
+# Dont Run Migrations (Useful when you want to make migrations first)
+# CMD ["sh","-c","python manage.py runserver 0.0.0.0:9000"]
+

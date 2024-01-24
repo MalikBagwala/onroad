@@ -2,50 +2,72 @@ table:
   name: contributions_attachments
   schema: public
 object_relationships:
+  - name: attachment
+    using:
+      foreign_key_constraint_on: attachment_id
   - name: contribution
     using:
       foreign_key_constraint_on: contribution_id
-  - name: media
-    using:
-      foreign_key_constraint_on: media_id
 insert_permissions:
+  - role: contributor
+    permission:
+      check: {}
+      columns: []
+    comment: ""
   - role: user
     permission:
       check: {}
-      columns:
-        - contribution_id
-        - media_id
+      columns: []
     comment: ""
 select_permissions:
-  - role: anonymous
+  - role: contributor
     permission:
       columns:
         - id
         - contribution_id
-        - media_id
+        - attachment_id
       filter: {}
     comment: ""
   - role: user
     permission:
       columns:
         - id
+        - attachment_id
         - contribution_id
-        - media_id
-      filter: {}
+      filter:
+        contribution:
+          user_id:
+            _eq: X-Hasura-User-Id
     comment: ""
 update_permissions:
-  - role: user
+  - role: contributor
     permission:
       columns:
-        - contribution_id
-        - media_id
+        - attachment_id
       filter:
         contribution:
           user_id:
             _eq: X-Hasura-User-Id
       check: null
     comment: ""
+  - role: user
+    permission:
+      columns:
+        - attachment_id
+      filter:
+        contribution:
+          user_id:
+            _eq: X-Hasura-User-Id
+      check: {}
+    comment: ""
 delete_permissions:
+  - role: contributor
+    permission:
+      filter:
+        contribution:
+          user_id:
+            _eq: X-Hasura-User-Id
+    comment: ""
   - role: user
     permission:
       filter:

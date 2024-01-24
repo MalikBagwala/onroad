@@ -13,6 +13,13 @@ array_relationships:
         table:
           name: variants_attachments
           schema: public
+  - name: colors
+    using:
+      foreign_key_constraint_on:
+        column: variant_id
+        table:
+          name: variant_colors
+          schema: public
   - name: contributions
     using:
       foreign_key_constraint_on:
@@ -21,7 +28,7 @@ array_relationships:
           name: contributions
           schema: public
 select_permissions:
-  - role: anonymous
+  - role: contributor
     permission:
       columns:
         - fuel_type
@@ -38,13 +45,14 @@ select_permissions:
   - role: user
     permission:
       columns:
-        - fuel_type
-        - name
-        - transmission
-        - launch_date
-        - specifications
         - description
+        - fuel_type
         - id
+        - launch_date
+        - manufacturer_link
+        - name
+        - specifications
+        - transmission
         - vehicle_id
       filter: {}
     comment: ""

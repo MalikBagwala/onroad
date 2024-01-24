@@ -1,0 +1,19 @@
+FROM node:alpine as build
+# update and install the latest dependencies for the alpine version
+RUN apk update && apk upgrade
+# set work dir as app
+
+WORKDIR /app
+
+# Copy all the essential items needed for an installation
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn ./.yarn
+
+# install all the project dependencies
+RUN  yarn install
+
+# copy all other project files to working directory
+COPY . ./
+
+# Run codegen and start the dev server
+CMD ["sh", "-c", "yarn codegen && yarn dev"]

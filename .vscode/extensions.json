@@ -10,6 +10,7 @@
     "ms-python.python",
     "donjayamanne.python-environment-manager",
     "donjayamanne.python-extension-pack",
-    "redhat.vscode-yaml"
+    "redhat.vscode-yaml",
+    "vunguyentuan.vscode-css-variables"
   ]
 }

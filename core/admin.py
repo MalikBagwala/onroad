@@ -3,13 +3,13 @@ from import_export.admin import ImportExportModelAdmin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
-from core.serializers import CustomTokenObtainPairSerializer
 from . import models
 from django.conf import settings
 from django_dramatiq.admin import TaskAdmin
 from django_dramatiq.models import Task
+
 # Register your models here.
-UserAdmin.fieldsets += (("Extra Fields", {"fields": ("city", "email_verified")}),)  # type: ignore
+UserAdmin.fieldsets += (("Extra Fields", {"fields": ("city", "email_verified", "has_contributed", "google_id", "avatar")}),)  # type: ignore
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -55,11 +55,10 @@ class UserAdmin(UserAdmin, ImportExportModelAdmin):
 
     @admin.action(description="Login as user")
     def login_as_user(self, _, queryset):
-        if queryset.count != 1:
+        if queryset.count() != 1:
             return
-        tokens = queryset.first().get_tokens()
-        url = f"https://{settings.DOMAIN_NAME}?access={tokens["accessToken"]}&refresh={tokens["refreshToken"]}"  # type: ignore
-        return redirect(url)
+        link = queryset.first().get_login_link(False)
+        return redirect(link)
 
     pass
 
@@ -71,9 +70,9 @@ class PasswordChangeRequestAdmin(ImportExportModelAdmin):
     pass
 
 
-@admin.register(models.Media)
-class MediaAdmin(ImportExportModelAdmin):
-    search_fields = ("url", "etag", "key")
+@admin.register(models.Attachment)
+class AttachmentAdmin(ImportExportModelAdmin):
+    search_fields = ("file",)
     list_filter = ("mime_type",)
     pass
 
@@ -113,12 +112,19 @@ class VehicleTypeAdmin(ImportExportModelAdmin):
 
 @admin.register(models.Vehicle)
 class VehicleAdmin(ImportExportModelAdmin):
+    search_fields = ("name",)
+    list_filter = (
+        "make__name",
+        "vehicle_type__name",
+    )
     pass
 
 
 @admin.register(models.Variant)
 class VariantAdmin(ImportExportModelAdmin):
     search_fields = ("name",)
+    autocomplete_fields = ("vehicle",)
+
     pass
 
 
@@ -130,12 +136,29 @@ class VariantColorAdmin(ImportExportModelAdmin):
     pass
 
 
+@admin.register(models.PriceItem)
+class PriceItemAdmin(ImportExportModelAdmin):
+    search_fields = ("name",)
+    list_display = ("name", "description", "category", "type")
+    list_filter = ("category",)
+    pass
+
+
 @admin.register(models.Contribution)
 class ContributionAdmin(ImportExportModelAdmin):
     search_fields = ("variant__name", "city__name")
     list_display = ("user", "variant", "color", "city", "total", "upvotes", "downvotes")
     list_filter = ("variant__name", "city__name")
     autocomplete_fields = ("user", "color", "variant", "city")
+    pass
+
+
+@admin.register(models.ContributionPriceItem)
+class ContributionPriceItemAdmin(ImportExportModelAdmin):
+    search_fields = ("contribution__variant__name", "price_item__name")
+    list_display = ("serial_no", "contribution", "price_item", "value")
+    list_filter = ("contribution__variant__name", "price_item__name")
+    autocomplete_fields = ("contribution", "price_item")
     pass
 
 
@@ -150,7 +173,22 @@ class OtpAdmin(ImportExportModelAdmin):
     list_display = ("user", "otp", "expires_at", "used")
     pass
 
+
+@admin.register(models.RefreshToken)
+class RefreshTokenAdmin(ImportExportModelAdmin):
+    search_fields = ("user__username",)
+    list_display = ("user", "user_email", "client", "expires_at")
+
+    def user_email(self, obj):
+        # Access the email field of the related User model
+        return obj.user.email
+
+    pass
+
+
 admin.site.unregister(Task)
+
+
 @admin.register(Task)
 class CustomTaskAdmin(TaskAdmin):
     list_display = (

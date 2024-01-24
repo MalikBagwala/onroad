@@ -5,6 +5,7 @@ from core.enums import OtpTypes
 from core.types import BaseResponse
 from core.models import Otp
 from django.utils import timezone
+from strawberry.types import Info
 
 
 @strawberry.type
@@ -15,16 +16,15 @@ class VerifyOtpResponse(BaseResponse):
 
 @strawberry_django.input(Otp)
 class OtpInput:
-    user_id: uuid.UUID
-    otp: strawberry.auto
+    otp: str
     type: str
     pass
 
 
-def verify_otp(self, input: OtpInput) -> VerifyOtpResponse:
+def verify_otp(self, input: OtpInput, info: Info) -> VerifyOtpResponse:
     try:
         otp = Otp.objects.get(
-            user__id=input.user_id,
+            user__id=info.context.request.user.id,
             otp=input.otp,
             used=False,
             expires_at__gt=timezone.now(),

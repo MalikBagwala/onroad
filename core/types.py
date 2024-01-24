@@ -1,3 +1,4 @@
+from typing import Optional
 import uuid
 import strawberry
 from strawberry.scalars import JSON
@@ -16,12 +17,12 @@ class UserType:
     id: uuid.UUID
     username: str
     email: str
-    first_name: str
-    last_name: str
-    city: str
+    first_name: Optional[str]
+    last_name: Optional[str]
+    city: Optional[uuid.UUID]
 
 
 @strawberry.type
 class Tokens:
     accessToken: str
-    refreshToken: str
+    refreshToken: uuid.UUID

@@ -2,7 +2,7 @@ import uuid
 import strawberry
 from core.models import PasswordChangeRequest
 from core.serializers import ChangePasswordSerializer
-from core.types import BaseResponse
+from core.types import BaseResponse, Tokens
 from django.utils import timezone
 from rest_framework.exceptions import ValidationError
 from django.core.exceptions import ObjectDoesNotExist
@@ -12,11 +12,13 @@ from core.utils.validation_error_serializer import validation_error_serializer
 
 @strawberry.type
 class ForgotPasswordConfirmResponse(BaseResponse):
-    data: None
+    data: Tokens | None
     pass
 
 
-GENERIC_MESSAGE = "Password changed successfully!"
+GENERIC_MESSAGE = (
+    "Password changed successfully! You are now signed in automatically. :)"
+)
 
 
 @strawberry.input
@@ -45,11 +47,14 @@ def forgot_password_confirm(
         change_request.user.save()
         change_request.used = True
         change_request.save()
-
+        tokens = change_request.user.get_tokens()
         return ForgotPasswordConfirmResponse(
             success=True,
             message=GENERIC_MESSAGE,
-            data=None,
+            data=Tokens(
+                accessToken=tokens["accessToken"],
+                refreshToken=tokens["refreshToken"],
+            ),
             code=200,
         )
 
@@ -74,5 +79,5 @@ def forgot_password_confirm(
             success=False,
             message=str(e),
             data=None,
-            code=200,
+            code=400,
         )

@@ -7,7 +7,6 @@ name = "pypi"
 django = "*"
 psycopg2 = "*"
 django-import-export = "*"
-djangorestframework-simplejwt = "*"
 djangorestframework = "*"
 markdown = "*"
 django-filter = "*"
@@ -17,10 +16,12 @@ strawberry-graphql-django = "*"
 pyjwt = "*"
 dramatiq = {extras = ["rabbitmq", "watch"], version = "*"}
 django-dramatiq = "*"
+python-dotenv = "*"
+pillow = "*"
+requests = "*"
 
 [dev-packages]
 black = "*"
-python-dotenv = "*"
 
 [requires]
 python_version = "3.12"

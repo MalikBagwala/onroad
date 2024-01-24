@@ -1,0 +1,17 @@
+[
+  {
+    "model": "core.Variant",
+    "pk": "7965067e-dac3-4b60-ba6b-9b8c7e719c72",
+    "fields": {
+      "vehicle_id": "b4680840-0baa-47c4-9226-ac1f38b17037",
+      "launch_date": "2022-09-04",
+      "name": "Okinawa Praise Pro",
+      "fuel_type": "EL",
+      "transmission": "AT",
+      "description": "The Okinawa PraisePro is equipped with a 2.7 kWh BLDC motor. It takes 2-3 hours to achieve a full charge for its battery, offering a claimed range of 88 km per charge. The model is available in one variant, STD.",
+      "specifications": "{\"gps\": \"No\", \"tyre\": \"90/90-12 Tubeless (Front/Rear)\", \"speed\": \"56 kmph\", \"wheel\": \"Stylish Aluminum Alloy Wheel\", \"battery\": \"2.08 kWh Lithium-ion (Detachable Battery)\", \"voltage\": \"72V\", \"floor_mat\": \"Stylish Body Coloured\", \"headlight\": \"LED with DRL Function\", \"back_light\": \"Unique Design with LED rear Winkers\", \"controller\": \"E-ABS (Electronic- Assisted Braking System) with regenerative energy\", \"dimensions\": \"1970X715X1165mm\", \"peak_power\": \"2700 W\", \"suspension\": \"Front- Hydraulic Telescopic Rear- Double Shocker with dual tube technology\", \"brake_lever\": \"CNC Machined with Lever Adjustment\", \"seat_height\": \"800mm\", \"speedometer\": \"Digital\", \"brake_system\": \"FR- Disc | RR- Disc\", \"key_features\": \"Central Locking with Anti-theft Alarm, Keyless Entry, Find My Scooter Function, Mobile Charging USB Port, Motor Walking Assistance (Front/Reverse Motion)\", \"charging_time\": \"2-3 HRs\", \"motor_warranty\": \"3 Yrs/30,000KMs (whichever is earlier)***\", \"battery_warranty\": \"3 Years\", \"ground_clearance\": \"175mm\", \"loading_capacity\": \"150Kg\", \"range_per_charge\": {\"name\": \"81 km/Charge (Sports Mode)\", \"description\": \"Under Ideal Test Conditions - Specific Range Depends Upon Riding Condition and Road Condition\"}, \"climbing_approval\": \"Approved at 7 degrees\", \"arai_icat_approved\": \"Yes\", \"road_side_assistance\": \"Yes (Optional)\", \"charger_specification\": \"Micro-Charger with Auto Cut Function\", \"mobile_app_connectivity\": \"No\"}",
+      "attachments": "",
+      "manufacturer_link": "https://okinawascooters.com/scooters/praisepro"
+    }
+  }
+]
