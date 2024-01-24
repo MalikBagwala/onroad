@@ -1856,7 +1856,7 @@ export type Contributions_Attachments_Bool_Exp = {
 /** unique or primary key constraints on table "contributions_attachments" */
 export enum Contributions_Attachments_Constraint {
   /** unique or primary key constraint on columns "attachment_id", "contribution_id" */
-  ContributionsAttachmentContributionIdMediaIdAd4ad1b2Uniq = 'contributions_attachment_contribution_id_media_id_ad4ad1b2_uniq',
+  ContributionsAttachmentContributionIdAttachme_1b924f0aUniq = 'contributions_attachment_contribution_id_attachme_1b924f0a_uniq',
   /** unique or primary key constraint on columns "id" */
   ContributionsAttachmentsPkey = 'contributions_attachments_pkey'
 }
@@ -5399,7 +5399,7 @@ export enum Refresh_Tokens_Constraint {
   /** unique or primary key constraint on columns "id" */
   RefreshTokensPkey = 'refresh_tokens_pkey',
   /** unique or primary key constraint on columns "token" */
-  RefreshTokensToken_34bd7b63Uniq = 'refresh_tokens_token_34bd7b63_uniq'
+  RefreshTokensTokenKey = 'refresh_tokens_token_key'
 }
 
 /** input type for inserting data into table "refresh_tokens" */
@@ -6841,11 +6841,11 @@ export type Users_Bool_Exp = {
 /** unique or primary key constraints on table "users" */
 export enum Users_Constraint {
   /** unique or primary key constraint on columns "apple_id" */
-  UsersAppleId_221fddcaUniq = 'users_apple_id_221fddca_uniq',
+  UsersAppleIdKey = 'users_apple_id_key',
   /** unique or primary key constraint on columns "email" */
   UsersEmailKey = 'users_email_key',
   /** unique or primary key constraint on columns "google_id" */
-  UsersGoogleId_49fe2bb1Uniq = 'users_google_id_49fe2bb1_uniq',
+  UsersGoogleIdKey = 'users_google_id_key',
   /** unique or primary key constraint on columns "id" */
   UsersPkey = 'users_pkey',
   /** unique or primary key constraint on columns "username" */
@@ -7967,7 +7967,7 @@ export type Variant_Colors_Attachments_Bool_Exp = {
 /** unique or primary key constraints on table "variant_colors_attachments" */
 export enum Variant_Colors_Attachments_Constraint {
   /** unique or primary key constraint on columns "attachment_id", "variantcolor_id" */
-  VariantColorsAttachmenVariantcolorIdMediaId_449eb0a8Uniq = 'variant_colors_attachmen_variantcolor_id_media_id_449eb0a8_uniq',
+  VariantColorsAttachmenVariantcolorIdAttachmeF246b268Uniq = 'variant_colors_attachmen_variantcolor_id_attachme_f246b268_uniq',
   /** unique or primary key constraint on columns "id" */
   VariantColorsAttachmentsPkey = 'variant_colors_attachments_pkey'
 }
@@ -8586,7 +8586,7 @@ export enum Variants_Attachments_Constraint {
   /** unique or primary key constraint on columns "id" */
   VariantsAttachmentsPkey = 'variants_attachments_pkey',
   /** unique or primary key constraint on columns "variant_id", "attachment_id" */
-  VariantsAttachmentsVariantIdMediaId_74bb6ecfUniq = 'variants_attachments_variant_id_media_id_74bb6ecf_uniq'
+  VariantsAttachmentsVariantIdAttachmentIdFabd455fUniq = 'variants_attachments_variant_id_attachment_id_fabd455f_uniq'
 }
 
 /** input type for incrementing numeric columns in table "variants_attachments" */
