@@ -28,8 +28,6 @@ from .utils import jwt
 import mimetypes
 from uuid import uuid4
 from django.conf import settings
-from django.contrib.postgres.functions import RandomUUID
-from django.db.models.functions import Now
 
 # Create your models here.
 
@@ -383,8 +381,6 @@ class RefreshToken(UUIDPrimaryKey, AbstractTimestamp):
         default=get_refresh_token_expires_in, null=True, blank=True
     )
     client = models.CharField(max_length=255, default="web")
-    test = models.UUIDField(unique=True, db_default=RandomUUID(), editable=False)  # type: ignore
-    xyz = models.DateTimeField(unique=True, db_default=Now(), editable=False)  # type: ignore
 
     class Meta:
         db_table = "refresh_tokens"
