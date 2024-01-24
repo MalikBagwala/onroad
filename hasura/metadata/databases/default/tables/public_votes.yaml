@@ -5,9 +5,6 @@ insert_permissions:
   - role: user
     permission:
       check: {}
-      set:
-        created_at: NOW()
-        updated_at: NOW()
       columns:
         - contribution_id
         - type

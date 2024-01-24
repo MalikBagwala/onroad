@@ -24,8 +24,6 @@ insert_permissions:
     permission:
       check: {}
       set:
-        created_at: NOW()
-        updated_at: NOW()
         user_id: x-hasura-User-Id
       columns:
         - city_id
@@ -40,8 +38,6 @@ insert_permissions:
     permission:
       check: {}
       set:
-        created_at: NOW()
-        updated_at: NOW()
         user_id: x-hasura-User-Id
       columns:
         - city_id
