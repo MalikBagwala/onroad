@@ -11,4 +11,5 @@ showmigrations:
 	docker-compose -f development.yml exec django python manage.py showmigrations
 
 loaddata:
-	docker-compose -f development.yml exec django python manage.py loaddata initial_data.json
+	@read -p "Enter the name of the fixture(eg. groups.json): " input_file; \
+	docker-compose -f development.yml exec django python manage.py loaddata $$input_file
