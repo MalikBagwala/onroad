@@ -96,8 +96,8 @@ REST_FRAMEWORK = {
         # Add your custom throttling classes if needed
     ),
     "DEFAULT_THROTTLE_RATES": {
-        "anon": "10000000/hour",  # Adjust as needed
-        "user": "10000000/hour",  # Adjust as needed
+        "anon": "100/hour",  # Adjust as needed
+        "user": "500/hour",  # Adjust as needed
     },
 }
 ROOT_URLCONF = "onroad.urls"

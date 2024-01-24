@@ -9,7 +9,16 @@ type UserMenuType = {
 export const UserMenu = ({ user }: UserMenuType) => {
   const theme = useMantineTheme();
   const { logout } = useAuth();
-  const userIdentity = user?.first_name || user?.last_name || user?.email;
+  let identity = '';
+  if (user?.first_name) {
+    identity += user.first_name;
+  }
+  if (user?.last_name) {
+    if (user?.first_name) identity += ' ';
+    identity += user.last_name;
+  }
+  if (!identity) return user?.email;
+  console.log(user);
   return (
     <Menu
       width={260}
@@ -20,9 +29,16 @@ export const UserMenu = ({ user }: UserMenuType) => {
       <Menu.Target>
         <UnstyledButton>
           <Group gap={7}>
-            <Avatar radius="xl" size={20} />
+            <Avatar
+              src={user?.avatar}
+              radius="xl"
+              size={20}
+              imageProps={{
+                referrerPolicy: 'no-referrer',
+              }}
+            />
             <Text fw={500} size="sm" lh={1} mr={3}>
-              {userIdentity}
+              {identity}
             </Text>
             <IconChevronDown style={{ width: rem(12), height: rem(12) }} stroke={1.5} />
           </Group>

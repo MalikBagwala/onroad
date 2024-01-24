@@ -1,3 +1,4 @@
+import { DELETE_REFRESH_TOKENS } from '@/graphql/auth.gql';
 import { setAccessToken, setRefreshToken } from '@/utils/tokens';
 import makeClient from '@/utils/urqlClient';
 import { createContext, useContext, useEffect, useState } from 'react';
@@ -19,7 +20,18 @@ const AuthProvider = ({ children }: AuthProviderType) => {
   const navigate = useNavigate();
   const [client, setClient] = useState<Client>(makeClient());
   const refreshClient = () => setClient(makeClient());
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await client.mutation(DELETE_REFRESH_TOKENS, {
+        where: {
+          client: {
+            _eq: 'web',
+          },
+        },
+      });
+    } catch {
+      console.log('Error deleting refresh tokens');
+    }
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
     refreshClient();

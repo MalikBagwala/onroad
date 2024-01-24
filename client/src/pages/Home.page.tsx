@@ -10,6 +10,7 @@ export function HomePage() {
       <Container pt={69}>
         <Paper py={48}>
           <Welcome />
+          
         </Paper>
       </Container>
       <GlobalFooter />

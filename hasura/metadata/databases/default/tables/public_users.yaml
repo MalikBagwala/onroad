@@ -31,11 +31,14 @@ select_permissions:
   - role: contributor
     permission:
       columns:
+        - avatar
         - city_id
         - created_at
         - email
         - email_verified
         - first_name
+        - google_id
+        - has_contributed
         - id
         - last_name
         - updated_at
@@ -47,11 +50,14 @@ select_permissions:
   - role: user
     permission:
       columns:
+        - avatar
         - city_id
         - created_at
         - email
         - email_verified
         - first_name
+        - google_id
+        - has_contributed
         - id
         - last_name
         - updated_at
@@ -64,6 +70,7 @@ update_permissions:
   - role: contributor
     permission:
       columns:
+        - avatar
         - city_id
         - email
         - first_name
@@ -77,6 +84,7 @@ update_permissions:
   - role: user
     permission:
       columns:
+        - avatar
         - city_id
         - email
         - first_name

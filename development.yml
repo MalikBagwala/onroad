@@ -13,6 +13,7 @@ services:
       - /app/node_modules/
     environment:
       VITE_API_DOMAIN: ${DOMAIN_NAME}
+      VITE_GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
     depends_on:
       - django
       - hasura

@@ -5349,7 +5349,7 @@ export type Refresh_Tokens = {
   __typename?: 'refresh_tokens';
   client: Scalars['String']['output'];
   created_at: Scalars['timestamptz']['output'];
-  expires_at: Scalars['timestamptz']['output'];
+  expires_at?: Maybe<Scalars['timestamptz']['output']>;
   id: Scalars['uuid']['output'];
   token: Scalars['uuid']['output'];
   updated_at: Scalars['timestamptz']['output'];
@@ -5395,9 +5395,11 @@ export type Refresh_Tokens_Bool_Exp = {
 /** unique or primary key constraints on table "refresh_tokens" */
 export enum Refresh_Tokens_Constraint {
   /** unique or primary key constraint on columns "user_id", "client" */
-  OneTokenPerClientPerUser = 'one_token_per_client_per_user',
+  OneTokenPerUserClient = 'one_token_per_user_client',
   /** unique or primary key constraint on columns "id" */
-  RefreshTokensPkey = 'refresh_tokens_pkey'
+  RefreshTokensPkey = 'refresh_tokens_pkey',
+  /** unique or primary key constraint on columns "token" */
+  RefreshTokensToken_34bd7b63Uniq = 'refresh_tokens_token_34bd7b63_uniq'
 }
 
 /** input type for inserting data into table "refresh_tokens" */
@@ -6686,6 +6688,8 @@ export type Timestamptz_Comparison_Exp = {
 /** columns and relationships of "users" */
 export type Users = {
   __typename?: 'users';
+  apple_id?: Maybe<Scalars['String']['output']>;
+  avatar?: Maybe<Scalars['String']['output']>;
   /** An object relationship */
   city?: Maybe<Cities>;
   city_id?: Maybe<Scalars['uuid']['output']>;
@@ -6698,6 +6702,7 @@ export type Users = {
   email: Scalars['String']['output'];
   email_verified: Scalars['Boolean']['output'];
   first_name?: Maybe<Scalars['String']['output']>;
+  google_id?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   groups: Array<Users_Groups>;
   /** An aggregate relationship */
@@ -6805,6 +6810,8 @@ export type Users_Bool_Exp = {
   _and?: InputMaybe<Array<Users_Bool_Exp>>;
   _not?: InputMaybe<Users_Bool_Exp>;
   _or?: InputMaybe<Array<Users_Bool_Exp>>;
+  apple_id?: InputMaybe<String_Comparison_Exp>;
+  avatar?: InputMaybe<String_Comparison_Exp>;
   city?: InputMaybe<Cities_Bool_Exp>;
   city_id?: InputMaybe<Uuid_Comparison_Exp>;
   contributions?: InputMaybe<Contributions_Bool_Exp>;
@@ -6814,6 +6821,7 @@ export type Users_Bool_Exp = {
   email?: InputMaybe<String_Comparison_Exp>;
   email_verified?: InputMaybe<Boolean_Comparison_Exp>;
   first_name?: InputMaybe<String_Comparison_Exp>;
+  google_id?: InputMaybe<String_Comparison_Exp>;
   groups?: InputMaybe<Users_Groups_Bool_Exp>;
   groups_aggregate?: InputMaybe<Users_Groups_Aggregate_Bool_Exp>;
   has_contributed?: InputMaybe<Boolean_Comparison_Exp>;
@@ -6832,8 +6840,12 @@ export type Users_Bool_Exp = {
 
 /** unique or primary key constraints on table "users" */
 export enum Users_Constraint {
+  /** unique or primary key constraint on columns "apple_id" */
+  UsersAppleId_221fddcaUniq = 'users_apple_id_221fddca_uniq',
   /** unique or primary key constraint on columns "email" */
   UsersEmailKey = 'users_email_key',
+  /** unique or primary key constraint on columns "google_id" */
+  UsersGoogleId_49fe2bb1Uniq = 'users_google_id_49fe2bb1_uniq',
   /** unique or primary key constraint on columns "id" */
   UsersPkey = 'users_pkey',
   /** unique or primary key constraint on columns "username" */
@@ -7157,6 +7169,8 @@ export type Users_Groups_Variance_Order_By = {
 
 /** input type for inserting data into table "users" */
 export type Users_Insert_Input = {
+  apple_id?: InputMaybe<Scalars['String']['input']>;
+  avatar?: InputMaybe<Scalars['String']['input']>;
   city?: InputMaybe<Cities_Obj_Rel_Insert_Input>;
   city_id?: InputMaybe<Scalars['uuid']['input']>;
   contributions?: InputMaybe<Contributions_Arr_Rel_Insert_Input>;
@@ -7165,6 +7179,7 @@ export type Users_Insert_Input = {
   email?: InputMaybe<Scalars['String']['input']>;
   email_verified?: InputMaybe<Scalars['Boolean']['input']>;
   first_name?: InputMaybe<Scalars['String']['input']>;
+  google_id?: InputMaybe<Scalars['String']['input']>;
   groups?: InputMaybe<Users_Groups_Arr_Rel_Insert_Input>;
   has_contributed?: InputMaybe<Scalars['Boolean']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
@@ -7182,11 +7197,14 @@ export type Users_Insert_Input = {
 /** aggregate max on columns */
 export type Users_Max_Fields = {
   __typename?: 'users_max_fields';
+  apple_id?: Maybe<Scalars['String']['output']>;
+  avatar?: Maybe<Scalars['String']['output']>;
   city_id?: Maybe<Scalars['uuid']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   date_joined?: Maybe<Scalars['timestamptz']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   first_name?: Maybe<Scalars['String']['output']>;
+  google_id?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   last_login?: Maybe<Scalars['timestamptz']['output']>;
   last_name?: Maybe<Scalars['String']['output']>;
@@ -7198,11 +7216,14 @@ export type Users_Max_Fields = {
 /** aggregate min on columns */
 export type Users_Min_Fields = {
   __typename?: 'users_min_fields';
+  apple_id?: Maybe<Scalars['String']['output']>;
+  avatar?: Maybe<Scalars['String']['output']>;
   city_id?: Maybe<Scalars['uuid']['output']>;
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   date_joined?: Maybe<Scalars['timestamptz']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   first_name?: Maybe<Scalars['String']['output']>;
+  google_id?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   last_login?: Maybe<Scalars['timestamptz']['output']>;
   last_name?: Maybe<Scalars['String']['output']>;
@@ -7236,6 +7257,8 @@ export type Users_On_Conflict = {
 
 /** Ordering options when selecting data from "users". */
 export type Users_Order_By = {
+  apple_id?: InputMaybe<Order_By>;
+  avatar?: InputMaybe<Order_By>;
   city?: InputMaybe<Cities_Order_By>;
   city_id?: InputMaybe<Order_By>;
   contributions_aggregate?: InputMaybe<Contributions_Aggregate_Order_By>;
@@ -7244,6 +7267,7 @@ export type Users_Order_By = {
   email?: InputMaybe<Order_By>;
   email_verified?: InputMaybe<Order_By>;
   first_name?: InputMaybe<Order_By>;
+  google_id?: InputMaybe<Order_By>;
   groups_aggregate?: InputMaybe<Users_Groups_Aggregate_Order_By>;
   has_contributed?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
@@ -7266,6 +7290,10 @@ export type Users_Pk_Columns_Input = {
 /** select columns of table "users" */
 export enum Users_Select_Column {
   /** column name */
+  AppleId = 'apple_id',
+  /** column name */
+  Avatar = 'avatar',
+  /** column name */
   CityId = 'city_id',
   /** column name */
   CreatedAt = 'created_at',
@@ -7277,6 +7305,8 @@ export enum Users_Select_Column {
   EmailVerified = 'email_verified',
   /** column name */
   FirstName = 'first_name',
+  /** column name */
+  GoogleId = 'google_id',
   /** column name */
   HasContributed = 'has_contributed',
   /** column name */
@@ -7301,12 +7331,15 @@ export enum Users_Select_Column {
 
 /** input type for updating data in table "users" */
 export type Users_Set_Input = {
+  apple_id?: InputMaybe<Scalars['String']['input']>;
+  avatar?: InputMaybe<Scalars['String']['input']>;
   city_id?: InputMaybe<Scalars['uuid']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   date_joined?: InputMaybe<Scalars['timestamptz']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   email_verified?: InputMaybe<Scalars['Boolean']['input']>;
   first_name?: InputMaybe<Scalars['String']['input']>;
+  google_id?: InputMaybe<Scalars['String']['input']>;
   has_contributed?: InputMaybe<Scalars['Boolean']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
@@ -7329,12 +7362,15 @@ export type Users_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Users_Stream_Cursor_Value_Input = {
+  apple_id?: InputMaybe<Scalars['String']['input']>;
+  avatar?: InputMaybe<Scalars['String']['input']>;
   city_id?: InputMaybe<Scalars['uuid']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   date_joined?: InputMaybe<Scalars['timestamptz']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   email_verified?: InputMaybe<Scalars['Boolean']['input']>;
   first_name?: InputMaybe<Scalars['String']['input']>;
+  google_id?: InputMaybe<Scalars['String']['input']>;
   has_contributed?: InputMaybe<Scalars['Boolean']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
@@ -7350,6 +7386,10 @@ export type Users_Stream_Cursor_Value_Input = {
 /** update columns of table "users" */
 export enum Users_Update_Column {
   /** column name */
+  AppleId = 'apple_id',
+  /** column name */
+  Avatar = 'avatar',
+  /** column name */
   CityId = 'city_id',
   /** column name */
   CreatedAt = 'created_at',
@@ -7361,6 +7401,8 @@ export enum Users_Update_Column {
   EmailVerified = 'email_verified',
   /** column name */
   FirstName = 'first_name',
+  /** column name */
+  GoogleId = 'google_id',
   /** column name */
   HasContributed = 'has_contributed',
   /** column name */
@@ -9589,7 +9631,7 @@ export type Votes_Updates = {
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CurrentUserQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: any, email: string, first_name?: string | null, last_name?: string | null }> };
+export type CurrentUserQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: any, email: string, first_name?: string | null, last_name?: string | null, avatar?: string | null }> };
 
 export type MembershipTypeByEmailQueryVariables = Exact<{
   email: Scalars['String']['input'];
@@ -9655,8 +9697,15 @@ export type ForgotPasswordConfirmMutationVariables = Exact<{
 
 export type ForgotPasswordConfirmMutation = { __typename?: 'mutation_root', forgotPasswordConfirm: { __typename?: 'ForgotPasswordConfirmResponse', success: boolean, code: number, message: string, data?: { __typename?: 'Tokens', accessToken: string, refreshToken: any } | null } };
 
+export type Delete_Refresh_TokensMutationVariables = Exact<{
+  where: Refresh_Tokens_Bool_Exp;
+}>;
 
-export const CurrentUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"currentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"first_name"}},{"kind":"Field","name":{"kind":"Name","value":"last_name"}}]}}]}}]} as unknown as DocumentNode<CurrentUserQuery, CurrentUserQueryVariables>;
+
+export type Delete_Refresh_TokensMutation = { __typename?: 'mutation_root', delete_refresh_tokens?: { __typename?: 'refresh_tokens_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'refresh_tokens', id: any, client: string }> } | null };
+
+
+export const CurrentUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"currentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"first_name"}},{"kind":"Field","name":{"kind":"Name","value":"last_name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"}}]}}]}}]} as unknown as DocumentNode<CurrentUserQuery, CurrentUserQueryVariables>;
 export const MembershipTypeByEmailDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"membershipTypeByEmail"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"membershipTypeByEmail"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"message"}},{"kind":"Field","name":{"kind":"Name","value":"data"}}]}}]}}]} as unknown as DocumentNode<MembershipTypeByEmailQuery, MembershipTypeByEmailQueryVariables>;
 export const LoginDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"login"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"Argument","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}}]}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<LoginMutation, LoginMutationVariables>;
 export const LoginWithMagicLinkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"loginWithMagicLink"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"loginWithMagicLink"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"data"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<LoginWithMagicLinkMutation, LoginWithMagicLinkMutationVariables>;
@@ -9666,3 +9715,4 @@ export const VerifyOtpDocument = {"kind":"Document","definitions":[{"kind":"Oper
 export const RefreshTokenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"refreshToken"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"refreshToken"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"refreshToken"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"refreshToken"},"value":{"kind":"Variable","name":{"kind":"Name","value":"refreshToken"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"data"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<RefreshTokenMutation, RefreshTokenMutationVariables>;
 export const ForgotPasswordDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"forgotPassword"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"identity"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"forgotPassword"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"identity"},"value":{"kind":"Variable","name":{"kind":"Name","value":"identity"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"data"}},{"kind":"Field","name":{"kind":"Name","value":"success"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<ForgotPasswordMutation, ForgotPasswordMutationVariables>;
 export const ForgotPasswordConfirmDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"forgotPasswordConfirm"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ForgotPasswordConfirmInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"forgotPasswordConfirm"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}}]}},{"kind":"Field","name":{"kind":"Name","value":"success"}},{"kind":"Field","name":{"kind":"Name","value":"code"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<ForgotPasswordConfirmMutation, ForgotPasswordConfirmMutationVariables>;
+export const Delete_Refresh_TokensDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"delete_refresh_tokens"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"refresh_tokens_bool_exp"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"delete_refresh_tokens"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"returning"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"client"}}]}},{"kind":"Field","name":{"kind":"Name","value":"affected_rows"}}]}}]}}]} as unknown as DocumentNode<Delete_Refresh_TokensMutation, Delete_Refresh_TokensMutationVariables>;

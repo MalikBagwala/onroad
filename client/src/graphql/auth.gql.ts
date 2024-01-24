@@ -7,6 +7,7 @@ export const CURRENT_USER = graphql(/* GraphQL */ `
       email
       first_name
       last_name
+      avatar
     }
   }
 `);
@@ -113,6 +114,18 @@ export const FORGOT_PASSWORD_CONFIRM = graphql(/* GraphQL */ `
       success
       code
       message
+    }
+  }
+`);
+
+export const DELETE_REFRESH_TOKENS = graphql(/* GraphQL */ `
+  mutation delete_refresh_tokens($where: refresh_tokens_bool_exp!) {
+    delete_refresh_tokens(where: $where) {
+      returning {
+        id
+        client
+      }
+      affected_rows
     }
   }
 `);

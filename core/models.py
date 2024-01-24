@@ -27,6 +27,9 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from .utils import jwt
 import mimetypes
 from uuid import uuid4
+from django.conf import settings
+from django.contrib.postgres.functions import RandomUUID
+from django.db.models.functions import Now
 
 # Create your models here.
 
@@ -69,6 +72,9 @@ class City(UUIDPrimaryKey):
 
 
 class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
+    avatar = models.ImageField(null=True, blank=True)
+    google_id = models.CharField(max_length=255, null=True, blank=True, unique=True)
+    apple_id = models.CharField(max_length=255, null=True, blank=True, unique=True)
     first_name = models.CharField(max_length=255, null=True, blank=True)
     last_name = models.CharField(max_length=255, null=True, blank=True)
     email = models.EmailField(unique=True)
@@ -98,6 +104,10 @@ class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
             "refreshToken": self.get_refresh_token(),
             "accessToken": self.get_access_token(),
         }
+
+    def get_login_link(self, include_refresh_token=True):
+        tokens = self.get_tokens()
+        return f"https://{settings.DOMAIN_NAME}?access={tokens['accessToken']}&refresh={tokens['refreshToken'] if include_refresh_token else ''}"
 
     @classmethod
     def get_user_from_access_token(cls, token):
@@ -368,9 +378,13 @@ class PasswordChangeRequest(UUIDPrimaryKey, AbstractTimestamp):
 
 class RefreshToken(UUIDPrimaryKey, AbstractTimestamp):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    token = models.UUIDField(default=uuid4)
-    expires_at = models.DateTimeField(default=get_refresh_token_expires_in)
+    token = models.UUIDField(default=uuid4, editable=False, unique=True)  # type: ignore
+    expires_at = models.DateTimeField(
+        default=get_refresh_token_expires_in, null=True, blank=True
+    )
     client = models.CharField(max_length=255, default="web")
+    test = models.UUIDField(unique=True, db_default=RandomUUID(), editable=False)  # type: ignore
+    xyz = models.DateTimeField(unique=True, db_default=Now(), editable=False)  # type: ignore
 
     class Meta:
         db_table = "refresh_tokens"
@@ -378,7 +392,7 @@ class RefreshToken(UUIDPrimaryKey, AbstractTimestamp):
         constraints = [
             models.UniqueConstraint(
                 fields=["user", "client"],
-                name="one_token_per_client_per_user",
+                name="one_token_per_user_client",
             ),
         ]
 

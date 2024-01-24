@@ -9,7 +9,7 @@ from django_dramatiq.admin import TaskAdmin
 from django_dramatiq.models import Task
 
 # Register your models here.
-UserAdmin.fieldsets += (("Extra Fields", {"fields": ("city", "email_verified", "has_contributed")}),)  # type: ignore
+UserAdmin.fieldsets += (("Extra Fields", {"fields": ("city", "email_verified", "has_contributed", "google_id", "avatar")}),)  # type: ignore
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -57,9 +57,8 @@ class UserAdmin(UserAdmin, ImportExportModelAdmin):
     def login_as_user(self, _, queryset):
         if queryset.count() != 1:
             return
-        access_token = queryset.first().get_access_token()
-        url = f"https://{settings.DOMAIN_NAME}/?access={access_token}"
-        return redirect(url)
+        link = queryset.first().get_login_link(False)
+        return redirect(link)
 
     pass
 
@@ -178,7 +177,12 @@ class OtpAdmin(ImportExportModelAdmin):
 @admin.register(models.RefreshToken)
 class RefreshTokenAdmin(ImportExportModelAdmin):
     search_fields = ("user__username",)
-    list_display = ("user", "expires_at")
+    list_display = ("user", "user_email", "client", "expires_at")
+
+    def user_email(self, obj):
+        # Access the email field of the related User model
+        return obj.user.email
+
     pass
 
 

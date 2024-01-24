@@ -1,12 +1,12 @@
-import { setAccessToken, setRefreshToken } from '@/utils/tokens';
-import { Button, Divider, PasswordInput, CloseButton, Box, Text } from '@mantine/core';
-import { modals } from '@mantine/modals';
-import { notifications } from '@mantine/notifications';
-import UserOnboardWrapper from '../UserOnboard/UserOnboardWrapper';
 import { useAuth } from '@/authentication/AuthContext';
 import { FORGOT_PASSWORD, LOGIN, LOGIN_WITH_MAGIC_LINK } from '@/graphql/auth.gql';
-import { useMutation } from 'urql';
+import { setAccessToken, setRefreshToken } from '@/utils/tokens';
+import { Button, CloseButton, Divider, PasswordInput, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { modals } from '@mantine/modals';
+import { notifications } from '@mantine/notifications';
+import { useMutation } from 'urql';
+import UserOnboardWrapper from '../UserOnboard/UserOnboardWrapper';
 
 type ReturningUserType = {
   email: string;
@@ -49,6 +49,7 @@ const ReturningUser = ({ email, abort }: ReturningUserType) => {
       >
         Login With Magic Link
       </Button>
+
       <Text
         style={{
           cursor: 'pointer',

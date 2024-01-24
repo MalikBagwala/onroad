@@ -19,9 +19,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.shortcuts import redirect
-from core.views import (
-    verify_otp,
-)
+from core.views import verify_otp, google_oauth
 from core.schema import schema
 from core.gql_view import JWTAuthGraphQLView
 
@@ -32,4 +30,5 @@ urlpatterns = [
     path("api/admin/", admin.site.urls),
     path("api/verify/otp/<str:user_id>/<str:otp>/", verify_otp, name="verify_otp"),
     path("api/graphql/", JWTAuthGraphQLView.as_view(schema=schema)),
+    path("api/oauth", google_oauth, name="google_oauth"),
 ]

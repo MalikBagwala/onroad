@@ -76,3 +76,9 @@ class ContributionStatus(models.TextChoices):
     PENDING = "PD", _("Pending")
     ACCEPTED = "AC", _("Accepted")
     REJECTED = "RJ", _("Rejected")
+
+
+class AuthProvider(models.TextChoices):
+    ONROAD = "OR", _("Onroad")
+    GOOGLE = "GO", _("Google")
+    APPLE = "AP", _("Apple")
