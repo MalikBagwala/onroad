@@ -2,7 +2,7 @@
 
 # Main Web Application (Client)
 handle_path /* {
-	try {path} /
+	try_files {path} /
 	encode gzip
 	root * /static/client
 	file_server

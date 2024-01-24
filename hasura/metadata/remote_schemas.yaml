@@ -1,6 +1,6 @@
 - name: DjangoGraphqlAPI
   definition:
-    url: "{{API_HOST}}/api/graphql/"
+    url: '{{API_HOST}}/api/graphql/'
     timeout_seconds: 60
     customization: {}
     forward_client_headers: true

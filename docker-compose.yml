@@ -1,41 +1,31 @@
 version: "3.9"
 
 services:
-  db:
+  client:
+    image: onroadclient:latest
+    container_name: or_client
+    build:
+      context: ./client
+      dockerfile: Dockerfile.client
     restart: unless-stopped
-    image: kartoza/postgis
-    container_name: or_database
-    volumes:
-      - postgres:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    networks:
-      - db_network
-
-  rabbitmq:
-    restart: unless-stopped
-    image: rabbitmq:management
-    container_name: or_rabbitmq
-    volumes:
-      - rabbitmq:/var/lib/rabbitmq
-    environment:
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
-      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_DEFAULT_VHOST}
+      VITE_API_DOMAIN: ${DOMAIN_NAME}
+      VITE_GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+    depends_on:
+      - django
+      - hasura
     networks:
       - db_network
 
   django:
-    restart: unless-stopped
     image: onroadapi:latest
     container_name: or_django
     build:
-      context: .
-      dockerfile: Dockerfile.api
+      dockerfile: ./Dockerfile.api
+    restart: unless-stopped
     volumes:
       - static:/app/static
+      - media:/app/media
     env_file:
       - ./.env
     environment:
@@ -46,13 +36,12 @@ services:
       - db_network
 
   worker:
-    restart: unless-stopped
     image: onroadapi:latest
     container_name: or_worker
     build:
-      context: .
-      dockerfile: Dockerfile.api
+      dockerfile: ./Dockerfile.api
     command: python manage.py rundramatiq
+    restart: unless-stopped
     volumes:
       - static:/app/static
     env_file:
@@ -65,10 +54,72 @@ services:
     networks:
       - db_network
 
+  caddy:
+    restart: always
+    image: caddy
+    volumes:
+      - static:/static/djstatic
+      - media:/static/djmedia
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./cert.crt:/etc/pki/tls/certs/cert.crt
+      - ./cert.key:/etc/pki/tls/private/cert.key
+    container_name: or_caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - django
+      - hasura
+    networks:
+      - db_network
+
+  db:
+    image: postgis/postgis
+    container_name: or_database
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    networks:
+      - db_network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: or_admin
+    links:
+      - db
+    depends_on:
+      - db
+    environment:
+      PGADMIN_DEFAULT_EMAIL: m.bagwala@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "4000:80"
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    networks:
+      - db_network
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: or_rabbitmq
+    restart: always
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+    # - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_DEFAULT_VHOST}
+    networks:
+      - db_network
+
   hasura:
-    restart: unless-stopped
-    image: hasura/graphql-engine:latest.cli-migrations-v3
     container_name: or_hasura
+    image: hasura/graphql-engine:latest.cli-migrations-v3
+    restart: always
     volumes:
       - ./hasura/migrations:/hasura-migrations
       - ./hasura/metadata:/hasura-metadata
@@ -90,54 +141,6 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-  # client:
-  #   restart: unless-stopped
-  #   image: onroadclient:latest
-  #   container_name: or_client
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.client
-  #   depends_on:
-  #     - hasura
-  #   networks:
-  #     - db_network
-
-  caddy:
-    restart: unless-stopped
-    image: webserver:latest
-    container_name: or_caddy
-    build:
-      context: .
-      dockerfile: Dockerfile.caddy
-    volumes:
-      - static:/static/djstatic
-    ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - django
-      - hasura
-    networks:
-      - db_network
-
-  pgadmin:
-    restart: unless-stopped
-    image: dpage/pgadmin4
-    container_name: or_admin
-    links:
-      - db
-    depends_on:
-      - db
-    environment:
-      PGADMIN_DEFAULT_EMAIL: m.bagwala@gmail.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-    ports:
-      - "4000:80"
-    volumes:
-      - pgadmin:/var/lib/pgadmin
-    networks:
-      - db_network
-
 networks:
   db_network:
     driver: bridge
@@ -147,3 +150,4 @@ volumes:
   pgadmin:
   rabbitmq:
   static:
+  media:

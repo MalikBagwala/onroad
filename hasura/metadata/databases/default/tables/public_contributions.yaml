@@ -11,6 +11,9 @@ object_relationships:
   - name: variant
     using:
       foreign_key_constraint_on: variant_id
+  - name: variant_color
+    using:
+      foreign_key_constraint_on: color_id
 array_relationships:
   - name: attachments
     using:
@@ -19,13 +22,18 @@ array_relationships:
         table:
           name: contributions_attachments
           schema: public
+  - name: contribution_price_items
+    using:
+      foreign_key_constraint_on:
+        column: contribution_id
+        table:
+          name: contribution_price_items
+          schema: public
 insert_permissions:
   - role: contributor
     permission:
       check: {}
       set:
-        created_at: NOW()
-        updated_at: NOW()
         user_id: x-hasura-User-Id
       columns:
         - city_id
@@ -40,8 +48,6 @@ insert_permissions:
     permission:
       check: {}
       set:
-        created_at: NOW()
-        updated_at: NOW()
         user_id: x-hasura-User-Id
       columns:
         - city_id

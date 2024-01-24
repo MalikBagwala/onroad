@@ -4,7 +4,6 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
 from . import models
-from django.conf import settings
 from django_dramatiq.admin import TaskAdmin
 from django_dramatiq.models import Task
 

@@ -1386,6 +1386,17 @@ export type Contribution_Price_Items_Aggregate = {
   nodes: Array<Contribution_Price_Items>;
 };
 
+export type Contribution_Price_Items_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Contribution_Price_Items_Aggregate_Bool_Exp_Count>;
+};
+
+export type Contribution_Price_Items_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Contribution_Price_Items_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Contribution_Price_Items_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "contribution_price_items" */
 export type Contribution_Price_Items_Aggregate_Fields = {
   __typename?: 'contribution_price_items_aggregate_fields';
@@ -1409,11 +1420,39 @@ export type Contribution_Price_Items_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+/** order by aggregate values of table "contribution_price_items" */
+export type Contribution_Price_Items_Aggregate_Order_By = {
+  avg?: InputMaybe<Contribution_Price_Items_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Contribution_Price_Items_Max_Order_By>;
+  min?: InputMaybe<Contribution_Price_Items_Min_Order_By>;
+  stddev?: InputMaybe<Contribution_Price_Items_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Contribution_Price_Items_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Contribution_Price_Items_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Contribution_Price_Items_Sum_Order_By>;
+  var_pop?: InputMaybe<Contribution_Price_Items_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Contribution_Price_Items_Var_Samp_Order_By>;
+  variance?: InputMaybe<Contribution_Price_Items_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "contribution_price_items" */
+export type Contribution_Price_Items_Arr_Rel_Insert_Input = {
+  data: Array<Contribution_Price_Items_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Contribution_Price_Items_On_Conflict>;
+};
+
 /** aggregate avg on columns */
 export type Contribution_Price_Items_Avg_Fields = {
   __typename?: 'contribution_price_items_avg_fields';
   serial_no?: Maybe<Scalars['Float']['output']>;
   value?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by avg() on columns of table "contribution_price_items" */
+export type Contribution_Price_Items_Avg_Order_By = {
+  serial_no?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "contribution_price_items". All fields are combined with a logical 'AND'. */
@@ -1473,6 +1512,17 @@ export type Contribution_Price_Items_Max_Fields = {
   value?: Maybe<Scalars['numeric']['output']>;
 };
 
+/** order by max() on columns of table "contribution_price_items" */
+export type Contribution_Price_Items_Max_Order_By = {
+  contribution_id?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  price_item_id?: InputMaybe<Order_By>;
+  serial_no?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type Contribution_Price_Items_Min_Fields = {
   __typename?: 'contribution_price_items_min_fields';
@@ -1483,6 +1533,17 @@ export type Contribution_Price_Items_Min_Fields = {
   serial_no?: Maybe<Scalars['smallint']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   value?: Maybe<Scalars['numeric']['output']>;
+};
+
+/** order by min() on columns of table "contribution_price_items" */
+export type Contribution_Price_Items_Min_Order_By = {
+  contribution_id?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  price_item_id?: InputMaybe<Order_By>;
+  serial_no?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "contribution_price_items" */
@@ -1555,6 +1616,12 @@ export type Contribution_Price_Items_Stddev_Fields = {
   value?: Maybe<Scalars['Float']['output']>;
 };
 
+/** order by stddev() on columns of table "contribution_price_items" */
+export type Contribution_Price_Items_Stddev_Order_By = {
+  serial_no?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
+};
+
 /** aggregate stddev_pop on columns */
 export type Contribution_Price_Items_Stddev_Pop_Fields = {
   __typename?: 'contribution_price_items_stddev_pop_fields';
@@ -1562,11 +1629,23 @@ export type Contribution_Price_Items_Stddev_Pop_Fields = {
   value?: Maybe<Scalars['Float']['output']>;
 };
 
+/** order by stddev_pop() on columns of table "contribution_price_items" */
+export type Contribution_Price_Items_Stddev_Pop_Order_By = {
+  serial_no?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
+};
+
 /** aggregate stddev_samp on columns */
 export type Contribution_Price_Items_Stddev_Samp_Fields = {
   __typename?: 'contribution_price_items_stddev_samp_fields';
   serial_no?: Maybe<Scalars['Float']['output']>;
   value?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_samp() on columns of table "contribution_price_items" */
+export type Contribution_Price_Items_Stddev_Samp_Order_By = {
+  serial_no?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "contribution_price_items" */
@@ -1593,6 +1672,12 @@ export type Contribution_Price_Items_Sum_Fields = {
   __typename?: 'contribution_price_items_sum_fields';
   serial_no?: Maybe<Scalars['smallint']['output']>;
   value?: Maybe<Scalars['numeric']['output']>;
+};
+
+/** order by sum() on columns of table "contribution_price_items" */
+export type Contribution_Price_Items_Sum_Order_By = {
+  serial_no?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "contribution_price_items" */
@@ -1629,6 +1714,12 @@ export type Contribution_Price_Items_Var_Pop_Fields = {
   value?: Maybe<Scalars['Float']['output']>;
 };
 
+/** order by var_pop() on columns of table "contribution_price_items" */
+export type Contribution_Price_Items_Var_Pop_Order_By = {
+  serial_no?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
+};
+
 /** aggregate var_samp on columns */
 export type Contribution_Price_Items_Var_Samp_Fields = {
   __typename?: 'contribution_price_items_var_samp_fields';
@@ -1636,11 +1727,23 @@ export type Contribution_Price_Items_Var_Samp_Fields = {
   value?: Maybe<Scalars['Float']['output']>;
 };
 
+/** order by var_samp() on columns of table "contribution_price_items" */
+export type Contribution_Price_Items_Var_Samp_Order_By = {
+  serial_no?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
+};
+
 /** aggregate variance on columns */
 export type Contribution_Price_Items_Variance_Fields = {
   __typename?: 'contribution_price_items_variance_fields';
   serial_no?: Maybe<Scalars['Float']['output']>;
   value?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by variance() on columns of table "contribution_price_items" */
+export type Contribution_Price_Items_Variance_Order_By = {
+  serial_no?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
 };
 
 /** columns and relationships of "contributions" */
@@ -1654,6 +1757,10 @@ export type Contributions = {
   city: Cities;
   city_id: Scalars['uuid']['output'];
   color_id?: Maybe<Scalars['uuid']['output']>;
+  /** An array relationship */
+  contribution_price_items: Array<Contribution_Price_Items>;
+  /** An aggregate relationship */
+  contribution_price_items_aggregate: Contribution_Price_Items_Aggregate;
   created_at: Scalars['timestamptz']['output'];
   dealership_name: Scalars['String']['output'];
   downvotes: Scalars['Int']['output'];
@@ -1669,6 +1776,8 @@ export type Contributions = {
   user_id: Scalars['uuid']['output'];
   /** An object relationship */
   variant: Variants;
+  /** An object relationship */
+  variant_color?: Maybe<Variant_Colors>;
   variant_id: Scalars['uuid']['output'];
 };
 
@@ -1690,6 +1799,26 @@ export type ContributionsAttachments_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Contributions_Attachments_Order_By>>;
   where?: InputMaybe<Contributions_Attachments_Bool_Exp>;
+};
+
+
+/** columns and relationships of "contributions" */
+export type ContributionsContribution_Price_ItemsArgs = {
+  distinct_on?: InputMaybe<Array<Contribution_Price_Items_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Contribution_Price_Items_Order_By>>;
+  where?: InputMaybe<Contribution_Price_Items_Bool_Exp>;
+};
+
+
+/** columns and relationships of "contributions" */
+export type ContributionsContribution_Price_Items_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Contribution_Price_Items_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Contribution_Price_Items_Order_By>>;
+  where?: InputMaybe<Contribution_Price_Items_Bool_Exp>;
 };
 
 /** aggregated selection of "contributions" */
@@ -1856,7 +1985,7 @@ export type Contributions_Attachments_Bool_Exp = {
 /** unique or primary key constraints on table "contributions_attachments" */
 export enum Contributions_Attachments_Constraint {
   /** unique or primary key constraint on columns "attachment_id", "contribution_id" */
-  ContributionsAttachmentContributionIdMediaIdAd4ad1b2Uniq = 'contributions_attachment_contribution_id_media_id_ad4ad1b2_uniq',
+  ContributionsAttachmentContributionIdAttachme_1b924f0aUniq = 'contributions_attachment_contribution_id_attachme_1b924f0a_uniq',
   /** unique or primary key constraint on columns "id" */
   ContributionsAttachmentsPkey = 'contributions_attachments_pkey'
 }
@@ -2088,6 +2217,8 @@ export type Contributions_Bool_Exp = {
   city?: InputMaybe<Cities_Bool_Exp>;
   city_id?: InputMaybe<Uuid_Comparison_Exp>;
   color_id?: InputMaybe<Uuid_Comparison_Exp>;
+  contribution_price_items?: InputMaybe<Contribution_Price_Items_Bool_Exp>;
+  contribution_price_items_aggregate?: InputMaybe<Contribution_Price_Items_Aggregate_Bool_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   dealership_name?: InputMaybe<String_Comparison_Exp>;
   downvotes?: InputMaybe<Int_Comparison_Exp>;
@@ -2101,6 +2232,7 @@ export type Contributions_Bool_Exp = {
   user?: InputMaybe<Users_Bool_Exp>;
   user_id?: InputMaybe<Uuid_Comparison_Exp>;
   variant?: InputMaybe<Variants_Bool_Exp>;
+  variant_color?: InputMaybe<Variant_Colors_Bool_Exp>;
   variant_id?: InputMaybe<Uuid_Comparison_Exp>;
 };
 
@@ -2123,6 +2255,7 @@ export type Contributions_Insert_Input = {
   city?: InputMaybe<Cities_Obj_Rel_Insert_Input>;
   city_id?: InputMaybe<Scalars['uuid']['input']>;
   color_id?: InputMaybe<Scalars['uuid']['input']>;
+  contribution_price_items?: InputMaybe<Contribution_Price_Items_Arr_Rel_Insert_Input>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   dealership_name?: InputMaybe<Scalars['String']['input']>;
   downvotes?: InputMaybe<Scalars['Int']['input']>;
@@ -2136,6 +2269,7 @@ export type Contributions_Insert_Input = {
   user?: InputMaybe<Users_Obj_Rel_Insert_Input>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
   variant?: InputMaybe<Variants_Obj_Rel_Insert_Input>;
+  variant_color?: InputMaybe<Variant_Colors_Obj_Rel_Insert_Input>;
   variant_id?: InputMaybe<Scalars['uuid']['input']>;
 };
 
@@ -2242,6 +2376,7 @@ export type Contributions_Order_By = {
   city?: InputMaybe<Cities_Order_By>;
   city_id?: InputMaybe<Order_By>;
   color_id?: InputMaybe<Order_By>;
+  contribution_price_items_aggregate?: InputMaybe<Contribution_Price_Items_Aggregate_Order_By>;
   created_at?: InputMaybe<Order_By>;
   dealership_name?: InputMaybe<Order_By>;
   downvotes?: InputMaybe<Order_By>;
@@ -2255,6 +2390,7 @@ export type Contributions_Order_By = {
   user?: InputMaybe<Users_Order_By>;
   user_id?: InputMaybe<Order_By>;
   variant?: InputMaybe<Variants_Order_By>;
+  variant_color?: InputMaybe<Variant_Colors_Order_By>;
   variant_id?: InputMaybe<Order_By>;
 };
 
@@ -4697,9 +4833,9 @@ export type Query_Root = {
   cities_aggregate: Cities_Aggregate;
   /** fetch data from the table: "cities" using primary key columns */
   cities_by_pk?: Maybe<Cities>;
-  /** fetch data from the table: "contribution_price_items" */
+  /** An array relationship */
   contribution_price_items: Array<Contribution_Price_Items>;
-  /** fetch aggregated fields from the table: "contribution_price_items" */
+  /** An aggregate relationship */
   contribution_price_items_aggregate: Contribution_Price_Items_Aggregate;
   /** fetch data from the table: "contribution_price_items" using primary key columns */
   contribution_price_items_by_pk?: Maybe<Contribution_Price_Items>;
@@ -4735,9 +4871,9 @@ export type Query_Root = {
   price_items_aggregate: Price_Items_Aggregate;
   /** fetch data from the table: "price_items" using primary key columns */
   price_items_by_pk?: Maybe<Price_Items>;
-  /** fetch data from the table: "refresh_tokens" */
+  /** An array relationship */
   refresh_tokens: Array<Refresh_Tokens>;
-  /** fetch aggregated fields from the table: "refresh_tokens" */
+  /** An aggregate relationship */
   refresh_tokens_aggregate: Refresh_Tokens_Aggregate;
   /** fetch data from the table: "refresh_tokens" using primary key columns */
   refresh_tokens_by_pk?: Maybe<Refresh_Tokens>;
@@ -4802,9 +4938,9 @@ export type Query_Root = {
   /** fetch data from the table: "vehicles" using primary key columns */
   vehicles_by_pk?: Maybe<Vehicles>;
   version: Scalars['String']['output'];
-  /** fetch data from the table: "votes" */
+  /** An array relationship */
   votes: Array<Votes>;
-  /** fetch aggregated fields from the table: "votes" */
+  /** An aggregate relationship */
   votes_aggregate: Votes_Aggregate;
   /** fetch data from the table: "votes" using primary key columns */
   votes_by_pk?: Maybe<Votes>;
@@ -5363,6 +5499,17 @@ export type Refresh_Tokens_Aggregate = {
   nodes: Array<Refresh_Tokens>;
 };
 
+export type Refresh_Tokens_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Refresh_Tokens_Aggregate_Bool_Exp_Count>;
+};
+
+export type Refresh_Tokens_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Refresh_Tokens_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Refresh_Tokens_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "refresh_tokens" */
 export type Refresh_Tokens_Aggregate_Fields = {
   __typename?: 'refresh_tokens_aggregate_fields';
@@ -5376,6 +5523,20 @@ export type Refresh_Tokens_Aggregate_Fields = {
 export type Refresh_Tokens_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<Refresh_Tokens_Select_Column>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** order by aggregate values of table "refresh_tokens" */
+export type Refresh_Tokens_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Refresh_Tokens_Max_Order_By>;
+  min?: InputMaybe<Refresh_Tokens_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "refresh_tokens" */
+export type Refresh_Tokens_Arr_Rel_Insert_Input = {
+  data: Array<Refresh_Tokens_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Refresh_Tokens_On_Conflict>;
 };
 
 /** Boolean expression to filter rows from the table "refresh_tokens". All fields are combined with a logical 'AND'. */
@@ -5399,7 +5560,7 @@ export enum Refresh_Tokens_Constraint {
   /** unique or primary key constraint on columns "id" */
   RefreshTokensPkey = 'refresh_tokens_pkey',
   /** unique or primary key constraint on columns "token" */
-  RefreshTokensToken_34bd7b63Uniq = 'refresh_tokens_token_34bd7b63_uniq'
+  RefreshTokensTokenKey = 'refresh_tokens_token_key'
 }
 
 /** input type for inserting data into table "refresh_tokens" */
@@ -5425,6 +5586,17 @@ export type Refresh_Tokens_Max_Fields = {
   user_id?: Maybe<Scalars['uuid']['output']>;
 };
 
+/** order by max() on columns of table "refresh_tokens" */
+export type Refresh_Tokens_Max_Order_By = {
+  client?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  expires_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  token?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type Refresh_Tokens_Min_Fields = {
   __typename?: 'refresh_tokens_min_fields';
@@ -5435,6 +5607,17 @@ export type Refresh_Tokens_Min_Fields = {
   token?: Maybe<Scalars['uuid']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** order by min() on columns of table "refresh_tokens" */
+export type Refresh_Tokens_Min_Order_By = {
+  client?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  expires_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  token?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "refresh_tokens" */
@@ -5836,9 +6019,9 @@ export type Subscription_Root = {
   cities_by_pk?: Maybe<Cities>;
   /** fetch data from the table in a streaming manner: "cities" */
   cities_stream: Array<Cities>;
-  /** fetch data from the table: "contribution_price_items" */
+  /** An array relationship */
   contribution_price_items: Array<Contribution_Price_Items>;
-  /** fetch aggregated fields from the table: "contribution_price_items" */
+  /** An aggregate relationship */
   contribution_price_items_aggregate: Contribution_Price_Items_Aggregate;
   /** fetch data from the table: "contribution_price_items" using primary key columns */
   contribution_price_items_by_pk?: Maybe<Contribution_Price_Items>;
@@ -5884,9 +6067,9 @@ export type Subscription_Root = {
   price_items_by_pk?: Maybe<Price_Items>;
   /** fetch data from the table in a streaming manner: "price_items" */
   price_items_stream: Array<Price_Items>;
-  /** fetch data from the table: "refresh_tokens" */
+  /** An array relationship */
   refresh_tokens: Array<Refresh_Tokens>;
-  /** fetch aggregated fields from the table: "refresh_tokens" */
+  /** An aggregate relationship */
   refresh_tokens_aggregate: Refresh_Tokens_Aggregate;
   /** fetch data from the table: "refresh_tokens" using primary key columns */
   refresh_tokens_by_pk?: Maybe<Refresh_Tokens>;
@@ -5972,9 +6155,9 @@ export type Subscription_Root = {
   vehicles_by_pk?: Maybe<Vehicles>;
   /** fetch data from the table in a streaming manner: "vehicles" */
   vehicles_stream: Array<Vehicles>;
-  /** fetch data from the table: "votes" */
+  /** An array relationship */
   votes: Array<Votes>;
-  /** fetch aggregated fields from the table: "votes" */
+  /** An aggregate relationship */
   votes_aggregate: Votes_Aggregate;
   /** fetch data from the table: "votes" using primary key columns */
   votes_by_pk?: Maybe<Votes>;
@@ -6719,8 +6902,16 @@ export type Users = {
   permissions: Array<Users_User_Permissions>;
   /** An aggregate relationship */
   permissions_aggregate: Users_User_Permissions_Aggregate;
+  /** An array relationship */
+  refresh_tokens: Array<Refresh_Tokens>;
+  /** An aggregate relationship */
+  refresh_tokens_aggregate: Refresh_Tokens_Aggregate;
   updated_at: Scalars['timestamptz']['output'];
   username: Scalars['String']['output'];
+  /** An array relationship */
+  votes: Array<Votes>;
+  /** An aggregate relationship */
+  votes_aggregate: Votes_Aggregate;
 };
 
 
@@ -6783,6 +6974,46 @@ export type UsersPermissions_AggregateArgs = {
   where?: InputMaybe<Users_User_Permissions_Bool_Exp>;
 };
 
+
+/** columns and relationships of "users" */
+export type UsersRefresh_TokensArgs = {
+  distinct_on?: InputMaybe<Array<Refresh_Tokens_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Refresh_Tokens_Order_By>>;
+  where?: InputMaybe<Refresh_Tokens_Bool_Exp>;
+};
+
+
+/** columns and relationships of "users" */
+export type UsersRefresh_Tokens_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Refresh_Tokens_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Refresh_Tokens_Order_By>>;
+  where?: InputMaybe<Refresh_Tokens_Bool_Exp>;
+};
+
+
+/** columns and relationships of "users" */
+export type UsersVotesArgs = {
+  distinct_on?: InputMaybe<Array<Votes_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Votes_Order_By>>;
+  where?: InputMaybe<Votes_Bool_Exp>;
+};
+
+
+/** columns and relationships of "users" */
+export type UsersVotes_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Votes_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Votes_Order_By>>;
+  where?: InputMaybe<Votes_Bool_Exp>;
+};
+
 /** aggregated selection of "users" */
 export type Users_Aggregate = {
   __typename?: 'users_aggregate';
@@ -6834,18 +7065,22 @@ export type Users_Bool_Exp = {
   password?: InputMaybe<String_Comparison_Exp>;
   permissions?: InputMaybe<Users_User_Permissions_Bool_Exp>;
   permissions_aggregate?: InputMaybe<Users_User_Permissions_Aggregate_Bool_Exp>;
+  refresh_tokens?: InputMaybe<Refresh_Tokens_Bool_Exp>;
+  refresh_tokens_aggregate?: InputMaybe<Refresh_Tokens_Aggregate_Bool_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   username?: InputMaybe<String_Comparison_Exp>;
+  votes?: InputMaybe<Votes_Bool_Exp>;
+  votes_aggregate?: InputMaybe<Votes_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "users" */
 export enum Users_Constraint {
   /** unique or primary key constraint on columns "apple_id" */
-  UsersAppleId_221fddcaUniq = 'users_apple_id_221fddca_uniq',
+  UsersAppleIdKey = 'users_apple_id_key',
   /** unique or primary key constraint on columns "email" */
   UsersEmailKey = 'users_email_key',
   /** unique or primary key constraint on columns "google_id" */
-  UsersGoogleId_49fe2bb1Uniq = 'users_google_id_49fe2bb1_uniq',
+  UsersGoogleIdKey = 'users_google_id_key',
   /** unique or primary key constraint on columns "id" */
   UsersPkey = 'users_pkey',
   /** unique or primary key constraint on columns "username" */
@@ -7190,8 +7425,10 @@ export type Users_Insert_Input = {
   last_name?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
   permissions?: InputMaybe<Users_User_Permissions_Arr_Rel_Insert_Input>;
+  refresh_tokens?: InputMaybe<Refresh_Tokens_Arr_Rel_Insert_Input>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
+  votes?: InputMaybe<Votes_Arr_Rel_Insert_Input>;
 };
 
 /** aggregate max on columns */
@@ -7278,8 +7515,10 @@ export type Users_Order_By = {
   last_name?: InputMaybe<Order_By>;
   password?: InputMaybe<Order_By>;
   permissions_aggregate?: InputMaybe<Users_User_Permissions_Aggregate_Order_By>;
+  refresh_tokens_aggregate?: InputMaybe<Refresh_Tokens_Aggregate_Order_By>;
   updated_at?: InputMaybe<Order_By>;
   username?: InputMaybe<Order_By>;
+  votes_aggregate?: InputMaybe<Votes_Aggregate_Order_By>;
 };
 
 /** primary key columns input for table: users */
@@ -7967,7 +8206,7 @@ export type Variant_Colors_Attachments_Bool_Exp = {
 /** unique or primary key constraints on table "variant_colors_attachments" */
 export enum Variant_Colors_Attachments_Constraint {
   /** unique or primary key constraint on columns "attachment_id", "variantcolor_id" */
-  VariantColorsAttachmenVariantcolorIdMediaId_449eb0a8Uniq = 'variant_colors_attachmen_variantcolor_id_media_id_449eb0a8_uniq',
+  VariantColorsAttachmenVariantcolorIdAttachmeF246b268Uniq = 'variant_colors_attachmen_variantcolor_id_attachme_f246b268_uniq',
   /** unique or primary key constraint on columns "id" */
   VariantColorsAttachmentsPkey = 'variant_colors_attachments_pkey'
 }
@@ -8586,7 +8825,7 @@ export enum Variants_Attachments_Constraint {
   /** unique or primary key constraint on columns "id" */
   VariantsAttachmentsPkey = 'variants_attachments_pkey',
   /** unique or primary key constraint on columns "variant_id", "attachment_id" */
-  VariantsAttachmentsVariantIdMediaId_74bb6ecfUniq = 'variants_attachments_variant_id_media_id_74bb6ecf_uniq'
+  VariantsAttachmentsVariantIdAttachmentIdFabd455fUniq = 'variants_attachments_variant_id_attachment_id_fabd455f_uniq'
 }
 
 /** input type for incrementing numeric columns in table "variants_attachments" */
@@ -9462,6 +9701,17 @@ export type Votes_Aggregate = {
   nodes: Array<Votes>;
 };
 
+export type Votes_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Votes_Aggregate_Bool_Exp_Count>;
+};
+
+export type Votes_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Votes_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Votes_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "votes" */
 export type Votes_Aggregate_Fields = {
   __typename?: 'votes_aggregate_fields';
@@ -9475,6 +9725,20 @@ export type Votes_Aggregate_Fields = {
 export type Votes_Aggregate_FieldsCountArgs = {
   columns?: InputMaybe<Array<Votes_Select_Column>>;
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** order by aggregate values of table "votes" */
+export type Votes_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Votes_Max_Order_By>;
+  min?: InputMaybe<Votes_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "votes" */
+export type Votes_Arr_Rel_Insert_Input = {
+  data: Array<Votes_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Votes_On_Conflict>;
 };
 
 /** Boolean expression to filter rows from the table "votes". All fields are combined with a logical 'AND'. */
@@ -9519,6 +9783,16 @@ export type Votes_Max_Fields = {
   user_id?: Maybe<Scalars['uuid']['output']>;
 };
 
+/** order by max() on columns of table "votes" */
+export type Votes_Max_Order_By = {
+  contribution_id?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  type?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type Votes_Min_Fields = {
   __typename?: 'votes_min_fields';
@@ -9528,6 +9802,16 @@ export type Votes_Min_Fields = {
   type?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** order by min() on columns of table "votes" */
+export type Votes_Min_Order_By = {
+  contribution_id?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  type?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "votes" */
