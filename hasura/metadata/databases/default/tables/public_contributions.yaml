@@ -11,6 +11,9 @@ object_relationships:
   - name: variant
     using:
       foreign_key_constraint_on: variant_id
+  - name: variant_color
+    using:
+      foreign_key_constraint_on: color_id
 array_relationships:
   - name: attachments
     using:
@@ -18,6 +21,13 @@ array_relationships:
         column: contribution_id
         table:
           name: contributions_attachments
+          schema: public
+  - name: contribution_price_items
+    using:
+      foreign_key_constraint_on:
+        column: contribution_id
+        table:
+          name: contribution_price_items
           schema: public
 insert_permissions:
   - role: contributor
