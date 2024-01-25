@@ -1,79 +1,89 @@
-import { Text, Container, ActionIcon, Group, rem, Highlight } from '@mantine/core';
-import { IconBrandTwitter, IconBrandInstagram, IconBrandDiscord } from '@tabler/icons-react';
+import { ActionIcon, Anchor, Box, Container, Group, Text, rem } from '@mantine/core';
+import {
+  IconBrandDiscord,
+  IconBrandGithub,
+  IconBrandLinkedin,
+  IconBrandTwitter,
+  IconBrowser,
+} from '@tabler/icons-react';
 import classes from './GlobalFooter.module.css';
+import OnRoadLogo from '../OnroadLogo';
 
-const data = [
-  {
-    title: 'About',
-    links: [
-      { label: 'Features', link: '#' },
-      { label: 'Pricing', link: '#' },
-      { label: 'Support', link: '#' },
-    ],
-  },
-  {
-    title: 'Community',
-    links: [
-      { label: 'Join Discord', link: '#' },
-      { label: 'Follow on Twitter', link: '#' },
-      { label: 'GitHub discussions', link: '#' },
-    ],
-  },
+const links = [
+  { link: '#', label: 'Contact' },
+  { link: '#', label: 'Privacy' },
+  { link: '#', label: 'Terms' },
 ];
 
 export function GlobalFooter() {
-  const groups = data.map((group) => {
-    const links = group.links.map((link, index) => (
-      <Text<'a'>
-        key={index}
-        className={classes.link}
-        component="a"
-        href={link.link}
-        onClick={(event) => event.preventDefault()}
-      >
-        {link.label}
-      </Text>
-    ));
-
-    return (
-      <div className={classes.wrapper} key={group.title}>
-        <Text className={classes.title}>{group.title}</Text>
-        {links}
-      </div>
-    );
-  });
+  const items = links.map((link) => (
+    <Anchor
+      c="dimmed"
+      key={link.label}
+      href={link.link}
+      lh={1}
+      onClick={(event) => event.preventDefault()}
+      size="sm"
+    >
+      {link.label}
+    </Anchor>
+  ));
 
   return (
-    <footer className={classes.footer}>
+    <Box bg={'gray.1'} className={classes.footer}>
       <Container className={classes.inner}>
-        <div className={classes.logo}>
-          <div>OnRoad</div>
-          <Text size="xs" c="dimmed" className={classes.description}>
-            Your trusted platform for{' '}
-            <Highlight highlight={'anonymous'}>anonymous vehicle price quoting</Highlight> Get real
-            prices with complete breakdown
-          </Text>
-        </div>
-        <div className={classes.groups}>{groups}</div>
-      </Container>
-      <Container className={classes.afterFooter}>
-        <Text c="dimmed" size="sm">
-          © {new Date().getFullYear()} maalik.dev. All rights reserved.
-        </Text>
-
-        <Group gap={0} className={classes.social} justify="flex-end" wrap="nowrap">
-          <ActionIcon size="lg" color="gray" variant="subtle">
+        <OnRoadLogo withImage={false} />
+        <Group className={classes.links}>{items}</Group>
+        <Group gap="xs" justify="flex-end" wrap="nowrap">
+          <ActionIcon
+            component="a"
+            href="https://discord.gg/62ffekH8QF"
+            size="lg"
+            variant="default"
+            radius="xl"
+          >
+            <IconBrandDiscord style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+          </ActionIcon>
+          <ActionIcon
+            component="a"
+            href="https://twitter.com/MalikBagwala"
+            size="lg"
+            variant="default"
+            radius="xl"
+          >
             <IconBrandTwitter style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
           </ActionIcon>
-          <ActionIcon size="lg" color="gray" variant="subtle">
-            <IconBrandInstagram style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+          <ActionIcon
+            component="a"
+            href="https://github.com/MalikBagwala"
+            size="lg"
+            variant="default"
+            radius="xl"
+          >
+            <IconBrandGithub style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
           </ActionIcon>
-          <ActionIcon size="lg" color="gray" variant="subtle">
-            <IconBrandDiscord style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
-            {/* Add Discord icon and link here */}
+          <ActionIcon
+            component="a"
+            href="https://www.linkedin.com/in/malikbagwala/"
+            size="lg"
+            variant="default"
+            radius="xl"
+          >
+            <IconBrandLinkedin style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
+          </ActionIcon>
+          <ActionIcon
+            component="a"
+            href="https://maalik.dev"
+            size="lg"
+            variant="default"
+            radius="xl"
+          >
+            <IconBrowser style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
           </ActionIcon>
         </Group>
       </Container>
-    </footer>
+    </Box>
   );
 }
+
+export default GlobalFooter;

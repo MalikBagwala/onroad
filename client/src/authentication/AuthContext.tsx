@@ -1,9 +1,9 @@
-import { DELETE_REFRESH_TOKENS } from '@/graphql/auth.gql';
+import { CURRENT_USER, DELETE_REFRESH_TOKENS } from '@/graphql/auth.gql';
 import { setAccessToken, setRefreshToken } from '@/utils/tokens';
 import makeClient from '@/utils/urqlClient';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Client, Provider } from 'urql';
+import { Client, Provider, useQuery } from 'urql';
 
 type AuthProviderType = {
   children: React.ReactNode;
@@ -58,4 +58,9 @@ const AuthProvider = ({ children }: AuthProviderType) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
+
+export const useCurrentUser = () => {
+  const [{ fetching, data, error }] = useQuery({ query: CURRENT_USER });
+  return { fetching, data: data?.users?.[0], error } as const;
+};
 export default AuthProvider;

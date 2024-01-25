@@ -7,14 +7,21 @@ import { theme } from './theme';
 import Root from './routes/root';
 import { Welcome } from './components/Welcome/Welcome';
 import ResetPassword from './components/ResetPassword/ResetPassword';
+import UserProfile from './components/UserProfile/UserProfile';
+import NotFoundPage from './components/NotFoundPage/NotFoundPage';
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
+    errorElement: <NotFoundPage />,
     children: [
       {
         index: true,
         element: <Welcome />,
+      },
+      {
+        path: '/profile',
+        element: <UserProfile />,
       },
       {
         path: '/reset/:id',

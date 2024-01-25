@@ -14,7 +14,7 @@ const DefaultLayout = ({ children }: DefaultLayoutType) => {
   const currentUser = data?.users?.[0];
   if (fetching) return null;
   return (
-    <Flex mih={'100vh'} direction={'column'}>
+    <Flex mih={'100vh'} bg="gray.0" direction={'column'}>
       <Notifications autoClose={3000} position="top-right" limit={5} />
       <GlobalNavbar user={currentUser} />
       <Container mt={69} py={'lg'} flex={'1'}>

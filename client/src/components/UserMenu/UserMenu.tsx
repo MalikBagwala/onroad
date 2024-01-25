@@ -2,6 +2,7 @@ import { useAuth } from '@/authentication/AuthContext';
 import { CurrentUserQuery } from '@/gql/graphql';
 import { Avatar, Group, Menu, Text, UnstyledButton, rem, useMantineTheme } from '@mantine/core';
 import { IconChevronDown, IconHeart, IconLogout, IconSettings } from '@tabler/icons-react';
+import { Link } from 'react-router-dom';
 
 type UserMenuType = {
   user?: CurrentUserQuery['users'][0];
@@ -57,6 +58,8 @@ export const UserMenu = ({ user }: UserMenuType) => {
           My Contributions
         </Menu.Item>
         <Menu.Item
+          component={Link}
+          to={'/profile'}
           leftSection={<IconSettings style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
         >
           My Profile
