@@ -24,6 +24,7 @@ const documents = {
     "\n  mutation forgotPassword($identity: String!) {\n    forgotPassword(identity: $identity) {\n      code\n      data\n      success\n      message\n    }\n  }\n": types.ForgotPasswordDocument,
     "\n  mutation forgotPasswordConfirm($input: ForgotPasswordConfirmInput!) {\n    forgotPasswordConfirm(input: $input) {\n      data {\n        accessToken\n        refreshToken\n      }\n      success\n      code\n      message\n    }\n  }\n": types.ForgotPasswordConfirmDocument,
     "\n  mutation delete_refresh_tokens($where: refresh_tokens_bool_exp!) {\n    delete_refresh_tokens(where: $where) {\n      returning {\n        id\n        client\n      }\n      affected_rows\n    }\n  }\n": types.Delete_Refresh_TokensDocument,
+    "\n  query cities(\n    $distinct_on: [cities_select_column!]\n    $limit: Int\n    $offset: Int\n    $order_by: [cities_order_by!]\n    $where: cities_bool_exp\n  ) {\n    cities(\n      distinct_on: $distinct_on\n      limit: $limit\n      offset: $offset\n      order_by: $order_by\n      where: $where\n    ) {\n      id\n      name\n      state {\n        id\n        name\n      }\n    }\n  }\n": types.CitiesDocument,
 };
 
 /**
@@ -84,6 +85,10 @@ export function graphql(source: "\n  mutation forgotPasswordConfirm($input: Forg
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation delete_refresh_tokens($where: refresh_tokens_bool_exp!) {\n    delete_refresh_tokens(where: $where) {\n      returning {\n        id\n        client\n      }\n      affected_rows\n    }\n  }\n"): (typeof documents)["\n  mutation delete_refresh_tokens($where: refresh_tokens_bool_exp!) {\n    delete_refresh_tokens(where: $where) {\n      returning {\n        id\n        client\n      }\n      affected_rows\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query cities(\n    $distinct_on: [cities_select_column!]\n    $limit: Int\n    $offset: Int\n    $order_by: [cities_order_by!]\n    $where: cities_bool_exp\n  ) {\n    cities(\n      distinct_on: $distinct_on\n      limit: $limit\n      offset: $offset\n      order_by: $order_by\n      where: $where\n    ) {\n      id\n      name\n      state {\n        id\n        name\n      }\n    }\n  }\n"): (typeof documents)["\n  query cities(\n    $distinct_on: [cities_select_column!]\n    $limit: Int\n    $offset: Int\n    $order_by: [cities_order_by!]\n    $where: cities_bool_exp\n  ) {\n    cities(\n      distinct_on: $distinct_on\n      limit: $limit\n      offset: $offset\n      order_by: $order_by\n      where: $where\n    ) {\n      id\n      name\n      state {\n        id\n        name\n      }\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
