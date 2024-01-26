@@ -1,3 +1,4 @@
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../favicon.png';
 import { Flex, Text, Image, TextProps } from '@mantine/core';
 type OnRoadLogoType = {
@@ -14,8 +15,9 @@ const OnRoadLogo = ({
   textProps,
   withImage = true,
 }: OnRoadLogoType) => {
+  const navigate = useNavigate();
   return (
-    <Flex align={'center'} gap={'4px'}>
+    <Flex style={{ cursor: 'pointer' }} onClick={() => navigate('/')} align={'center'} gap={'4px'}>
       {withImage && <Image src={logo} width={width} height={height} />}
       {withText && (
         <Text fw={500} {...textProps}>

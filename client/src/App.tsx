@@ -9,6 +9,9 @@ import { Welcome } from './components/Welcome/Welcome';
 import ResetPassword from './components/ResetPassword/ResetPassword';
 import UserProfile from './components/UserProfile/UserProfile';
 import NotFoundPage from './components/NotFoundPage/NotFoundPage';
+import ProfileDetails from './components/UserProfile/ProfileDetails/ProfileDetails';
+import AccountDetails from './components/UserProfile/AccountDetails/AccountDetails';
+import MyContributions from './components/UserProfile/Contributions/Contributions';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -22,6 +25,21 @@ const router = createBrowserRouter([
       {
         path: '/profile',
         element: <UserProfile />,
+        children: [
+          {
+            index: true,
+            // path: 'details',
+            element: <ProfileDetails />,
+          },
+          {
+            path: 'account',
+            element: <AccountDetails />,
+          },
+          {
+            path: 'contributions',
+            element: <MyContributions />,
+          },
+        ],
       },
       {
         path: '/reset/:id',

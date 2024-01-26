@@ -47,6 +47,8 @@ export const UserMenu = ({ user }: UserMenuType) => {
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Item
+          component={Link}
+          to={'/profile/contributions'}
           leftSection={
             <IconHeart
               style={{ width: rem(16), height: rem(16) }}
