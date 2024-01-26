@@ -41,6 +41,15 @@ export type Boolean_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['Boolean']['input']>>;
 };
 
+export type ChangePasswordResponse = {
+  __typename?: 'ChangePasswordResponse';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Scalars['Void']['output']>;
+  errors?: Maybe<Scalars['JSON']['output']>;
+  message: Scalars['String']['output'];
+  success: Scalars['Boolean']['output'];
+};
+
 export type ForgotPasswordConfirmInput = {
   confirmPassword: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -3099,6 +3108,7 @@ export type Makes_Variance_Fields = {
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
+  changePassword: ChangePasswordResponse;
   /** delete data from the table: "attachments" */
   delete_attachments?: Maybe<Attachments_Mutation_Response>;
   /** delete single row from the table: "attachments" */
@@ -3429,6 +3439,13 @@ export type Mutation_Root = {
   /** update multiples rows of table: "votes" */
   update_votes_many?: Maybe<Array<Maybe<Votes_Mutation_Response>>>;
   verifyOtp: VerifyOtpResponse;
+};
+
+
+/** mutation root */
+export type Mutation_RootChangePasswordArgs = {
+  confirmPassword: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
 
