@@ -8,7 +8,7 @@ const UserProfile = ({}: UserProfileType) => {
   return (
     <Flex className={styles.base}>
       <ProfileSections />
-      <Box p={'lg'} bg={'white'}>
+      <Box w={'65%'} p={'lg'} bg={'white'}>
         <Outlet />
       </Box>
     </Flex>

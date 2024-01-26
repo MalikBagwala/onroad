@@ -5,6 +5,7 @@
   display: flex;
   flex-direction: column;
   background: var(--mantine-color-white);
+  width: 35%;
 }
 
 .navbarMain {
@@ -60,4 +61,11 @@
   margin-right: var(--mantine-spacing-sm);
   width: rem(25px);
   height: rem(25px);
+}
+
+.avatar {
+  height: 64px;
+  width: 64px;
+  border-radius: 50%;
+  border: 1px solid var(--mantine-color-gray-3);
 }

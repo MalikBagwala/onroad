@@ -13,7 +13,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "\n  query currentUser {\n    users {\n      id\n      email\n      first_name\n      last_name\n      avatar\n    }\n  }\n": types.CurrentUserDocument,
+    "\n  query currentUser {\n    users {\n      id\n      email\n      username\n      first_name\n      last_name\n      avatar\n      city {\n        id\n        name\n        state {\n          id\n          name\n        }\n      }\n    }\n  }\n": types.CurrentUserDocument,
     "\n  query membershipTypeByEmail($email: String!) {\n    membershipTypeByEmail(email: $email) {\n      message\n      data\n    }\n  }\n": types.MembershipTypeByEmailDocument,
     "\n  mutation login($email: String!, $password: String!) {\n    login(email: $email, password: $password) {\n      code\n      data {\n        accessToken\n        refreshToken\n      }\n      message\n    }\n  }\n": types.LoginDocument,
     "\n  mutation loginWithMagicLink($email: String!) {\n    loginWithMagicLink(email: $email) {\n      code\n      data\n      message\n    }\n  }\n": types.LoginWithMagicLinkDocument,
@@ -25,6 +25,7 @@ const documents = {
     "\n  mutation forgotPasswordConfirm($input: ForgotPasswordConfirmInput!) {\n    forgotPasswordConfirm(input: $input) {\n      data {\n        accessToken\n        refreshToken\n      }\n      success\n      code\n      message\n    }\n  }\n": types.ForgotPasswordConfirmDocument,
     "\n  mutation delete_refresh_tokens($where: refresh_tokens_bool_exp!) {\n    delete_refresh_tokens(where: $where) {\n      returning {\n        id\n        client\n      }\n      affected_rows\n    }\n  }\n": types.Delete_Refresh_TokensDocument,
     "\n  query cities(\n    $distinct_on: [cities_select_column!]\n    $limit: Int\n    $offset: Int\n    $order_by: [cities_order_by!]\n    $where: cities_bool_exp\n  ) {\n    cities(\n      distinct_on: $distinct_on\n      limit: $limit\n      offset: $offset\n      order_by: $order_by\n      where: $where\n    ) {\n      id\n      name\n      state {\n        id\n        name\n      }\n    }\n  }\n": types.CitiesDocument,
+    "\n  mutation update_users_by_pk($_set: users_set_input, $pk_columns: users_pk_columns_input!) {\n    update_users_by_pk(_set: $_set, pk_columns: $pk_columns) {\n      id\n      email\n      username\n      first_name\n      last_name\n      avatar\n      city {\n        id\n        name\n        state {\n          id\n          name\n        }\n      }\n    }\n  }\n": types.Update_Users_By_PkDocument,
 };
 
 /**
@@ -44,7 +45,7 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query currentUser {\n    users {\n      id\n      email\n      first_name\n      last_name\n      avatar\n    }\n  }\n"): (typeof documents)["\n  query currentUser {\n    users {\n      id\n      email\n      first_name\n      last_name\n      avatar\n    }\n  }\n"];
+export function graphql(source: "\n  query currentUser {\n    users {\n      id\n      email\n      username\n      first_name\n      last_name\n      avatar\n      city {\n        id\n        name\n        state {\n          id\n          name\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query currentUser {\n    users {\n      id\n      email\n      username\n      first_name\n      last_name\n      avatar\n      city {\n        id\n        name\n        state {\n          id\n          name\n        }\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -89,6 +90,10 @@ export function graphql(source: "\n  mutation delete_refresh_tokens($where: refr
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query cities(\n    $distinct_on: [cities_select_column!]\n    $limit: Int\n    $offset: Int\n    $order_by: [cities_order_by!]\n    $where: cities_bool_exp\n  ) {\n    cities(\n      distinct_on: $distinct_on\n      limit: $limit\n      offset: $offset\n      order_by: $order_by\n      where: $where\n    ) {\n      id\n      name\n      state {\n        id\n        name\n      }\n    }\n  }\n"): (typeof documents)["\n  query cities(\n    $distinct_on: [cities_select_column!]\n    $limit: Int\n    $offset: Int\n    $order_by: [cities_order_by!]\n    $where: cities_bool_exp\n  ) {\n    cities(\n      distinct_on: $distinct_on\n      limit: $limit\n      offset: $offset\n      order_by: $order_by\n      where: $where\n    ) {\n      id\n      name\n      state {\n        id\n        name\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation update_users_by_pk($_set: users_set_input, $pk_columns: users_pk_columns_input!) {\n    update_users_by_pk(_set: $_set, pk_columns: $pk_columns) {\n      id\n      email\n      username\n      first_name\n      last_name\n      avatar\n      city {\n        id\n        name\n        state {\n          id\n          name\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation update_users_by_pk($_set: users_set_input, $pk_columns: users_pk_columns_input!) {\n    update_users_by_pk(_set: $_set, pk_columns: $pk_columns) {\n      id\n      email\n      username\n      first_name\n      last_name\n      avatar\n      city {\n        id\n        name\n        state {\n          id\n          name\n        }\n      }\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

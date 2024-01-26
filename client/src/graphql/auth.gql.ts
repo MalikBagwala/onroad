@@ -5,9 +5,18 @@ export const CURRENT_USER = graphql(/* GraphQL */ `
     users {
       id
       email
+      username
       first_name
       last_name
       avatar
+      city {
+        id
+        name
+        state {
+          id
+          name
+        }
+      }
     }
   }
 `);

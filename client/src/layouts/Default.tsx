@@ -1,7 +1,7 @@
 import { GlobalFooter } from '@/components/GlobalFooter/GlobalFooter';
 import { GlobalNavbar } from '@/components/GlobalNavbar/GlobalNavbar';
 import { CURRENT_USER } from '@/graphql/auth.gql';
-import { Container, Flex } from '@mantine/core';
+import { Box, Container, Flex } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { useQuery } from 'urql';
 
@@ -17,9 +17,11 @@ const DefaultLayout = ({ children }: DefaultLayoutType) => {
     <Flex mih={'100vh'} bg="gray.0" direction={'column'}>
       <Notifications autoClose={3000} position="top-right" limit={5} />
       <GlobalNavbar user={currentUser} />
-      <Container mt={69} py={'lg'} flex={'1'}>
-        {children}
-      </Container>
+      <Box flex={'1'}>
+        <Container mt={69} py={'lg'}>
+          {children}
+        </Container>
+      </Box>
       <GlobalFooter />
     </Flex>
   );

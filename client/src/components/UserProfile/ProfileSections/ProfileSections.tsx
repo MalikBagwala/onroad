@@ -1,6 +1,5 @@
 import { useAuth, useCurrentUser } from '@/authentication/AuthContext';
-import OnRoadLogo from '@/components/OnroadLogo';
-import { Code, Group, Stack, Text } from '@mantine/core';
+import { Image, Stack, Text } from '@mantine/core';
 import {
   IconFingerprint,
   IconHeart,
@@ -38,7 +37,11 @@ export function ProfileSections() {
       <div className={classes.navbarMain}>
         <Stack dir="column" className={classes.header} justify="center" align="center" gap={0}>
           {uData?.avatar ? (
-            <img src={uData?.avatar || undefined} referrerPolicy="no-referrer" />
+            <Image
+              className={classes.avatar}
+              src={uData?.avatar || undefined}
+              referrerPolicy="no-referrer"
+            />
           ) : (
             <IconUserCircle size={64} color="gray" strokeWidth={1} />
           )}
