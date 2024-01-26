@@ -1,11 +1,14 @@
 import { useCurrentUser } from '@/authentication/AuthContext';
+import { DELETE_REFRESH_TOKENS } from '@/graphql/auth.gql';
 import signinWithGoogleLink from '@/utils/signinWithGoogleLink';
 import { ActionIcon, Button, Flex, PasswordInput, Stack, Text, TextInput } from '@mantine/core';
 import { IconBrandGoogle, IconCheck, IconEdit, IconKey } from '@tabler/icons-react';
 import dayjs from 'dayjs';
+import { useMutation } from 'urql';
 type AccountDetailsType = {};
 const AccountDetails = ({}: AccountDetailsType) => {
   const { data: uData } = useCurrentUser();
+  const [{ fetching, data }, deleteRefreshToken] = useMutation(DELETE_REFRESH_TOKENS);
   // const form = useForm({
   //   initialValues: {
   //     firstName: uData?.first_name,
@@ -77,7 +80,19 @@ const AccountDetails = ({}: AccountDetailsType) => {
                     {token.client} (expires {dayjs(token.expires_at).format('D MMM YY hh:mm a')})
                   </Text>
                 </Flex>
-                <Button size="xs">Revoke</Button>
+                <Button
+                  loading={
+                    data?.delete_refresh_tokens?.returning?.find((idx) => idx.id === token.id)
+                      ? fetching
+                      : false
+                  }
+                  onClick={() => deleteRefreshToken({ where: { id: { _eq: token.id } } })}
+                  color="red"
+                  variant="light"
+                  size="xs"
+                >
+                  Revoke
+                </Button>
               </Flex>
             );
           })}
