@@ -1,7 +1,8 @@
 import { useCurrentUser } from '@/authentication/AuthContext';
-import { DELETE_REFRESH_TOKENS } from '@/graphql/auth.gql';
+import { DELETE_REFRESH_TOKENS, FORGOT_PASSWORD } from '@/graphql/auth.gql';
 import signinWithGoogleLink from '@/utils/signinWithGoogleLink';
 import { ActionIcon, Button, Flex, PasswordInput, Stack, Text, TextInput } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import { IconBrandGoogle, IconCheck, IconEdit, IconKey } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import { useMutation } from 'urql';
@@ -9,14 +10,8 @@ type AccountDetailsType = {};
 const AccountDetails = ({}: AccountDetailsType) => {
   const { data: uData } = useCurrentUser();
   const [{ fetching, data }, deleteRefreshToken] = useMutation(DELETE_REFRESH_TOKENS);
-  // const form = useForm({
-  //   initialValues: {
-  //     firstName: uData?.first_name,
-  //     lastName: uData?.last_name,
-  //     username: uData?.username,
-  //     city: uData?.city?.id,
-  //   },
-  // });
+  const [{ fetching: fFetching }, forgot] = useMutation(FORGOT_PASSWORD);
+
   return (
     <Stack>
       <Stack>
@@ -31,7 +26,24 @@ const AccountDetails = ({}: AccountDetailsType) => {
             label="Current Password"
             visible={false}
             rightSection={
-              <ActionIcon variant="white">
+              <ActionIcon
+                loading={fFetching}
+                onClick={async () => {
+                  if (!uData?.email) return;
+                  const { data } = await forgot({
+                    identity: uData.email,
+                  });
+                  if (data?.forgotPassword?.success) {
+                    notifications.show({
+                      message: data?.forgotPassword?.message,
+                      color: 'green',
+                      withBorder: true,
+                      autoClose: 9000,
+                    });
+                  }
+                }}
+                variant="white"
+              >
                 <IconEdit />
               </ActionIcon>
             }
