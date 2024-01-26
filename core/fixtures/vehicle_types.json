@@ -38,5 +38,13 @@
       "name": "MPV",
       "category": "SUV"
     }
+  },
+  {
+    "model": "core.VehicleType",
+    "pk": "a1f60e7c-398f-4a59-9f2f-334c3ae5bda2",
+    "fields": {
+      "name": "Scooter",
+      "category": "MO"
+    }
   }
 ]

@@ -13,7 +13,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "\n  query currentUser {\n    users {\n      id\n      email\n      username\n      first_name\n      last_name\n      avatar\n      google_id\n      refresh_tokens {\n        id\n        client\n        expires_at\n        created_at\n      }\n      city {\n        id\n        name\n        state {\n          id\n          name\n        }\n      }\n    }\n  }\n": types.CurrentUserDocument,
+    "\n  query currentUser {\n    users {\n      id\n      email\n      username\n      first_name\n      last_name\n      avatar\n      has_contributed\n      google_id\n      refresh_tokens {\n        id\n        client\n        expires_at\n        created_at\n      }\n      city {\n        id\n        name\n        state {\n          id\n          name\n        }\n      }\n    }\n  }\n": types.CurrentUserDocument,
     "\n  query membershipTypeByEmail($email: String!) {\n    membershipTypeByEmail(email: $email) {\n      message\n      data\n    }\n  }\n": types.MembershipTypeByEmailDocument,
     "\n  mutation login($email: String!, $password: String!) {\n    login(email: $email, password: $password) {\n      code\n      data {\n        accessToken\n        refreshToken\n      }\n      message\n    }\n  }\n": types.LoginDocument,
     "\n  mutation loginWithMagicLink($email: String!) {\n    loginWithMagicLink(email: $email) {\n      code\n      data\n      message\n    }\n  }\n": types.LoginWithMagicLinkDocument,
@@ -45,7 +45,7 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query currentUser {\n    users {\n      id\n      email\n      username\n      first_name\n      last_name\n      avatar\n      google_id\n      refresh_tokens {\n        id\n        client\n        expires_at\n        created_at\n      }\n      city {\n        id\n        name\n        state {\n          id\n          name\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query currentUser {\n    users {\n      id\n      email\n      username\n      first_name\n      last_name\n      avatar\n      google_id\n      refresh_tokens {\n        id\n        client\n        expires_at\n        created_at\n      }\n      city {\n        id\n        name\n        state {\n          id\n          name\n        }\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query currentUser {\n    users {\n      id\n      email\n      username\n      first_name\n      last_name\n      avatar\n      has_contributed\n      google_id\n      refresh_tokens {\n        id\n        client\n        expires_at\n        created_at\n      }\n      city {\n        id\n        name\n        state {\n          id\n          name\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query currentUser {\n    users {\n      id\n      email\n      username\n      first_name\n      last_name\n      avatar\n      has_contributed\n      google_id\n      refresh_tokens {\n        id\n        client\n        expires_at\n        created_at\n      }\n      city {\n        id\n        name\n        state {\n          id\n          name\n        }\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
