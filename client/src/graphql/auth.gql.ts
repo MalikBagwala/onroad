@@ -9,6 +9,13 @@ export const CURRENT_USER = graphql(/* GraphQL */ `
       first_name
       last_name
       avatar
+      google_id
+      refresh_tokens {
+        id
+        client
+        expires_at
+        created_at
+      }
       city {
         id
         name

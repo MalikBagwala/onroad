@@ -5,6 +5,7 @@ function signinWithGoogleLink(email?: string) {
     response_type: 'code',
     scope: 'openid profile email',
     redirect_uri: `https://${import.meta.env.VITE_API_DOMAIN}/api/oauth`,
+    state: window.location.pathname,
   });
   if (email) params.append('login_hint', email);
 
