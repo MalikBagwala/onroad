@@ -8,11 +8,17 @@ type OnRoadLogoType = {
   withImage?: boolean;
   textProps?: TextProps;
 };
-const OnRoadLogo = ({ withText = true, textProps, withImage = true }: OnRoadLogoType) => {
+const OnRoadLogo = ({
+  height = 24,
+  width = 24,
+  withText = true,
+  textProps,
+  withImage = true,
+}: OnRoadLogoType) => {
   const navigate = useNavigate();
   return (
     <Flex style={{ cursor: 'pointer' }} onClick={() => navigate('/')} align={'center'} gap={'4px'}>
-      {withImage && <Image src={logo} className="w-6 h-6" />}
+      {withImage && <Image src={logo} width={width} height={height} />}
       {withText && (
         <Text fw={500} {...textProps}>
           OnRoad
