@@ -1,8 +1,9 @@
-import { CONTRIBUTIONS, CONTRIBUTIONS_BRIEF, MY_CONTRIBUTIONS } from '@/graphql/contribution.gql';
+import { CONTRIBUTIONS_BRIEF, MY_CONTRIBUTIONS } from '@/graphql/contribution.gql';
 import convertToInr from '@/utils/convertToInr';
-import { Badge, Box, Card, Flex, Group, Pill, Skeleton, Stack, Text } from '@mantine/core';
+import { Badge, Card, Flex, Group, Pill, Skeleton, Stack, Text } from '@mantine/core';
 import { IconThumbDown, IconThumbUp } from '@tabler/icons-react';
 import dayjs from 'dayjs';
+import { Link } from 'react-router-dom';
 import { useQuery } from 'urql';
 type MyContributionsType = {};
 const MyContributions = ({}: MyContributionsType) => {
@@ -82,10 +83,12 @@ const MyContributions = ({}: MyContributionsType) => {
                     </Group>
                   </Flex>
                   <Flex mt="xs" justify={'space-between'}>
-                    <Text c="gray.7" fw={500} size="lg">
-                      {contribution.variant?.name} ({contribution.variant_color?.name || 'No Color'}
-                      )
-                    </Text>
+                    <Link to={`/contributions/${contribution.id}`}>
+                      <Text c="gray.7" fw={500} size="lg">
+                        {contribution.variant?.name} (
+                        {contribution.variant_color?.name || 'No Color'})
+                      </Text>
+                    </Link>
                     <Group>
                       <Text c="gray.9" fw={500} size="lg">
                         {convertToInr(contribution.total)}
