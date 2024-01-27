@@ -22,7 +22,7 @@ array_relationships:
         table:
           name: contributions_attachments
           schema: public
-  - name: contribution_price_items
+  - name: items
     using:
       foreign_key_constraint_on:
         column: contribution_id

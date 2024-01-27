@@ -1,6 +1,8 @@
+import AddUpdateContribution from '@/components/AddUpdateContribution/AddUpdateContribution';
 import { CURRENT_USER, DELETE_REFRESH_TOKENS } from '@/graphql/auth.gql';
 import { setAccessToken, setRefreshToken } from '@/utils/tokens';
 import makeClient from '@/utils/urqlClient';
+import { modals } from '@mantine/modals';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Client, Provider, useQuery } from 'urql';
@@ -61,6 +63,22 @@ export const useAuth = () => useContext(AuthContext);
 
 export const useCurrentUser = () => {
   const [{ fetching, data, error }] = useQuery({ query: CURRENT_USER });
-  return { fetching, data: data?.users?.[0], error } as const;
+  const user = data?.users?.[0];
+  const hasContributed = user?.has_contributed;
+
+  useEffect(() => {
+    console.log(hasContributed);
+    if (!hasContributed && user?.id) {
+      modals.open({
+        centered: true,
+        withCloseButton: false,
+        overlayProps: {
+          blur: 4,
+        },
+        children: <AddUpdateContribution />,
+      });
+    }
+  }, [hasContributed, user]);
+  return { fetching, data: user, error } as const;
 };
 export default AuthProvider;

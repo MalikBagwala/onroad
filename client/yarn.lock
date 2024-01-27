@@ -3116,6 +3116,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mantine/dates@npm:^7.5.0":
+  version: 7.5.0
+  resolution: "@mantine/dates@npm:7.5.0"
+  dependencies:
+    clsx: "npm:2.0.0"
+  peerDependencies:
+    "@mantine/core": 7.5.0
+    "@mantine/hooks": 7.5.0
+    dayjs: ">=1.0.0"
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  checksum: be2b5bf7cccf9a487483314ea326726a83fa087ffb345e675f81f18f528fb32d0622bebad4d8b29666d8fb2f885c3bc1bb839b42e802a24b7c34e085ebcf1e94
+  languageName: node
+  linkType: hard
+
 "@mantine/form@npm:^7.4.2":
   version: 7.4.2
   resolution: "@mantine/form@npm:7.4.2"
@@ -10732,6 +10747,7 @@ __metadata:
     "@graphql-codegen/cli": "npm:5.0.0"
     "@graphql-codegen/client-preset": "npm:4.1.0"
     "@mantine/core": "npm:7.4.1"
+    "@mantine/dates": "npm:^7.5.0"
     "@mantine/form": "npm:^7.4.2"
     "@mantine/hooks": "npm:7.4.1"
     "@mantine/modals": "npm:^7.4.2"

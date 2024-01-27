@@ -6,10 +6,13 @@ import { IconLogin } from '@tabler/icons-react';
 import OnRoadLogo from '../OnroadLogo';
 import { UserOnboard } from '../UserOnboard/UserOnboard';
 import styles from './GlobalNavbar.module.css';
+import { useParams, useSearchParams } from 'react-router-dom';
+import { useEffect } from 'react';
 type GlobalNavbarType = {
   user?: CurrentUserQuery['users'][0];
 };
 export function GlobalNavbar({ user }: GlobalNavbarType) {
+  const [params] = useSearchParams();
   const openModal = () =>
     modals.open({
       centered: true,
@@ -19,6 +22,10 @@ export function GlobalNavbar({ user }: GlobalNavbarType) {
       },
       children: <UserOnboard />,
     });
+
+  useEffect(() => {
+    if (params.get('modal') === 'login') openModal();
+  }, [params.get('modal')]);
   return (
     <Box className={styles.base}>
       <Container py={'md'}>
