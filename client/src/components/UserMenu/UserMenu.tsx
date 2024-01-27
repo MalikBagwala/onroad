@@ -1,8 +1,16 @@
 import { useAuth } from '@/authentication/AuthContext';
 import { CurrentUserQuery } from '@/gql/graphql';
 import { Avatar, Group, Menu, Text, UnstyledButton, rem, useMantineTheme } from '@mantine/core';
-import { IconChevronDown, IconHeart, IconLogout, IconSettings } from '@tabler/icons-react';
+import {
+  IconChevronDown,
+  IconGift,
+  IconHeart,
+  IconLogout,
+  IconSettings,
+} from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
+import AddUpdateContribution from '../AddUpdateContribution/AddUpdateContribution';
+import { modals } from '@mantine/modals';
 
 type UserMenuType = {
   user?: CurrentUserQuery['users'][0];
@@ -47,15 +55,27 @@ export const UserMenu = ({ user }: UserMenuType) => {
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Item
+          onClick={() => {
+            modals.open({
+              closeOnClickOutside: false,
+              closeOnEscape: false,
+              size: 'lg',
+              centered: true,
+              withCloseButton: false,
+              overlayProps: {
+                blur: 4,
+              },
+              children: <AddUpdateContribution />,
+            });
+          }}
+          leftSection={<IconGift style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
+        >
+          Add Contribution
+        </Menu.Item>
+        <Menu.Item
           component={Link}
           to={'/profile/contributions'}
-          leftSection={
-            <IconHeart
-              style={{ width: rem(16), height: rem(16) }}
-              color={theme.colors.red[6]}
-              stroke={1.5}
-            />
-          }
+          leftSection={<IconHeart style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
         >
           My Contributions
         </Menu.Item>
