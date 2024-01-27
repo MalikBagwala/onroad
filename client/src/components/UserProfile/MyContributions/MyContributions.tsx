@@ -1,0 +1,105 @@
+import { CONTRIBUTIONS, CONTRIBUTIONS_BRIEF, MY_CONTRIBUTIONS } from '@/graphql/contribution.gql';
+import convertToInr from '@/utils/convertToInr';
+import { Badge, Box, Card, Flex, Group, Pill, Skeleton, Stack, Text } from '@mantine/core';
+import { IconThumbDown, IconThumbUp } from '@tabler/icons-react';
+import dayjs from 'dayjs';
+import { useQuery } from 'urql';
+type MyContributionsType = {};
+const MyContributions = ({}: MyContributionsType) => {
+  const [{ fetching: iFetching, data: iData }] = useQuery({ query: MY_CONTRIBUTIONS });
+  const contributionIds = iData?.myContributions?.data;
+
+  const [{ data, fetching }] = useQuery({
+    query: CONTRIBUTIONS_BRIEF,
+    variables: {
+      where: {
+        id: {
+          _in: contributionIds,
+        },
+      },
+    },
+    pause: iFetching,
+  });
+  return (
+    <Stack>
+      <Stack>
+        <Text fw={500} c={'gray.7'} size="xl">
+          My Contributions
+        </Text>
+        <Stack gap={'xs'}>
+          {fetching ? (
+            <>
+              <Skeleton visible>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque, officia laboriosam
+                iure dicta similique ducimus suscipit veniam, amet quidem, sint sapiente quasi. At
+                debitis illum totam, nobis nostrum, officia amet perspiciatis iusto animi aliquam
+                itaque velit, sint eligendi quas perferendis.
+              </Skeleton>
+              <Skeleton visible>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque, officia laboriosam
+                iure dicta similique ducimus suscipit veniam, amet quidem, sint sapiente quasi. At
+                debitis illum totam, nobis nostrum, officia amet perspiciatis iusto animi aliquam
+                itaque velit, sint eligendi quas perferendis.
+              </Skeleton>
+              <Skeleton visible>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque, officia laboriosam
+                iure dicta similique ducimus suscipit veniam, amet quidem, sint sapiente quasi. At
+                debitis illum totam, nobis nostrum, officia amet perspiciatis iusto animi aliquam
+                itaque velit, sint eligendi quas perferendis.
+              </Skeleton>
+              <Skeleton visible>
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Neque, officia laboriosam
+                iure dicta similique ducimus suscipit veniam, amet quidem, sint sapiente quasi. At
+                debitis illum totam, nobis nostrum, officia amet perspiciatis iusto animi aliquam
+                itaque velit, sint eligendi quas perferendis.
+              </Skeleton>
+            </>
+          ) : (
+            data?.contributions?.map((contribution) => {
+              return (
+                <Card radius={'md'} bg={'gray.0'} key={contribution.id}>
+                  <Flex justify={'space-between'}>
+                    <Pill bg="blue.1">
+                      {dayjs(contribution.created_at).format('MMMM DD, YYYY')}
+                    </Pill>
+                    <Group>
+                      <Badge
+                        bg={'green.0'}
+                        color="green.7"
+                        variant="light"
+                        leftSection={<IconThumbUp stroke={1.5} />}
+                      >
+                        {contribution.upvotes.toLocaleString()}
+                      </Badge>
+                      <Badge
+                        bg={'red.0'}
+                        color="red.7"
+                        variant="light"
+                        leftSection={<IconThumbDown stroke={1.5} />}
+                      >
+                        {contribution.downvotes.toLocaleString()}
+                      </Badge>
+                    </Group>
+                  </Flex>
+                  <Flex mt="xs" justify={'space-between'}>
+                    <Text c="gray.7" fw={500} size="lg">
+                      {contribution.variant?.name} ({contribution.variant_color?.name || 'No Color'}
+                      )
+                    </Text>
+                    <Group>
+                      <Text c="gray.9" fw={500} size="lg">
+                        {convertToInr(contribution.total)}
+                      </Text>
+                    </Group>
+                  </Flex>
+                </Card>
+              );
+            })
+          )}
+        </Stack>
+      </Stack>
+    </Stack>
+  );
+};
+
+export default MyContributions;

@@ -19,6 +19,7 @@ from core.queries.membership_type import (
     MembershipTypeByEmailResponse,
     membership_type_by_email,
 )
+from core.queries.my_contributions import MyContributionsResponse, my_contributions
 from core.queries.verify_otp import VerifyOtpResponse, verify_otp
 from strawberry.permission import BasePermission
 from strawberry.types import Info
@@ -58,6 +59,9 @@ class Query:
 
     membership_type_by_email: MembershipTypeByEmailResponse = strawberry.field(
         resolver=membership_type_by_email
+    )
+    my_contributions: MyContributionsResponse = strawberry.field(
+        resolver=my_contributions, permission_classes=[IsAuthenticated]
     )
     pass
 

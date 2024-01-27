@@ -1,5 +1,14 @@
 import { graphql } from '@/gql';
 
+export const MY_CONTRIBUTIONS = graphql(/* GraphQL */ `
+  query myContributions($limit: Int, $offset: Int, $query: String) {
+    myContributions(limit: $limit, offset: $offset, query: $query) {
+      code
+      data
+      message
+    }
+  }
+`);
 export const CONTRIBUTIONS = graphql(/* GraphQL */ `
   query contributions(
     $distinct_on: [contributions_select_column!]
@@ -44,6 +53,38 @@ export const CONTRIBUTIONS = graphql(/* GraphQL */ `
           type
         }
         value
+      }
+    }
+  }
+`);
+
+export const CONTRIBUTIONS_BRIEF = graphql(/* GraphQL */ `
+  query contributionsBrief(
+    $distinct_on: [contributions_select_column!]
+    $limit: Int
+    $offset: Int
+    $order_by: [contributions_order_by!]
+    $where: contributions_bool_exp
+  ) {
+    contributions(
+      distinct_on: $distinct_on
+      limit: $limit
+      offset: $offset
+      order_by: $order_by
+      where: $where
+    ) {
+      id
+      created_at
+      upvotes
+      downvotes
+      total
+      variant {
+        id
+        name
+      }
+      variant_color {
+        id
+        name
       }
     }
   }
