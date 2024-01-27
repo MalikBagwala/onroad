@@ -94,6 +94,8 @@ update_permissions:
         id:
           _eq: X-Hasura-User-Id
       check: null
+      set:
+        updated_at: NOW()
     comment: ""
   - role: user
     permission:

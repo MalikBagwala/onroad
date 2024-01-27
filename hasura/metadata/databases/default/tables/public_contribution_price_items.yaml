@@ -11,17 +11,26 @@ object_relationships:
 insert_permissions:
   - role: contributor
     permission:
-      check: {}
+      check:
+        contribution:
+          user_id:
+            _eq: X-Hasura-User-Id
       columns:
         - contribution_id
+        - id
         - price_item_id
+        - serial_no
         - value
     comment: ""
   - role: user
     permission:
-      check: {}
+      check:
+        contribution:
+          user_id:
+            _eq: X-Hasura-User-Id
       columns:
         - contribution_id
+        - id
         - price_item_id
         - serial_no
         - value

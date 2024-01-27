@@ -13,3 +13,6 @@ showmigrations:
 loaddata:
 	@read -p "Enter the name of the fixture(eg. groups.json): " input_file; \
 	docker-compose -f development.yml exec django python manage.py loaddata $$input_file
+
+hasura:
+	cd hasura; and hasura console --admin-secret onroad --console-port 9800 --endpoint https://localhost/hasura/

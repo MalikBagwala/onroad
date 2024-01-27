@@ -1,6 +1,7 @@
 import strawberry
 from strawberry_django.optimizer import DjangoOptimizerExtension
 from django.conf import settings
+from core.mutations.change_password import change_password, ChangePasswordResponse
 from core.mutations.forgot_password_confirm import (
     forgot_password_confirm,
     ForgotPasswordConfirmResponse,
@@ -70,6 +71,9 @@ class Mutation:
         resolver=login_with_magic_link
     )
     forgot_password: ForgotPasswordResponse = strawberry.field(resolver=forgot_password)
+    change_password: ChangePasswordResponse = strawberry.field(
+        resolver=change_password, permission_classes=[IsAuthenticated]
+    )
     forgot_password_confirm: ForgotPasswordConfirmResponse = strawberry.field(
         resolver=forgot_password_confirm
     )

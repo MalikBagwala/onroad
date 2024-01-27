@@ -1,42 +1,20 @@
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 import requests
-from core.enums import OtpTypes
-from core.models import Otp, User
+from core.models import User
 from rest_framework.decorators import (
     api_view,
     authentication_classes,
     permission_classes,
     throttle_classes,
 )
-from django.utils import timezone
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from os import getenv
 from django.contrib.auth.models import Group
 from django.conf import settings
 from rest_framework.throttling import AnonRateThrottle
 
-
-@api_view(["GET"])
-@authentication_classes([])
-@permission_classes([])
-@throttle_classes([AnonRateThrottle])
-def verify_otp(request, user_id, otp):
-    try:
-        otp = Otp.objects.get(
-            user__id=user_id,
-            otp=otp,
-            used=False,
-            expires_at__gt=timezone.now(),
-            type=OtpTypes.EMAIL.value,
-        )
-        otp.used = True
-        otp.save()
-        otp.user.email_verified = True
-        otp.user.save()
-    except ObjectDoesNotExist:
-        return render(request, "otp_invalid.html")
-    return render(request, "otp_verified.html", {"username": str(otp.user)})
+# from core.api_views import JWTAuthRestMiddleware
+# from rest_framework.permissions import IsAuthenticated
 
 
 @api_view(["GET"])

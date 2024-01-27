@@ -4,11 +4,12 @@
     "pk": "d4b67ec9-c2c9-4f6b-964e-f03e389c8c2f",
     "fields": {
       "name": "Ex-Showroom",
-      "description": "",
+      "description": "Ex showroom price inclusive of taxes",
       "category": "EX",
       "type": "DB",
       "created_at": "2024-01-20T03:45:34.442Z",
-      "updated_at": "2024-01-20T03:45:34.446Z"
+      "updated_at": "2024-01-27T11:36:29.446Z",
+      "serial_no": 1
     }
   },
   {
@@ -19,32 +20,9 @@
       "description": "",
       "category": "MI",
       "type": "DB",
-      "created_at": "2024-01-20T03:45:34.446Z",
-      "updated_at": "2024-01-20T03:45:34.446Z"
-    }
-  },
-  {
-    "model": "core.PriceItem",
-    "pk": "a94cde51-511e-414b-8c2b-afb4e1cc9a40",
-    "fields": {
-      "name": "FAME II Subsidy",
-      "description": "",
-      "category": "SU",
-      "type": "CR",
-      "created_at": "2024-01-20T03:45:34.446Z",
-      "updated_at": "2024-01-20T03:45:34.446Z"
-    }
-  },
-  {
-    "model": "core.PriceItem",
-    "pk": "a832dd83-3ec5-47ed-946a-06d7905a07cd",
-    "fields": {
-      "name": "Discount",
-      "description": "",
-      "category": "DI",
-      "type": "CR",
-      "created_at": "2024-01-20T03:45:34.446Z",
-      "updated_at": "2024-01-20T03:45:34.446Z"
+      "created_at": "2024-01-20T03:45:34.442Z",
+      "updated_at": "2024-01-27T11:34:38.446Z",
+      "serial_no": 2
     }
   },
   {
@@ -55,20 +33,9 @@
       "description": "",
       "category": "IN",
       "type": "DB",
-      "created_at": "2024-01-20T03:45:34.446Z",
-      "updated_at": "2024-01-20T03:45:34.446Z"
-    }
-  },
-  {
-    "model": "core.PriceItem",
-    "pk": "8ae525cc-9b34-42a5-b33b-c8cd2caba1f1",
-    "fields": {
-      "name": "Accessories",
-      "description": "",
-      "category": "OA",
-      "type": "DB",
-      "created_at": "2024-01-20T03:45:34.446Z",
-      "updated_at": "2024-01-20T03:45:34.446Z"
+      "created_at": "2024-01-20T03:45:34.442Z",
+      "updated_at": "2024-01-27T11:34:50.446Z",
+      "serial_no": 3
     }
   },
   {
@@ -79,8 +46,48 @@
       "description": "",
       "category": "RTO",
       "type": "DB",
-      "created_at": "2024-01-20T03:45:34.446Z",
-      "updated_at": "2024-01-20T03:45:34.446Z"
+      "created_at": "2024-01-20T03:45:34.442Z",
+      "updated_at": "2024-01-27T11:35:04.446Z",
+      "serial_no": 4
+    }
+  },
+  {
+    "model": "core.PriceItem",
+    "pk": "8ae525cc-9b34-42a5-b33b-c8cd2caba1f1",
+    "fields": {
+      "name": "Accessories",
+      "description": "",
+      "category": "OA",
+      "type": "DB",
+      "created_at": "2024-01-20T03:45:34.442Z",
+      "updated_at": "2024-01-27T11:35:10.446Z",
+      "serial_no": 5
+    }
+  },
+  {
+    "model": "core.PriceItem",
+    "pk": "60aabb24-f95d-47eb-9b5b-fa53794415ab",
+    "fields": {
+      "name": "Misc",
+      "description": "",
+      "category": "MI",
+      "type": "DB",
+      "created_at": "2024-01-27T11:31:20.446Z",
+      "updated_at": "2024-01-27T11:35:28.446Z",
+      "serial_no": 6
+    }
+  },
+  {
+    "model": "core.PriceItem",
+    "pk": "a94cde51-511e-414b-8c2b-afb4e1cc9a40",
+    "fields": {
+      "name": "FAME II Subsidy",
+      "description": "",
+      "category": "SU",
+      "type": "CR",
+      "created_at": "2024-01-20T03:45:34.442Z",
+      "updated_at": "2024-01-27T11:35:38.446Z",
+      "serial_no": 7
     }
   },
   {
@@ -91,8 +98,22 @@
       "description": "",
       "category": "SU",
       "type": "CR",
-      "created_at": "2024-01-20T03:45:34.446Z",
-      "updated_at": "2024-01-20T03:45:34.446Z"
+      "created_at": "2024-01-20T03:45:34.442Z",
+      "updated_at": "2024-01-27T11:35:43.446Z",
+      "serial_no": 8
+    }
+  },
+  {
+    "model": "core.PriceItem",
+    "pk": "a832dd83-3ec5-47ed-946a-06d7905a07cd",
+    "fields": {
+      "name": "Discount",
+      "description": "",
+      "category": "DI",
+      "type": "CR",
+      "created_at": "2024-01-20T03:45:34.442Z",
+      "updated_at": "2024-01-27T11:35:50.446Z",
+      "serial_no": 9
     }
   }
 ]

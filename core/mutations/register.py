@@ -1,4 +1,5 @@
 from typing import Optional
+from uuid import UUID
 import strawberry
 import core.models as models
 from django.core.exceptions import ObjectDoesNotExist
@@ -28,6 +29,7 @@ class RegisterInput:
     confirm_password: str
     first_name: Optional[str] = None
     last_name: Optional[str] = None
+    city_id: Optional[UUID] = None
 
 
 def register(self, input: RegisterInput) -> RegisterResponse:

@@ -6,23 +6,25 @@ select_permissions:
     permission:
       columns:
         - category
-        - name
-        - type
-        - description
         - created_at
-        - updated_at
+        - description
         - id
+        - name
+        - serial_no
+        - type
+        - updated_at
       filter: {}
     comment: ""
   - role: user
     permission:
       columns:
         - category
-        - name
-        - type
-        - description
         - created_at
-        - updated_at
+        - description
         - id
+        - name
+        - serial_no
+        - type
+        - updated_at
       filter: {}
     comment: ""

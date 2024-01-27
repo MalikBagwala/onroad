@@ -6,6 +6,7 @@ import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
 import { useMutation } from 'urql';
 import UserOnboardWrapper from '../UserOnboard/UserOnboardWrapper';
+import CitySelector from './CitySelector';
 import VerifyOtp from './VerifyOtp';
 type NewUserType = {
   email: string;
@@ -13,6 +14,7 @@ type NewUserType = {
 };
 const NewUser = ({ email, abort }: NewUserType) => {
   const { refreshClient } = useAuth();
+
   const [visible, { toggle }] = useDisclosure(false);
   const form = useForm({
     initialValues: {
@@ -20,7 +22,7 @@ const NewUser = ({ email, abort }: NewUserType) => {
       lastName: '',
       password: '',
       confirmPassword: '',
-      //   city: null,
+      city: null,
     },
     validate: {
       password: (value) => {
@@ -66,6 +68,7 @@ const NewUser = ({ email, abort }: NewUserType) => {
               confirmPassword: values.confirmPassword,
               firstName: values.firstName,
               lastName: values.lastName,
+              cityId: values.city,
             },
           });
           const response = data?.register?.data;
@@ -110,6 +113,7 @@ const NewUser = ({ email, abort }: NewUserType) => {
             visible={visible}
             onVisibilityChange={toggle}
           />
+          <CitySelector {...form.getInputProps('city')} />
           <Button color="purple" loading={fetching} type="submit" fullWidth mt="md">
             Create Account
           </Button>

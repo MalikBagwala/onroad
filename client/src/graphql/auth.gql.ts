@@ -5,9 +5,27 @@ export const CURRENT_USER = graphql(/* GraphQL */ `
     users {
       id
       email
+      username
       first_name
       last_name
       avatar
+      has_contributed
+      email_verified
+      google_id
+      refresh_tokens {
+        id
+        client
+        expires_at
+        created_at
+      }
+      city {
+        id
+        name
+        state {
+          id
+          name
+        }
+      }
     }
   }
 `);
@@ -126,6 +144,31 @@ export const DELETE_REFRESH_TOKENS = graphql(/* GraphQL */ `
         client
       }
       affected_rows
+    }
+  }
+`);
+
+export const CITIES = graphql(/* GraphQL */ `
+  query cities(
+    $distinct_on: [cities_select_column!]
+    $limit: Int
+    $offset: Int
+    $order_by: [cities_order_by!]
+    $where: cities_bool_exp
+  ) {
+    cities(
+      distinct_on: $distinct_on
+      limit: $limit
+      offset: $offset
+      order_by: $order_by
+      where: $where
+    ) {
+      id
+      name
+      state {
+        id
+        name
+      }
     }
   }
 `);

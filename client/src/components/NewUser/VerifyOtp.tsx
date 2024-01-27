@@ -1,7 +1,7 @@
 import { Button, PinInput, Stack } from '@mantine/core';
 import UserOnboardWrapper from '../UserOnboard/UserOnboardWrapper';
-import { useMutation } from 'urql';
-import { VERIFY_EMAIL_OTP } from '@/graphql/auth.gql';
+import { useClient, useMutation } from 'urql';
+import { CURRENT_USER, VERIFY_EMAIL_OTP } from '@/graphql/auth.gql';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { modals } from '@mantine/modals';
@@ -10,6 +10,7 @@ type VerifyOtpType = {
   email: string;
 };
 const VerifyOtp = ({ email }: VerifyOtpType) => {
+  const client = useClient();
   const form = useForm({
     initialValues: {
       otp: '',
@@ -33,6 +34,7 @@ const VerifyOtp = ({ email }: VerifyOtpType) => {
               withBorder: true,
             });
             modals.closeAll();
+            await client.query(CURRENT_USER, {}, { requestPolicy: 'network-only' }).toPromise();
           } else {
             notifications.show({
               message: 'Invalid OTP',

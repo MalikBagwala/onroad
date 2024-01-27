@@ -24,7 +24,7 @@ const ReturningUser = ({ email, abort }: ReturningUserType) => {
       password: (value) => (value.length > 0 ? null : 'Please enter a password.'),
     },
   });
-  const [{ fetching: pFetching }, forgot] = useMutation(FORGOT_PASSWORD);
+  const [_, forgot] = useMutation(FORGOT_PASSWORD);
   return (
     <UserOnboardWrapper title={'Welcome back to OnRoad'}>
       <Button

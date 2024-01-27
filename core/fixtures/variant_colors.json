@@ -1,0 +1,32 @@
+[
+  {
+    "model": "core.VariantColor",
+    "pk": "b3932082-b474-46f6-be1a-275ed5e263ac",
+    "fields": {
+      "variant": "7965067e-dac3-4b60-ba6b-9b8c7e719c72",
+      "name": "Glossy Red Black",
+      "hex_code": "",
+      "attachments": ""
+    }
+  },
+  {
+    "model": "core.VariantColor",
+    "pk": "ae7d1105-cb9f-483a-b9b6-d7cd4f9d1527",
+    "fields": {
+      "variant": "7965067e-dac3-4b60-ba6b-9b8c7e719c72",
+      "name": "White",
+      "hex_code": "",
+      "attachments": ""
+    }
+  },
+  {
+    "model": "core.VariantColor",
+    "pk": "832574a1-345a-4c7f-9f76-a2b5f675b63e",
+    "fields": {
+      "variant": "7965067e-dac3-4b60-ba6b-9b8c7e719c72",
+      "name": "Black",
+      "hex_code": "",
+      "attachments": ""
+    }
+  }
+]
