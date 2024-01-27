@@ -53,6 +53,7 @@ insert_permissions:
         - city_id
         - color_id
         - dealership_name
+        - id
         - quoted_on
         - remark
         - variant_id

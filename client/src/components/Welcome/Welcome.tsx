@@ -1,8 +1,9 @@
-import { Text, Title } from '@mantine/core';
+import { Button, Text, Title } from '@mantine/core';
+import { useSearchParams } from 'react-router-dom';
 import classes from './Welcome.module.css';
-import AddUpdatePricing from '../AddUpdateContribution/AddUpdatePricing';
 
 export function Welcome() {
+  const [params, setParams] = useSearchParams();
   return (
     <>
       <Title className={classes.title} ta="center">
@@ -11,7 +12,6 @@ export function Welcome() {
           OnRoad
         </Text>
       </Title>
-      <AddUpdatePricing contribution_id={'125d5161-00f6-46bd-9d26-592943eaebf0'} />
     </>
   );
 }

@@ -15,6 +15,8 @@ export function GlobalNavbar({ user }: GlobalNavbarType) {
   const [params] = useSearchParams();
   const openModal = () =>
     modals.open({
+      closeOnEscape: false,
+      closeOnClickOutside: false,
       centered: true,
       withCloseButton: false,
       overlayProps: {

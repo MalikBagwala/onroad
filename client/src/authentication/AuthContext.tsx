@@ -67,9 +67,10 @@ export const useCurrentUser = () => {
   const hasContributed = user?.has_contributed;
 
   useEffect(() => {
-    console.log(hasContributed);
-    if (!hasContributed && user?.id) {
+    if (!hasContributed && user?.id && user?.email_verified) {
       modals.open({
+        closeOnClickOutside: false,
+        closeOnEscape: false,
         size: 'lg',
         centered: true,
         withCloseButton: false,

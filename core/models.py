@@ -337,7 +337,7 @@ class ContributionPriceItem(UUIDPrimaryKey, AbstractTimestamp):
 
 class Vote(UUIDPrimaryKey, AbstractTimestamp):
     contribution = models.ForeignKey(Contribution, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     type = models.CharField(max_length=2, choices=VoteTypes.choices)
 
     class Meta:

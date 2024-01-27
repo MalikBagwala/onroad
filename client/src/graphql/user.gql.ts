@@ -5,6 +5,7 @@ export const UPDATE_USER = graphql(/* GraphQL */ `
     update_users_by_pk(_set: $_set, pk_columns: $pk_columns) {
       id
       email
+      email_verified
       username
       first_name
       last_name
