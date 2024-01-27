@@ -9,7 +9,7 @@ import UserProfile from './components/UserProfile/UserProfile';
 import NotFoundPage from './components/NotFoundPage/NotFoundPage';
 import ProfileDetails from './components/UserProfile/ProfileDetails/ProfileDetails';
 import AccountDetails from './components/UserProfile/AccountDetails/AccountDetails';
-import MyContributions from './components/UserProfile/Contributions/Contributions';
+import MyContributions from './components/UserProfile/MyContributions/MyContributions';
 const router = createBrowserRouter([
   {
     path: '/',
