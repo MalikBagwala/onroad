@@ -138,7 +138,8 @@ class VariantColorAdmin(ImportExportModelAdmin):
 @admin.register(models.PriceItem)
 class PriceItemAdmin(ImportExportModelAdmin):
     search_fields = ("name",)
-    list_display = ("name", "description", "category", "type")
+    list_display = ("name", "serial_no", "description", "category", "type")
+    ordering = ("serial_no",)
     list_filter = ("category",)
     pass
 

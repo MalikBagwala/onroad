@@ -70,6 +70,7 @@ export const useCurrentUser = () => {
     console.log(hasContributed);
     if (!hasContributed && user?.id) {
       modals.open({
+        size: 'lg',
         centered: true,
         withCloseButton: false,
         overlayProps: {

@@ -15,6 +15,7 @@ insert_permissions:
       columns:
         - contribution_id
         - price_item_id
+        - serial_no
         - value
     comment: ""
   - role: user

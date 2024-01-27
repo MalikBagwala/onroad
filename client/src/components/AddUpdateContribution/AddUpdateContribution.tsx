@@ -1,33 +1,49 @@
-import { REGISTER } from '@/graphql/auth.gql';
+import { Contributions_Constraint, Contributions_Update_Column } from '@/gql/graphql';
+import { ADD_UPDATE_CONTRIBUTION } from '@/graphql/contribution.gql';
 import { VARIANT_COLORS } from '@/graphql/variant.gql';
 import { Alert, Button, Stack, TextInput } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
+import { notifications } from '@mantine/notifications';
 import { IconDatabase } from '@tabler/icons-react';
+import { useState } from 'react';
 import { useMutation } from 'urql';
 import CitySelector from '../NewUser/CitySelector';
 import QuerySelect from '../QuerySelect/QuerySelect';
 import UserOnboardWrapper from '../UserOnboard/UserOnboardWrapper';
 import VariantSelector from '../VariantSelector/VariantSelector';
-import { ADD_UPDATE_CONTRIBUTION } from '@/graphql/contribution.gql';
-import { notifications } from '@mantine/notifications';
-import { Contributions_Constraint, Contributions_Update_Column } from '@/gql/graphql';
+import AddUpdatePricing from './AddUpdatePricing';
+import { useCurrentUser } from '@/authentication/AuthContext';
 
 type AddUpdateContributionType = {};
+
+const INITIAL_STATE = {
+  variant: '7965067e-dac3-4b60-ba6b-9b8c7e719c72',
+  color: 'b3932082-b474-46f6-be1a-275ed5e263ac',
+  city: '713b7600-4c05-48fc-86d1-31974c747ce3',
+  quotedAt: new Date('2022-02-26T11:53:07.840Z'),
+  dealership: 'Anutek Engineering',
+  remark: 'Good Experience',
+};
 const AddUpdateContribution = ({}: AddUpdateContributionType) => {
+  const { data: uData } = useCurrentUser();
+  const [activeStep, setActiveStep] = useState<1 | 2>(1);
   const form = useForm({
     initialValues: {
       variant: null,
       color: null,
-      city: null,
+      city: uData?.city?.id,
       quotedAt: new Date(),
       dealership: null,
       remark: null,
-      priceBreakup: [],
+      ...(INITIAL_STATE as any),
     },
     validate: {},
   });
-  const [{ fetching }, addUpdateContribution] = useMutation(ADD_UPDATE_CONTRIBUTION);
+  const [{ fetching, data }, addUpdateContribution] = useMutation(ADD_UPDATE_CONTRIBUTION);
+
+  if (activeStep === 2 && data?.insert_contributions_one)
+    return <AddUpdatePricing contribution={data.insert_contributions_one} />;
 
   console.log(form.values);
   return (
@@ -36,7 +52,7 @@ const AddUpdateContribution = ({}: AddUpdateContributionType) => {
     >
       <form
         onSubmit={form.onSubmit(async (values) => {
-          const { data } = await addUpdateContribution({
+          const { data, error } = await addUpdateContribution({
             object: {
               variant_id: values.variant,
               color_id: values.color,
@@ -58,10 +74,12 @@ const AddUpdateContribution = ({}: AddUpdateContributionType) => {
             },
           });
           if (data?.insert_contributions_one?.id) {
+            setActiveStep(2);
+          } else {
             notifications.show({
-              title: 'Contribution Added',
-              message: 'Thank you for your contribution',
-              color: 'green',
+              title: 'Error',
+              message: error?.message,
+              color: 'red',
             });
           }
         })}
@@ -108,7 +126,7 @@ const AddUpdateContribution = ({}: AddUpdateContributionType) => {
             {...form.getInputProps('city')}
           />
           <Button color="purple" loading={fetching} type="submit" fullWidth mt="md">
-            Contribute
+            Continue To Add Pricing
           </Button>
         </Stack>
       </form>

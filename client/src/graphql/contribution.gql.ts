@@ -18,6 +18,8 @@ export const CONTRIBUTIONS = graphql(/* GraphQL */ `
       id
       created_at
       updated_at
+      quoted_on
+      dealership_name
       city {
         id
         name
@@ -55,6 +57,8 @@ export const ADD_UPDATE_CONTRIBUTION = graphql(/* GraphQL */ `
       id
       created_at
       updated_at
+      quoted_on
+      dealership_name
       city {
         id
         name
@@ -102,6 +106,18 @@ export const PRICE_ITEMS = graphql(/* GraphQL */ `
       id
       name
       type
+    }
+  }
+`);
+
+export const DELETE_PRICE_ITEMS = graphql(/* GraphQL */ `
+  mutation delete_price_items($where: price_items_bool_exp!) {
+    delete_price_items(where: $where) {
+      returning {
+        id
+        name
+      }
+      affected_rows
     }
   }
 `);

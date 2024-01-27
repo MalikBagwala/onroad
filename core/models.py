@@ -230,7 +230,7 @@ class Variant(UUIDPrimaryKey):
     )  # type: ignore
     description = models.TextField()
     specifications = models.JSONField(
-        null=True, blank=True, default=dict, db_default={}
+        null=True, blank=True, default=dict, db_default=str({})
     )  # type: ignore
 
     attachments = models.ManyToManyField(Attachment, blank=True)
@@ -262,6 +262,7 @@ class PriceItem(UUIDPrimaryKey, AbstractTimestamp):
     description = models.TextField(null=True, blank=True)
     category = models.CharField(max_length=3, choices=PriceCategoryTypes.choices)
     type = models.CharField(max_length=2, choices=TransactionTypes.choices)
+    serial_no = models.PositiveSmallIntegerField(default=1, db_default=1)  # type: ignore
 
     def __str__(self) -> str:
         return f"{self.name} - {self.type}"
