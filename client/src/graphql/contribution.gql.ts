@@ -46,7 +46,7 @@ export const CONTRIBUTIONS = graphql(/* GraphQL */ `
     }
   }
 `);
-export const ADD_UPDATE_SINGLE_CONTRIBUTION = graphql(/* GraphQL */ `
+export const ADD_UPDATE_CONTRIBUTION = graphql(/* GraphQL */ `
   mutation add_update_contribution(
     $object: contributions_insert_input!
     $on_conflict: contributions_on_conflict

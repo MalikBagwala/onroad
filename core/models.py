@@ -226,9 +226,13 @@ class Variant(UUIDPrimaryKey):
         max_length=6,
         choices=TransmissionTypes.choices,
         default=TransmissionTypes.MANUAL.value,
-    )
+        db_default=TransmissionTypes.MANUAL.value,
+    )  # type: ignore
     description = models.TextField()
-    specifications = models.JSONField(null=True, blank=True, default=dict)
+    specifications = models.JSONField(
+        null=True, blank=True, default=dict, db_default={}
+    )  # type: ignore
+
     attachments = models.ManyToManyField(Attachment, blank=True)
     manufacturer_link = models.URLField(max_length=255, null=True, blank=True)
 
@@ -271,7 +275,8 @@ class Contribution(UUIDPrimaryKey, AbstractTimestamp):
         max_length=2,
         choices=ContributionStatus.choices,
         default=ContributionStatus.PENDING.value,
-    )
+        db_default=ContributionStatus.PENDING.value,
+    )  # type: ignore
     variant = models.ForeignKey(Variant, on_delete=models.CASCADE)
     color = models.ForeignKey(
         VariantColor, on_delete=models.CASCADE, null=True, blank=True
@@ -283,11 +288,20 @@ class Contribution(UUIDPrimaryKey, AbstractTimestamp):
     dealership_name = models.CharField(max_length=255)
 
     total = models.DecimalField(
-        max_digits=10, decimal_places=2, default=decimal.Decimal(0)
-    )
+        max_digits=10,
+        decimal_places=2,
+        default=decimal.Decimal(0),
+        db_default=decimal.Decimal(0),
+    )  # type: ignore
     attachments = models.ManyToManyField(Attachment, blank=True)
-    upvotes = models.IntegerField(default=0)
-    downvotes = models.IntegerField(default=0)
+    upvotes = models.IntegerField(
+        default=decimal.Decimal(0),
+        db_default=decimal.Decimal(0),
+    )  # type: ignore
+    downvotes = models.IntegerField(
+        default=decimal.Decimal(0),
+        db_default=decimal.Decimal(0),
+    )  # type: ignore
     remark = models.TextField(null=True, blank=True)
 
     class Meta:
@@ -298,7 +312,7 @@ class Contribution(UUIDPrimaryKey, AbstractTimestamp):
 
 
 class ContributionPriceItem(UUIDPrimaryKey, AbstractTimestamp):
-    serial_no = models.PositiveSmallIntegerField(default=1)
+    serial_no = models.PositiveSmallIntegerField(default=1, db_default=1)  # type: ignore
     contribution = models.ForeignKey(Contribution, on_delete=models.CASCADE)
     price_item = models.ForeignKey(PriceItem, on_delete=models.CASCADE)
     value = models.DecimalField(max_digits=10, decimal_places=2)
