@@ -62,23 +62,14 @@ const AuthProvider = ({ children }: AuthProviderType) => {
 export const useAuth = () => useContext(AuthContext);
 
 export const useCurrentUser = () => {
+  const navigate = useNavigate();
   const [{ fetching, data, error }] = useQuery({ query: CURRENT_USER });
   const user = data?.users?.[0];
   const hasContributed = user?.has_contributed;
 
   useEffect(() => {
     if (!hasContributed && user?.id && user?.email_verified) {
-      modals.open({
-        closeOnClickOutside: false,
-        closeOnEscape: false,
-        size: 'lg',
-        centered: true,
-        withCloseButton: false,
-        overlayProps: {
-          blur: 4,
-        },
-        children: <AddUpdateContribution />,
-      });
+      navigate('/contributions/new', { replace: true });
     }
   }, [hasContributed, user]);
   return { fetching, data: user, error } as const;

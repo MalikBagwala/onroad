@@ -1,3 +1,4 @@
+import { Order_By } from '@/gql/graphql';
 import { CONTRIBUTIONS_BRIEF, MY_CONTRIBUTIONS } from '@/graphql/contribution.gql';
 import convertToInr from '@/utils/convertToInr';
 import { Badge, Card, Flex, Group, Pill, ScrollArea, Skeleton, Stack, Text } from '@mantine/core';
@@ -17,6 +18,9 @@ const MyContributions = ({}: MyContributionsType) => {
         id: {
           _in: contributionIds,
         },
+      },
+      order_by: {
+        created_at: Order_By.DescNullsLast,
       },
     },
     pause: iFetching,
