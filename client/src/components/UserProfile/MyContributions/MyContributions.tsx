@@ -74,8 +74,8 @@ const MyContributions = ({}: MyContributionsType) => {
                           {contribution.upvotes.toLocaleString()}
                         </Badge>
                         <Badge
-                          bg={'red.0'}
-                          color="red.7"
+                          bg={'gray.0'}
+                          color="gray.7"
                           variant="light"
                           leftSection={<IconThumbDown stroke={1.5} />}
                         >
@@ -84,8 +84,8 @@ const MyContributions = ({}: MyContributionsType) => {
                       </Group>
                     </Flex>
                     <Flex mt="xs" justify={'space-between'}>
-                      <Link to={`/contributions/${contribution.id}`}>
-                        <Text c="gray.7" fw={500} size="lg">
+                      <Link className="link" to={`/contributions/${contribution.id}`}>
+                        <Text c="gray.7" fw={500} size="lg" maw={350} truncate>
                           {contribution.variant?.name} (
                           {contribution.variant_color?.name || 'No Color'})
                         </Text>

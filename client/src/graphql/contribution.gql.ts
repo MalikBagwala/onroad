@@ -29,6 +29,7 @@ export const CONTRIBUTIONS = graphql(/* GraphQL */ `
       updated_at
       quoted_on
       dealership_name
+      remark
       city {
         id
         name

@@ -10,6 +10,7 @@ import NotFoundPage from './components/NotFoundPage/NotFoundPage';
 import ProfileDetails from './components/UserProfile/ProfileDetails/ProfileDetails';
 import AccountDetails from './components/UserProfile/AccountDetails/AccountDetails';
 import MyContributions from './components/UserProfile/MyContributions/MyContributions';
+import AddUpdateContribution from './components/AddUpdateContribution/AddUpdateContribution';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
             element: <MyContributions />,
           },
         ],
+      },
+      {
+        path: '/contributions/:id',
+        element: <AddUpdateContribution />,
       },
       {
         path: '/reset/:id',

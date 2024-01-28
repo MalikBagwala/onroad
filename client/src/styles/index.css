@@ -6,3 +6,17 @@ strong {
   font-weight: 600;
   color: var(--mantine-color-gray-7);
 }
+
+a.link {
+  /* color: rgba(255, 255, 255, 0.8); */
+  text-decoration: none;
+  border-bottom: 2.5px solid var(--mantine-color-violet-1);
+  transition: 0.4s all ease-out;
+}
+
+a.link:hover {
+  box-shadow: inset 0 -5.5rem 0 var(--mantine-color-violet-1);
+  border-bottom: 2.5px solid var(--mantine-color-violet-2);
+  color: #4e44d6;
+}
+  

@@ -55,19 +55,8 @@ export const UserMenu = ({ user }: UserMenuType) => {
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Item
-          onClick={() => {
-            modals.open({
-              closeOnClickOutside: false,
-              closeOnEscape: false,
-              size: 'lg',
-              centered: true,
-              withCloseButton: false,
-              overlayProps: {
-                blur: 4,
-              },
-              children: <AddUpdateContribution />,
-            });
-          }}
+          component={Link}
+          to={'/contributions/new'}
           leftSection={<IconGift style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
         >
           Add Contribution

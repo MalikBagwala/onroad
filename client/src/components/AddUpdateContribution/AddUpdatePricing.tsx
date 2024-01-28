@@ -31,6 +31,7 @@ import { useEffect } from 'react';
 import ConfettiExplosion from 'react-confetti-explosion';
 import { useClient, useMutation, useQuery } from 'urql';
 import UserOnboardWrapper from '../UserOnboard/UserOnboardWrapper';
+import { useNavigate } from 'react-router-dom';
 type AddUpdatePricingType = {
   contribution: Add_Update_ContributionMutation['insert_contributions_one'];
 };
@@ -44,101 +45,20 @@ type FormState = {
   }[];
 };
 
-const INITIAL_STATE: FormState = {
-  total: 94844.99,
-  priceBreakup: [
-    {
-      item: {
-        id: 'd4b67ec9-c2c9-4f6b-964e-f03e389c8c2f',
-        name: 'Ex-Showroom',
-        type: 'DB',
-        __typename: 'price_items',
-      },
-      value: 108344.99,
-    },
-    {
-      item: {
-        id: 'bee9b5c2-6e97-494d-9cd9-140380c78c16',
-        name: 'Road Tax',
-        type: 'DB',
-        __typename: 'price_items',
-      },
-      value: 0,
-    },
-    {
-      item: {
-        id: '9edf5329-d563-49ae-b1b7-f18e6bfbc15d',
-        name: 'Insurance',
-        type: 'DB',
-        __typename: 'price_items',
-      },
-      value: 2500,
-    },
-    {
-      item: {
-        id: '60ea232c-467d-451c-ba35-c7b5b4e438da',
-        name: 'RTO',
-        type: 'DB',
-        __typename: 'price_items',
-      },
-      value: 1500,
-    },
-    {
-      item: {
-        id: '8ae525cc-9b34-42a5-b33b-c8cd2caba1f1',
-        name: 'Accessories',
-        type: 'DB',
-        __typename: 'price_items',
-      },
-      value: 4000,
-    },
-    {
-      item: {
-        id: '60aabb24-f95d-47eb-9b5b-fa53794415ab',
-        name: 'Misc',
-        type: 'DB',
-        __typename: 'price_items',
-      },
-      value: 7000,
-    },
-    {
-      item: {
-        id: 'a94cde51-511e-414b-8c2b-afb4e1cc9a40',
-        name: 'FAME II Subsidy',
-        type: 'CR',
-        __typename: 'price_items',
-      },
-      value: 28500,
-    },
-    {
-      item: {
-        id: '523ade17-98eb-43f8-8040-608b60324f4b',
-        name: 'State Subsidy',
-        type: 'CR',
-        __typename: 'price_items',
-      },
-      value: 0,
-    },
-    {
-      item: {
-        id: 'a832dd83-3ec5-47ed-946a-06d7905a07cd',
-        name: 'Discount',
-        type: 'CR',
-        __typename: 'price_items',
-      },
-      value: 0,
-    },
-  ],
-};
 const AddUpdatePricing = ({ contribution }: AddUpdatePricingType) => {
   const client = useClient();
+  const navigate = useNavigate();
   const { refreshClient } = useAuth();
   const form = useForm<FormState>({
-    // initialValues: {
-    //   total: 0,
-    //   priceBreakup: [],
-    // },
-    initialValues: INITIAL_STATE,
+    initialValues: {
+      total: contribution?.total || 0,
+      priceBreakup:
+        contribution?.items?.map((item) => ({
+          id: item?.id,
+          item: item?.price_item,
+          value: item?.value,
+        })) || [],
+    },
     validate: {},
   });
   const [{ fetching, data: pData }, addUpdateContribution] = useMutation(ADD_UPDATE_CONTRIBUTION);
@@ -179,7 +99,9 @@ const AddUpdatePricing = ({ contribution }: AddUpdatePricingType) => {
               setAccessToken(newAccessToken);
               refreshClient();
             }
+
             modals.closeAll();
+            navigate('/', { replace: true });
           }}
           width={1200}
           force={0.6}

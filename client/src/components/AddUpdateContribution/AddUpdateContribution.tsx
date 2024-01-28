@@ -1,19 +1,20 @@
 import { Contributions_Constraint, Contributions_Update_Column } from '@/gql/graphql';
-import { ADD_UPDATE_CONTRIBUTION } from '@/graphql/contribution.gql';
+import { ADD_UPDATE_CONTRIBUTION, CONTRIBUTIONS } from '@/graphql/contribution.gql';
 import { VARIANT_COLORS } from '@/graphql/variant.gql';
 import { Alert, Button, Stack, TextInput } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { IconDatabase } from '@tabler/icons-react';
-import { useState } from 'react';
-import { useMutation } from 'urql';
+import { useEffect, useState } from 'react';
+import { useClient, useMutation } from 'urql';
 import CitySelector from '../NewUser/CitySelector';
 import QuerySelect from '../QuerySelect/QuerySelect';
 import UserOnboardWrapper from '../UserOnboard/UserOnboardWrapper';
 import VariantSelector from '../VariantSelector/VariantSelector';
 import AddUpdatePricing from './AddUpdatePricing';
 import { useCurrentUser } from '@/authentication/AuthContext';
+import { useParams } from 'react-router-dom';
 
 type AddUpdateContributionType = {};
 
@@ -26,26 +27,55 @@ const INITIAL_STATE = {
   remark: 'Good Experience',
 };
 const AddUpdateContribution = ({}: AddUpdateContributionType) => {
+  const { id } = useParams();
+  const client = useClient();
+  console.log(id);
   const { data: uData } = useCurrentUser();
   const [activeStep, setActiveStep] = useState<1 | 2>(1);
   const form = useForm({
     initialValues: {
+      id: 'new',
       variant: null,
       color: null,
       city: uData?.city?.id,
       quotedAt: new Date(),
-      dealership: null,
-      remark: null,
-      ...(INITIAL_STATE as any),
+      dealership: '',
+      remark: '',
+      // ...(INITIAL_STATE as any),
     },
     validate: {},
   });
+
+  useEffect(() => {
+    if (id !== 'new') {
+      client
+        .query(CONTRIBUTIONS, {
+          where: {
+            id: {
+              _eq: id,
+            },
+          },
+        })
+        .then((data) => {
+          const contribution = data.data?.contributions?.[0];
+          if (!contribution) return;
+          form.setValues({
+            id: contribution.id,
+            variant: contribution.variant.id,
+            color: contribution.variant_color?.id,
+            city: contribution.city?.id,
+            quotedAt: new Date(contribution.quoted_on),
+            dealership: contribution.dealership_name,
+            remark: contribution.remark || '',
+          });
+        });
+    }
+  }, [id]);
   const [{ fetching, data }, addUpdateContribution] = useMutation(ADD_UPDATE_CONTRIBUTION);
 
   if (activeStep === 2 && data?.insert_contributions_one)
     return <AddUpdatePricing contribution={data.insert_contributions_one} />;
 
-  console.log(form.values);
   return (
     <UserOnboardWrapper
       title={'Your anonymous contribution will help people make smarter decisions! 🧠💡'}
@@ -54,6 +84,7 @@ const AddUpdateContribution = ({}: AddUpdateContributionType) => {
         onSubmit={form.onSubmit(async (values) => {
           const { data, error } = await addUpdateContribution({
             object: {
+              id: values.id === 'new' ? undefined : values.id,
               variant_id: values.variant,
               color_id: values.color,
               city_id: values.city,
@@ -97,6 +128,13 @@ const AddUpdateContribution = ({}: AddUpdateContributionType) => {
           />
           <QuerySelect
             query={VARIANT_COLORS}
+            variables={{
+              where: {
+                variant_id: {
+                  _eq: form.values.variant,
+                },
+              },
+            }}
             label="Variant Color"
             {...form.getInputProps('color')}
             placeholder="Color"
