@@ -1,7 +1,13 @@
 import { useAuth } from '@/authentication/AuthContext';
 import { CurrentUserQuery } from '@/gql/graphql';
-import { Avatar, Group, Menu, Text, UnstyledButton, rem, useMantineTheme } from '@mantine/core';
-import { IconChevronDown, IconHeart, IconLogout, IconSettings } from '@tabler/icons-react';
+import { Avatar, Button, Group, Menu, Stack, Text, rem, useMantineTheme } from '@mantine/core';
+import {
+  IconChevronDown,
+  IconGift,
+  IconHeart,
+  IconLogout,
+  IconSettings,
+} from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 
 type UserMenuType = {
@@ -28,7 +34,7 @@ export const UserMenu = ({ user }: UserMenuType) => {
       withinPortal
     >
       <Menu.Target>
-        <UnstyledButton>
+        <Button variant="subtle">
           <Group gap={7}>
             <Avatar
               src={user?.avatar}
@@ -38,24 +44,30 @@ export const UserMenu = ({ user }: UserMenuType) => {
                 referrerPolicy: 'no-referrer',
               }}
             />
-            <Text fw={500} size="sm" lh={1} mr={3}>
-              {identity}
-            </Text>
+            <Stack ta={'left'} gap={'2px'}>
+              <Text fw={500} c={'gray.8'} size="sm" lh={1} mr={3}>
+                {identity}
+              </Text>
+              <Text c="dimmed" size="sm" lh={1} mr={3}>
+                {user?.city?.name}
+              </Text>
+            </Stack>
             <IconChevronDown style={{ width: rem(12), height: rem(12) }} stroke={1.5} />
           </Group>
-        </UnstyledButton>
+        </Button>
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Item
           component={Link}
+          to={'/contributions/new'}
+          leftSection={<IconGift style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
+        >
+          Add Contribution
+        </Menu.Item>
+        <Menu.Item
+          component={Link}
           to={'/profile/contributions'}
-          leftSection={
-            <IconHeart
-              style={{ width: rem(16), height: rem(16) }}
-              color={theme.colors.red[6]}
-              stroke={1.5}
-            />
-          }
+          leftSection={<IconHeart style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
         >
           My Contributions
         </Menu.Item>

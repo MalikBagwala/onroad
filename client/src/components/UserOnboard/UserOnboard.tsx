@@ -82,6 +82,7 @@ export const UserOnboard = () => {
         })}
       >
         <TextInput
+          description="Just a way of reaching you, feel free to use any proxies if desired"
           withAsterisk
           label="Email"
           placeholder="Your email"

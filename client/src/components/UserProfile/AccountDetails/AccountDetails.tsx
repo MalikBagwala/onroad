@@ -19,7 +19,12 @@ const AccountDetails = ({}: AccountDetailsType) => {
           Email & Password
         </Text>
         <Stack gap={'xs'}>
-          <TextInput readOnly label="Email" value={uData?.email} />
+          <TextInput
+            description="Email is just a way of reaching you, feel free to use any proxies if desired"
+            readOnly
+            label="Email"
+            value={uData?.email}
+          />
           <PasswordInput
             readOnly
             value={'**********'}

@@ -70,12 +70,13 @@ class City(UUIDPrimaryKey):
 
 
 class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
+    username = models.CharField(max_length=255, unique=True)
+    email = models.EmailField(unique=True)
     avatar = models.ImageField(null=True, blank=True)
     google_id = models.CharField(max_length=255, null=True, blank=True, unique=True)
     apple_id = models.CharField(max_length=255, null=True, blank=True, unique=True)
     first_name = models.CharField(max_length=255, null=True, blank=True)
     last_name = models.CharField(max_length=255, null=True, blank=True)
-    email = models.EmailField(unique=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True)
     email_verified = models.BooleanField(default=False)
     has_contributed = models.BooleanField(default=False)
