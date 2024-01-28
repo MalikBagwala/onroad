@@ -52,7 +52,6 @@ const ResetPassword = ({}: ResetPasswordType) => {
               icon: <IconX size={16} />,
             });
           }
-          console.log(values);
           const { data } = await forgotPasswordConfirm({
             input: {
               userId: userId,

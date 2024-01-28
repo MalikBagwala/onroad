@@ -344,7 +344,6 @@ const AddUpdateContribution = ({}: AddUpdateContributionType) => {
                         }
                         value={value}
                         onChange={(value) => {
-                          console.log(value);
                           const valuesClone = structuredClone(form.values);
                           if (valuesClone.priceBreakup?.[index]) {
                             valuesClone.priceBreakup[index].value = Number(value);

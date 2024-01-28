@@ -1,16 +1,6 @@
 import { useAuth } from '@/authentication/AuthContext';
 import { CurrentUserQuery } from '@/gql/graphql';
-import {
-  Avatar,
-  Button,
-  Group,
-  Menu,
-  Stack,
-  Text,
-  UnstyledButton,
-  rem,
-  useMantineTheme,
-} from '@mantine/core';
+import { Avatar, Button, Group, Menu, Stack, Text, rem, useMantineTheme } from '@mantine/core';
 import {
   IconChevronDown,
   IconGift,
@@ -19,8 +9,6 @@ import {
   IconSettings,
 } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
-import AddUpdateContribution from '../AddUpdateContribution/AddUpdateContribution';
-import { modals } from '@mantine/modals';
 
 type UserMenuType = {
   user?: CurrentUserQuery['users'][0];
