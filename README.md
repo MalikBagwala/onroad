@@ -1,111 +1,69 @@
-## Onroad Application
+## OnRoad MonoRepo
 
-1. `make https` (install mkcert if you haven't already https://github.com/FiloSottile/mkcert)
-2. `docker compose -f development.yml up` Will run the complete stack locally, you can make changes to the api server and client app and it will reflect without restarting
-3. `docker compose up` Will run the complete stack locally in production setting
+1. **Setup HTTPS:**
 
+   - Run `make https` (Install [mkcert](https://github.com/FiloSottile/mkcert) if not already installed)
 
-## DB Triggers
+2. **Local Development:**
 
-Update upvotes and downvotes
+   - Run `docker compose -f development.yml up`
+   - Allows seamless development with real-time reflection of changes in both the API server and client app without the need for restarts.
 
-```sql
--- Drop the trigger if it exists
-DROP TRIGGER IF EXISTS contribution_vote_trigger ON votes;
+3. **Local Production:**
 
--- Create the trigger function
-CREATE OR REPLACE FUNCTION update_contribution_votes()
-RETURNS TRIGGER AS $$
-BEGIN
-    IF TG_OP = 'INSERT' THEN
-        UPDATE contributions
-        SET upvotes = upvotes + CASE WHEN NEW.type = 'UP' THEN 1 ELSE 0 END,
-            downvotes = downvotes + CASE WHEN NEW.type = 'DN' THEN 1 ELSE 0 END
-        WHERE id = NEW.contribution_id;
-    ELSIF TG_OP = 'UPDATE' THEN
-        UPDATE contributions
-        SET upvotes = upvotes + CASE WHEN NEW.type = 'UP' THEN 1 ELSE 0 END - CASE WHEN OLD.type = 'UP' THEN 1 ELSE 0 END,
-            downvotes = downvotes + CASE WHEN NEW.type = 'DN' THEN 1 ELSE 0 END - CASE WHEN OLD.type = 'DN' THEN 1 ELSE 0 END
-        WHERE id = NEW.contribution_id;
-    ELSIF TG_OP = 'DELETE' THEN
-        UPDATE contributions
-        SET upvotes = upvotes - CASE WHEN OLD.type = 'UP' THEN 1 ELSE 0 END,
-            downvotes = downvotes - CASE WHEN OLD.type = 'DN' THEN 1 ELSE 0 END
-        WHERE id = OLD.contribution_id;
-    END IF;
-    RETURN NULL;
-END;
-$$ LANGUAGE plpgsql;
+   - Run `docker compose up`
+   - Deploys the complete stack locally in a production setting, ensuring a consistent environment.
 
--- Create the trigger
-CREATE TRIGGER contribution_vote_trigger
-AFTER INSERT OR UPDATE OR DELETE ON votes
-FOR EACH ROW
-EXECUTE FUNCTION update_contribution_votes();
-```
+4. **Routes:**
 
-Update contribution total price
+   - `/*` → Front-end client
+   - `/api*` → Django API
+   - `/hasura*` → Hasura
+   - `/rabbitmq*` → RabbitMQ Admin
+   - `/media*` → File Server for uploaded Media Files
+   - `/static*` → File Server for Django Static Assets
 
-```sql
--- Drop the existing trigger if it exists
-DROP TRIGGER IF EXISTS contribution_price_item_trigger ON contribution_price_items;
+5. **Tech Stack:**
 
-CREATE OR REPLACE FUNCTION update_contribution_total()
-RETURNS TRIGGER AS $$
-BEGIN
-    IF TG_OP = 'INSERT' OR TG_OP = 'UPDATE' THEN
-        UPDATE contributions
-        SET total = COALESCE(
-            (SELECT SUM(CASE WHEN p.type = 'DB' THEN cpi.value ELSE -cpi.value END)
-             FROM contribution_price_items cpi
-             JOIN price_items p ON cpi.price_item_id = p.id
-             WHERE cpi.contribution_id = NEW.contribution_id),
-            0
-        )
-        WHERE id = NEW.contribution_id;
-    ELSIF TG_OP = 'DELETE' THEN
-        UPDATE contributions
-        SET total = COALESCE(
-            (SELECT SUM(CASE WHEN p.type = 'DB' THEN cpi.value ELSE -cpi.value END)
-             FROM contribution_price_items cpi
-             JOIN price_items p ON cpi.price_item_id = p.id
-             WHERE cpi.contribution_id = OLD.contribution_id),
-            0
-        )
-        WHERE id = OLD.contribution_id;
-    END IF;
-    RETURN NULL;
-END;
-$$ LANGUAGE plpgsql;
+   - **Django:**
 
--- Create new trigger
-CREATE TRIGGER contribution_price_item_trigger
-AFTER INSERT OR UPDATE OR DELETE ON contribution_price_items
-FOR EACH ROW
-EXECUTE FUNCTION update_contribution_total();
-```
+     - Handles data modeling, authentication, and custom APIs for robust server-side functionality.
 
-Update user has contributed
+   - **Hasura:**
 
-```sql
--- Drop the existing trigger if it exists
-DROP TRIGGER IF EXISTS contribution_update_user_trigger ON contributions;
+     - Provides CRUD APIs, subscriptions, and potential future integration with CRON jobs for efficient data management.
 
-CREATE OR REPLACE FUNCTION update_user_contributions()
-RETURNS TRIGGER AS $$
-BEGIN
-    -- Check if the user has any contributions after INSERT, UPDATE, or DELETE
-    UPDATE users
-    SET has_contributed = EXISTS (SELECT 1 FROM contributions WHERE user_id = NEW.user_id)
-    WHERE id = NEW.user_id;
+   - **RabbitMQ:**
 
-    RETURN NULL;
-END;
-$$ LANGUAGE plpgsql;
+     - Serves as a reliable message broker to facilitate communication between various components of the application.
 
--- Create new trigger
-CREATE TRIGGER contribution_update_user_trigger
-AFTER INSERT OR UPDATE OR DELETE ON contributions
-FOR EACH ROW
-EXECUTE FUNCTION update_user_contributions();
-```
+   - **Dramatiq:**
+
+     - Utilized for spinning up workers that handle resource-intensive tasks, such as sending emails, ensuring optimal performance.
+
+   - **Caddy:**
+
+     - Acts as a reverse proxy and file server, managing routing and serving static files efficiently.
+
+   - **Postgres:**
+
+     - Chosen as the database for its reliability and efficiency in handling data storage requirements.
+
+   - **Docker:**
+
+     - Enables containerization, ensuring consistent and reproducible deployment across different environments.
+
+   - **Terraform:**
+
+     - Used for Infrastructure as Code (IaC) to manage infrastructure resources efficiently.
+
+   - **Kubernetes:**
+
+     - Optional but valuable for scaling deployment strategies, providing flexibility in managing containerized applications.
+
+   - **Digital Ocean:**
+
+     - Selected as the cloud provider of choice for hosting and managing the application in a scalable and reliable environment.
+
+   - **React-Vite-Mantine:**
+     - Employs a modern set of tools for rapidly developing a visually appealing Single Page Application (SPA).
