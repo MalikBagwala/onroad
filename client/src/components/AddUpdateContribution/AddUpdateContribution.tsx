@@ -129,6 +129,8 @@ const AddUpdateContribution = ({}: AddUpdateContributionType) => {
               })) || [],
           });
         });
+    } else {
+      form.reset();
     }
   }, [id]);
 
