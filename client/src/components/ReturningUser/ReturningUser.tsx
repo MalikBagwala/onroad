@@ -7,12 +7,14 @@ import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { useMutation } from 'urql';
 import UserOnboardWrapper from '../UserOnboard/UserOnboardWrapper';
+import { useNavigate } from 'react-router-dom';
 
 type ReturningUserType = {
   email: string;
   abort: () => void;
 };
 const ReturningUser = ({ email, abort }: ReturningUserType) => {
+  const navigate = useNavigate();
   const { refreshClient } = useAuth();
   const [{ fetching: lFetching }, login] = useMutation(LOGIN);
   const [{ fetching: lmFetching }, loginWithMagicLink] = useMutation(LOGIN_WITH_MAGIC_LINK);
@@ -39,6 +41,7 @@ const ReturningUser = ({ email, abort }: ReturningUserType) => {
               withBorder: true,
             });
             modals.closeAll();
+            navigate({ search: '' }, { replace: true });
           }
         }}
         loading={lFetching || lmFetching}
@@ -77,6 +80,7 @@ const ReturningUser = ({ email, abort }: ReturningUserType) => {
             setRefreshToken(data?.login?.data?.refreshToken);
             refreshClient();
             modals.closeAll();
+            navigate({ search: '' }, { replace: true });
           }
           notifications.show({
             message: data?.login?.message,

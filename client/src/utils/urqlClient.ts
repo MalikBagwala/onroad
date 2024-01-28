@@ -9,6 +9,7 @@ import {
   removeRefreshToken,
   hasTokenExpired,
 } from './tokens';
+import { NavigateFunction } from 'react-router-dom';
 
 export const AUTH_OPERATIONS = [
   'register',
@@ -19,7 +20,7 @@ export const AUTH_OPERATIONS = [
   'forgotPasswordConfirm',
   'membershipTypeByEmail',
 ];
-function makeClient() {
+function makeClient(navigate: NavigateFunction) {
   return createClient({
     url: `https://${import.meta.env.VITE_API_DOMAIN}/hasura/v1/graphql`,
     exchanges: [
@@ -54,6 +55,7 @@ function makeClient() {
               }
             } catch {
               removeRefreshToken();
+              navigate('/', { replace: true });
             }
           },
           willAuthError(operation) {

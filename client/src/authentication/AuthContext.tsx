@@ -1,8 +1,6 @@
-import AddUpdateContribution from '@/components/AddUpdateContribution/AddUpdateContribution';
 import { CURRENT_USER, DELETE_REFRESH_TOKENS } from '@/graphql/auth.gql';
 import { setAccessToken, setRefreshToken } from '@/utils/tokens';
 import makeClient from '@/utils/urqlClient';
-import { modals } from '@mantine/modals';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Client, Provider, useQuery } from 'urql';
@@ -20,8 +18,8 @@ const AuthContext = createContext<AuthContextProps>(null as any);
 const AuthProvider = ({ children }: AuthProviderType) => {
   const [params] = useSearchParams();
   const navigate = useNavigate();
-  const [client, setClient] = useState<Client>(makeClient());
-  const refreshClient = () => setClient(makeClient());
+  const [client, setClient] = useState<Client>(makeClient(navigate));
+  const refreshClient = () => setClient(makeClient(navigate));
   const logout = async () => {
     try {
       await client.mutation(DELETE_REFRESH_TOKENS, {
