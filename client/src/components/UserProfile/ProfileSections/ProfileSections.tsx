@@ -38,6 +38,9 @@ export function ProfileSections() {
         <Stack dir="column" className={classes.header} justify="center" align="center" gap={0}>
           {uData?.avatar ? (
             <Image
+              radius={'100%'}
+              h={64}
+              w={64}
               className={classes.avatar}
               src={uData?.avatar || undefined}
               referrerPolicy="no-referrer"

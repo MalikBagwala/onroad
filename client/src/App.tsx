@@ -1,16 +1,17 @@
 import { MantineProvider } from '@mantine/core';
-import './styles/index.css';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { theme } from './theme';
-import Root from './routes/root';
-import { Welcome } from './components/Welcome/Welcome';
-import ResetPassword from './components/ResetPassword/ResetPassword';
-import UserProfile from './components/UserProfile/UserProfile';
+import AddUpdateContribution from './components/AddUpdateContribution/AddUpdateContribution';
+import { HomePageHero } from './components/HomePageHero/HomePageHero';
 import NotFoundPage from './components/NotFoundPage/NotFoundPage';
-import ProfileDetails from './components/UserProfile/ProfileDetails/ProfileDetails';
+import ResetPassword from './components/ResetPassword/ResetPassword';
 import AccountDetails from './components/UserProfile/AccountDetails/AccountDetails';
 import MyContributions from './components/UserProfile/MyContributions/MyContributions';
-import AddUpdateContribution from './components/AddUpdateContribution/AddUpdateContribution';
+import ProfileDetails from './components/UserProfile/ProfileDetails/ProfileDetails';
+import UserProfile from './components/UserProfile/UserProfile';
+import Root from './routes/root';
+import './styles/index.css';
+import { theme } from './theme';
+import ContributionsList from './components/ContributionsList/ContributionsList';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Welcome />,
+        element: <HomePageHero />,
       },
       {
         path: '/profile',
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
       {
         path: '/contributions/:id',
         element: <AddUpdateContribution />,
+      },
+      {
+        path: '/contributions',
+        element: <ContributionsList />,
       },
       {
         path: '/reset/:id',
