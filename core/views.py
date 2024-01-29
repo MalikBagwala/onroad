@@ -1,8 +1,7 @@
-from json import loads
 from uuid import uuid4
 from django.http import JsonResponse
 import requests
-from core.models import Attachment, User
+from core.models import User
 from rest_framework.decorators import (
     api_view,
     authentication_classes,
@@ -18,7 +17,9 @@ from rest_framework.throttling import AnonRateThrottle
 from core.api_views import JWTAuthRestMiddleware
 from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
-from .utils.spaces import spaces_client
+
+from core.serializers import AttachmentSerializer
+from .utils.spaces import upload_file_obj
 
 
 @api_view(["GET"])
@@ -28,7 +29,6 @@ from .utils.spaces import spaces_client
 def google_oauth(request):
     try:
         params = dict(request.query_params)
-        print(params)
         response_id = requests.post(
             "https://oauth2.googleapis.com/token",
             data={
@@ -72,46 +72,10 @@ def upload_file(request):
     try:
         file = request.data.get("file", None)
         attachment_id = request.data.get("media_id", uuid4())
-        raw_file_name = request.data.get("name", getattr(file, "name", None))
-        raw_file_ext = raw_file_name.split(".")[-1].lower()
-        content_type = getattr(file, "content_type", None)
-        size = getattr(file, "size", None)
-        access = "public-read"
-        bucket = settings.BUCKET
-        key = f"{settings.ENVIRONMENT[0]}/{attachment_id}.{raw_file_ext}"
-        params = dict(
-            Bucket=bucket,
-            Key=key,
-            Body=file,
-            ACL=access,
-            ContentType=content_type,
-        )
-        response = spaces_client.put_object(**params)
-        if response["ETag"] is not None:
-            media, _ = Attachment.objects.update_or_create(
-                id=attachment_id,
-                defaults={
-                    "key": key,
-                    "mime_type": content_type,
-                    "url": f"https://cdn.maalik.dev/{key}",
-                    "etag": loads(response["ETag"]),
-                    "size": size,
-                    "created_by": request.user,
-                },
-            )
+        media = upload_file_obj(file, request.user, attachment_id)
+        if media is not None:
             return JsonResponse(
-                {
-                    "success": True,
-                    "data": {
-                        "id": media.id,
-                        "key": key,
-                        "media_kind": content_type,
-                        "url": media.url.url,
-                        "size": size,
-                        "bucket": bucket,
-                        "etag": loads(response["ETag"]),
-                    },
-                },
+                {"success": True, "data": AttachmentSerializer(media).data},
                 status=201,
             )
     except Exception as e:

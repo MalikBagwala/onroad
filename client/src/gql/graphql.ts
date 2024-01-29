@@ -233,11 +233,15 @@ export type VerifyOtpResponse = {
 /** columns and relationships of "attachments" */
 export type Attachments = {
   __typename?: 'attachments';
+  created_at: Scalars['timestamptz']['output'];
   created_by_id: Scalars['uuid']['output'];
-  file: Scalars['String']['output'];
+  etag?: Maybe<Scalars['String']['output']>;
   id: Scalars['uuid']['output'];
+  key?: Maybe<Scalars['String']['output']>;
   mime_type: Scalars['String']['output'];
-  size: Scalars['Int']['output'];
+  size?: Maybe<Scalars['Int']['output']>;
+  updated_at: Scalars['timestamptz']['output'];
+  url: Scalars['String']['output'];
 };
 
 /** aggregated selection of "attachments" */
@@ -281,11 +285,15 @@ export type Attachments_Bool_Exp = {
   _and?: InputMaybe<Array<Attachments_Bool_Exp>>;
   _not?: InputMaybe<Attachments_Bool_Exp>;
   _or?: InputMaybe<Array<Attachments_Bool_Exp>>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   created_by_id?: InputMaybe<Uuid_Comparison_Exp>;
-  file?: InputMaybe<String_Comparison_Exp>;
+  etag?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  key?: InputMaybe<String_Comparison_Exp>;
   mime_type?: InputMaybe<String_Comparison_Exp>;
   size?: InputMaybe<Int_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  url?: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "attachments" */
@@ -301,31 +309,43 @@ export type Attachments_Inc_Input = {
 
 /** input type for inserting data into table "attachments" */
 export type Attachments_Insert_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   created_by_id?: InputMaybe<Scalars['uuid']['input']>;
-  file?: InputMaybe<Scalars['String']['input']>;
+  etag?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  key?: InputMaybe<Scalars['String']['input']>;
   mime_type?: InputMaybe<Scalars['String']['input']>;
   size?: InputMaybe<Scalars['Int']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate max on columns */
 export type Attachments_Max_Fields = {
   __typename?: 'attachments_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   created_by_id?: Maybe<Scalars['uuid']['output']>;
-  file?: Maybe<Scalars['String']['output']>;
+  etag?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
+  key?: Maybe<Scalars['String']['output']>;
   mime_type?: Maybe<Scalars['String']['output']>;
   size?: Maybe<Scalars['Int']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+  url?: Maybe<Scalars['String']['output']>;
 };
 
 /** aggregate min on columns */
 export type Attachments_Min_Fields = {
   __typename?: 'attachments_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
   created_by_id?: Maybe<Scalars['uuid']['output']>;
-  file?: Maybe<Scalars['String']['output']>;
+  etag?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
+  key?: Maybe<Scalars['String']['output']>;
   mime_type?: Maybe<Scalars['String']['output']>;
   size?: Maybe<Scalars['Int']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+  url?: Maybe<Scalars['String']['output']>;
 };
 
 /** response of any mutation on the table "attachments" */
@@ -353,11 +373,15 @@ export type Attachments_On_Conflict = {
 
 /** Ordering options when selecting data from "attachments". */
 export type Attachments_Order_By = {
+  created_at?: InputMaybe<Order_By>;
   created_by_id?: InputMaybe<Order_By>;
-  file?: InputMaybe<Order_By>;
+  etag?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  key?: InputMaybe<Order_By>;
   mime_type?: InputMaybe<Order_By>;
   size?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  url?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: attachments */
@@ -368,24 +392,36 @@ export type Attachments_Pk_Columns_Input = {
 /** select columns of table "attachments" */
 export enum Attachments_Select_Column {
   /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
   CreatedById = 'created_by_id',
   /** column name */
-  File = 'file',
+  Etag = 'etag',
   /** column name */
   Id = 'id',
   /** column name */
+  Key = 'key',
+  /** column name */
   MimeType = 'mime_type',
   /** column name */
-  Size = 'size'
+  Size = 'size',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  Url = 'url'
 }
 
 /** input type for updating data in table "attachments" */
 export type Attachments_Set_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   created_by_id?: InputMaybe<Scalars['uuid']['input']>;
-  file?: InputMaybe<Scalars['String']['input']>;
+  etag?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  key?: InputMaybe<Scalars['String']['input']>;
   mime_type?: InputMaybe<Scalars['String']['input']>;
   size?: InputMaybe<Scalars['Int']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate stddev on columns */
@@ -416,11 +452,15 @@ export type Attachments_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Attachments_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   created_by_id?: InputMaybe<Scalars['uuid']['input']>;
-  file?: InputMaybe<Scalars['String']['input']>;
+  etag?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  key?: InputMaybe<Scalars['String']['input']>;
   mime_type?: InputMaybe<Scalars['String']['input']>;
   size?: InputMaybe<Scalars['Int']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  url?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate sum on columns */
@@ -432,15 +472,23 @@ export type Attachments_Sum_Fields = {
 /** update columns of table "attachments" */
 export enum Attachments_Update_Column {
   /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
   CreatedById = 'created_by_id',
   /** column name */
-  File = 'file',
+  Etag = 'etag',
   /** column name */
   Id = 'id',
   /** column name */
+  Key = 'key',
+  /** column name */
   MimeType = 'mime_type',
   /** column name */
-  Size = 'size'
+  Size = 'size',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  Url = 'url'
 }
 
 export type Attachments_Updates = {

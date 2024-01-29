@@ -127,25 +127,13 @@ class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
     pass
 
 
-def custom_filename(instance, filename):
-    """
-    Generate a unique filename for the uploaded image.
-    """
-    # Get the file extension
-    ext = filename.split(".")[-1]
-    # Generate a unique filename using UUID4
-    new_filename = f"{instance.pk}.{ext}"
-    # Return the new filename
-    return new_filename
-
-
 class Attachment(UUIDPrimaryKey, AbstractTimestamp):
-    url = models.FileField()
+    url = models.URLField(blank=True)
     key = models.CharField(max_length=255, null=True, blank=True)
     etag = models.CharField(max_length=255, null=True, blank=True)
-    mime_type = models.CharField(max_length=50)
+    mime_type = models.CharField(max_length=50, blank=True)
     size = models.PositiveIntegerField(blank=True, null=True)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
 
     class Meta:
         db_table = "attachments"
