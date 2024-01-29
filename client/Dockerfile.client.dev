@@ -1,4 +1,4 @@
-FROM node:alpine as build
+FROM node:20-alpine as build
 # update and install the latest dependencies for the alpine version
 RUN apk update && apk upgrade
 # set work dir as app

@@ -1,5 +1,0 @@
-FROM caddy
-
-COPY ./cert.crt /etc/pki/tls/certs/cert.crt
-COPY ./cert.key /etc/pki/tls/private/cert.key
-COPY ./Caddyfile /etc/caddy/Caddyfile

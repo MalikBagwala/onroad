@@ -20,8 +20,7 @@ COPY . /app/
 # 1. Run migratios
 # 2. Create admin user
 # 3. Run the server
-CMD ["sh", "-c", "python manage.py migrate && python manage.py createadmin && python manage.py runserver 0.0.0.0:9000"]
+RUN chmod +x ./deploy.sh
 
-# Dont Run Migrations (Useful when you want to make migrations first)
-# CMD ["sh","-c","python manage.py runserver 0.0.0.0:9000"]
+CMD ["./deploy.sh"]
 

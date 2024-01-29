@@ -267,9 +267,8 @@ pyrightconfig.json
 
 /playground.*
 
-/static
 
-/*.crt
-/*.key
+*.crt
+*.key
 
 # Node Modules

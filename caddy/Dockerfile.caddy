@@ -1,0 +1,4 @@
+FROM caddy:2.7
+
+COPY ./static /static/djstatic
+COPY ./Caddyfile /etc/caddy/Caddyfile

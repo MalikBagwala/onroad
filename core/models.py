@@ -127,58 +127,21 @@ class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
     pass
 
 
-def custom_filename(instance, filename):
-    """
-    Generate a unique filename for the uploaded image.
-    """
-    # Get the file extension
-    ext = filename.split(".")[-1]
-    # Generate a unique filename using UUID4
-    new_filename = f"{instance.pk}.{ext}"
-    # Return the new filename
-    return new_filename
-
-
-class Attachment(UUIDPrimaryKey):
-    file = models.FileField()
+class Attachment(UUIDPrimaryKey, AbstractTimestamp):
+    url = models.URLField(blank=True)
+    key = models.CharField(max_length=255, null=True, blank=True)
+    etag = models.CharField(max_length=255, null=True, blank=True)
     mime_type = models.CharField(max_length=50, blank=True)
-    size = models.PositiveIntegerField(blank=True)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    def save(self):
-        mt = mimetypes.guess_type(self.file.name)
-        if mt[0] and mt[0].startswith("image"):
-            im = Image.open(self.file)
-            output = BytesIO()
-            # after modifications, save it to the output
-            im.save(output, format="WEBP", quality=80)
-            output.seek(0)
-
-            self.size = sys.getsizeof(output)
-            self.mime_type = "image/webp"
-            # change the imagefield value to be the newley modifed image value
-            self.file = InMemoryUploadedFile(
-                output,
-                "ImageField",
-                f"{self.pk}.webp",
-                self.mime_type,
-                self.size,
-                None,
-            )
-        else:
-            self.mime_type = mt[0]
-            self.size = self.file.size
-            self.file.name = custom_filename(self, self.file.name)
-            pass
-
-        super(Attachment, self).save()
+    size = models.PositiveIntegerField(blank=True, null=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
 
     class Meta:
         db_table = "attachments"
         verbose_name_plural = "Attachments"
+        ordering = ["-created_at"]
 
     def __str__(self):
-        return f"{self.file}"
+        return f"{self.url}"
 
 
 class Make(UUIDPrimaryKey):

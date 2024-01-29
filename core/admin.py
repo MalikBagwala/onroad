@@ -1,11 +1,15 @@
+from uuid import uuid4
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
+
+from core.utils.spaces import upload_file_obj
 from . import models
 from django_dramatiq.admin import TaskAdmin
 from django_dramatiq.models import Task
+from django import forms
 
 # Register your models here.
 UserAdmin.fieldsets += (("Extra Fields", {"fields": ("city", "email_verified", "has_contributed", "google_id", "avatar")}),)  # type: ignore
@@ -69,10 +73,38 @@ class PasswordChangeRequestAdmin(ImportExportModelAdmin):
     pass
 
 
+class AttachmentAdminForm(forms.ModelForm):
+    file = forms.FileField(label="Upload File")
+
+    class Meta:
+        model = models.Attachment
+        fields = "__all__"
+
+
 @admin.register(models.Attachment)
 class AttachmentAdmin(ImportExportModelAdmin):
-    search_fields = ("file",)
+    form = AttachmentAdminForm
+    search_fields = ("url",)
     list_filter = ("mime_type",)
+
+    def save_model(self, request, obj, form, change):
+        # Get the uploaded file from the form
+        uploaded_file = form.cleaned_data.get("file")
+        media_id = obj.id or uuid4()
+        response = upload_file_obj(uploaded_file, media_id=media_id, create_media=False)
+        if response:
+            obj.url = response["url"]  # type: ignore
+            obj.key = response["key"]  # type: ignore
+            obj.created_by = request.user
+            obj.mime_type = response["mime_type"]  # type: ignore
+            obj.size = response["size"]  # type: ignore
+            obj.etag = response["etag"]  # type: ignore
+            obj.save()
+            return
+
+        # Call the parent save_model method to save the other fields
+        super().save_model(request, obj, form, change)
+
     pass
 
 

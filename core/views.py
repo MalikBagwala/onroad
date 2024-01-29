@@ -1,3 +1,4 @@
+from uuid import uuid4
 from django.http import JsonResponse
 import requests
 from core.models import User
@@ -13,8 +14,12 @@ from django.contrib.auth.models import Group
 from django.conf import settings
 from rest_framework.throttling import AnonRateThrottle
 
-# from core.api_views import JWTAuthRestMiddleware
-# from rest_framework.permissions import IsAuthenticated
+from core.api_views import JWTAuthRestMiddleware
+from rest_framework.permissions import IsAuthenticated
+from django.conf import settings
+
+from core.serializers import AttachmentSerializer
+from .utils.spaces import upload_file_obj
 
 
 @api_view(["GET"])
@@ -24,7 +29,6 @@ from rest_framework.throttling import AnonRateThrottle
 def google_oauth(request):
     try:
         params = dict(request.query_params)
-        print(params)
         response_id = requests.post(
             "https://oauth2.googleapis.com/token",
             data={
@@ -59,3 +63,20 @@ def google_oauth(request):
         return redirect(user.get_login_link())
     except Exception as e:
         return JsonResponse({"error": str(e)})
+
+
+@api_view(["PUT"])
+@authentication_classes([JWTAuthRestMiddleware])
+@permission_classes([IsAuthenticated])
+def upload_file(request):
+    try:
+        file = request.data.get("file", None)
+        attachment_id = request.data.get("media_id", uuid4())
+        media = upload_file_obj(file, request.user, attachment_id)
+        if media is not None:
+            return JsonResponse(
+                {"success": True, "data": AttachmentSerializer(media).data},
+                status=201,
+            )
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=400)

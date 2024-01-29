@@ -19,7 +19,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.shortcuts import redirect
-from core.views import google_oauth
+from core.views import google_oauth, upload_file
 from core.schema import schema
 from core.api_views import JWTAuthGraphQLView
 
@@ -30,4 +30,5 @@ urlpatterns = [
     path("api/admin/", admin.site.urls),
     path("api/graphql/", JWTAuthGraphQLView.as_view(schema=schema)),
     path("api/oauth", google_oauth, name="google_oauth"),
+    path("api/upload", upload_file, name="upload_file"),
 ]

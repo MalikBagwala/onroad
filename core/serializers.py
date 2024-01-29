@@ -1,6 +1,12 @@
-from core.models import User
+from core.models import Attachment, User
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
+
+
+class AttachmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Attachment
+        fields = ["id", "url", "mime_type", "size", "created_at", "updated_at", "etag"]
 
 
 class UserSerializer(serializers.ModelSerializer):
