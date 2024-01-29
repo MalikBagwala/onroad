@@ -4,6 +4,5 @@ docker-compose.yml
 development.yml
 .gitignore
 hasura
-/static
 .gitlab-ci.yml
 **/*/node_modules
