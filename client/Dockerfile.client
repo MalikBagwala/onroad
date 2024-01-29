@@ -2,6 +2,12 @@ FROM node:20-alpine as client-builder
 
 WORKDIR /app
 
+ARG GOOGLE_CLIENT_ID
+ENV VITE_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
+
+ARG API_DOMAIN
+ENV VITE_API_DOMAIN=$API_DOMAIN
+
 ENV ENVIRONMENT=production
 
 COPY ./package.json ./yarn.lock ./.yarnrc.yml ./

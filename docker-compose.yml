@@ -9,10 +9,10 @@ services:
       dockerfile: Dockerfile.client
       tags:
         - registry.digitalocean.com/or-main/client:latest
+      args:
+        - API_DOMAIN=${DOMAIN_NAME}
+        - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
     restart: unless-stopped
-    environment:
-      VITE_API_DOMAIN: ${DOMAIN_NAME}
-      VITE_GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
     depends_on:
       - django
       - hasura
