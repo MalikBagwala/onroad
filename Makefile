@@ -1,4 +1,5 @@
 certs:
+	chmod +x deploy.sh
 	mkcert --cert-file ./caddy/cert.crt --key-file ./caddy/cert.key localhost
 
 makemigrations:
@@ -6,6 +7,7 @@ makemigrations:
 
 collectstatic:
 	docker-compose -f development.yml exec django python manage.py collectstatic --noinput
+	
 migrate:
 	docker-compose -f development.yml exec django python manage.py migrate
 
