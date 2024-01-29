@@ -27,6 +27,8 @@ except:
 APP_VERSION = os.getenv("APP_VERSION", "dev")
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
 DOMAIN_NAME = os.getenv("DOMAIN_NAME")
+BUCKET = os.getenv("BUCKET", "onroadcdn")
+ENVIRONMENT = os.getenv("ENVIRONMENT", "dev")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
