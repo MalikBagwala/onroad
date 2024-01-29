@@ -1,11 +1,11 @@
-localhost {
-	tls /etc/pki/tls/certs/cert.crt /etc/pki/tls/private/cert.key
+{$DOMAIN_NAME} {
+	tls {$TLS} {$TLS_KEY}
 
 	# Media Files
-	handle_path /media* {
-		root * /static/djmedia
-		file_server
-	}
+	# handle_path /media* {
+	# 	root * /static/djmedia
+	# 	file_server
+	# }
 
 	# Django Staticfiles
 	handle_path /static* {
@@ -33,33 +33,3 @@ localhost {
 		reverse_proxy client:5000
 	}
 }
-
-# onroad1.maalik.dev {
-# 	tls m.bagwala@gmail.com
-
-# 	# Django Staticfiles
-# 	handle_path /static* {
-# 		root * /static/djstatic
-# 		file_server
-# 	}
-
-# 	# Django API
-# 	handle /api* {
-# 		reverse_proxy django-service:9000
-# 	}
-
-# 	# Hasura 
-# 	handle_path /hasura* {
-# 		reverse_proxy hasura-service:8080
-# 	}
-
-# 	# Rabbit MQ Management
-# 	handle_path /rabbitmq* {
-# 		reverse_proxy rabbitmq-service:15672
-# 	}
-
-# 	# Main Web Application (Client)
-# 	handle_path /* {
-# 		reverse_proxy client-service:5000
-# 	}
-# }

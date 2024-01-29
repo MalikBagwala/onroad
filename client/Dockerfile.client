@@ -1,4 +1,4 @@
-FROM node:lts-alpine as client-builder
+FROM node:20-alpine as client-builder
 
 WORKDIR /app
 

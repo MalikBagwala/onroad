@@ -64,8 +64,14 @@ services:
       tags:
         - registry.digitalocean.com/or-main/caddy:latest
     volumes:
+      - caddy_data:/data
+      - caddy_config:/config
       - ./caddy/cert.crt:/etc/pki/tls/certs/cert.crt
       - ./caddy/cert.key:/etc/pki/tls/private/cert.key
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
+      - TLS=${TLS}
+      - TLS_KEY=${TLS_KEY}
     container_name: or_caddy
     ports:
       - "80:80"
@@ -153,3 +159,5 @@ volumes:
   postgres:
   pgadmin:
   rabbitmq:
+  caddy_data:
+  caddy_config:
