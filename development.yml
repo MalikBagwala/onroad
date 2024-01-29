@@ -27,7 +27,7 @@ services:
       dockerfile: ./Dockerfile.api.dev
     restart: unless-stopped
     volumes:
-      - ./static:/app/static
+      - ./caddy/static:/app/static
       - .:/app
     env_file:
       - ./.env
@@ -46,7 +46,6 @@ services:
     command: python manage.py rundramatiq
     restart: unless-stopped
     volumes:
-      - ./static:/app/static
       - .:/app
     env_file:
       - ./.env
@@ -60,14 +59,14 @@ services:
 
   caddy:
     restart: always
-    image: orcaddy:latest
+    image: onroadcaddy:dev
     build:
-      context: .
+      context: ./caddy
       dockerfile: Dockerfile.caddy
     volumes:
-      - ./cert.crt:/etc/pki/tls/certs/cert.crt
-      - ./cert.key:/etc/pki/tls/private/cert.key
-    container_name: or_caddy
+      - ./caddy/cert.crt:/etc/pki/tls/certs/cert.crt
+      - ./caddy/cert.key:/etc/pki/tls/private/cert.key
+    container_name: or_caddy_dev
     ports:
       - "80:80"
       - "443:443"
