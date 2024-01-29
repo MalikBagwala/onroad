@@ -7,6 +7,8 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile.client
+      tags:
+        - registry.digitalocean.com/or-main/client:latest
     restart: unless-stopped
     environment:
       VITE_API_DOMAIN: ${DOMAIN_NAME}
@@ -22,10 +24,9 @@ services:
     container_name: or_django
     build:
       dockerfile: ./Dockerfile.api
+      tags:
+        - registry.digitalocean.com/or-main/api:latest
     restart: unless-stopped
-    volumes:
-      - static:/app/static
-      - media:/app/media
     env_file:
       - ./.env
     environment:
@@ -40,10 +41,10 @@ services:
     container_name: or_worker
     build:
       dockerfile: ./Dockerfile.api
+      tags:
+        - registry.digitalocean.com/or-main/api:latest
     command: python manage.py rundramatiq
     restart: unless-stopped
-    volumes:
-      - static:/app/static
     env_file:
       - ./.env
     environment:
@@ -55,14 +56,16 @@ services:
       - db_network
 
   caddy:
-    restart: always
-    image: caddy
+    restart: unless-stopped
+    image: onroadcaddy:dev
+    build:
+      context: ./caddy
+      dockerfile: Dockerfile.caddy
+      tags:
+        - registry.digitalocean.com/or-main/caddy:latest
     volumes:
-      - static:/static/djstatic
-      - media:/static/djmedia
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - ./cert.crt:/etc/pki/tls/certs/cert.crt
-      - ./cert.key:/etc/pki/tls/private/cert.key
+      - ./caddy/cert.crt:/etc/pki/tls/certs/cert.crt
+      - ./caddy/cert.key:/etc/pki/tls/private/cert.key
     container_name: or_caddy
     ports:
       - "80:80"
@@ -108,7 +111,6 @@ services:
     restart: always
     volumes:
       - rabbitmq:/var/lib/rabbitmq
-    # - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
@@ -118,11 +120,13 @@ services:
 
   hasura:
     container_name: or_hasura
-    image: hasura/graphql-engine:latest.cli-migrations-v3
-    restart: always
-    volumes:
-      - ./hasura/migrations:/hasura-migrations
-      - ./hasura/metadata:/hasura-metadata
+    image: onroadhasura:latest
+    build:
+      context: ./hasura
+      dockerfile: Dockerfile.hasura
+      tags:
+        - registry.digitalocean.com/or-main/hasura:latest
+    restart: unless-stopped
     depends_on:
       - "db"
       - "django"
@@ -149,5 +153,3 @@ volumes:
   postgres:
   pgadmin:
   rabbitmq:
-  static:
-  media:
