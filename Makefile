@@ -14,9 +14,8 @@ migrate:
 showmigrations:
 	docker-compose -f development.yml exec django python manage.py showmigrations
 
-loaddata:
-	@read -p "Enter the name of the fixture(eg. groups.json): " input_file; \
-	docker-compose -f development.yml exec django python manage.py loaddata $$input_file
-
 hasura:
-	cd hasura; and hasura console --admin-secret onroad --console-port 9800 --endpoint https://localhost/hasura/
+	hasura console --admin-secret onroad --console-port 9800 --endpoint https://localhost/hasura/ -C hasura
+
+seed:
+	hasura seeds apply --endpoint https://localhost/hasura/ --admin-secret onroad -C hasura
