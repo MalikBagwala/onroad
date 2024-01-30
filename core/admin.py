@@ -138,6 +138,7 @@ class MakeAdmin(ImportExportModelAdmin):
 class VehicleTypeAdmin(ImportExportModelAdmin):
     search_fields = ("name",)
     list_filter = ("category",)
+    list_display = ("name", "category")
     pass
 
 

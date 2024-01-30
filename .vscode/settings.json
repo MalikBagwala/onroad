@@ -11,5 +11,8 @@
     "client/**/*.less",
     "client/node_modules/@mantine/core/styles.css"
   ],
-  "typescript.tsdk": "./client/node_modules/typescript/lib"
+  "typescript.tsdk": "./client/node_modules/typescript/lib",
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": "file:///Users/maalik/Developer/stash/onroad/.github/workflows/deploy.yml"
+  }
 }
