@@ -16,8 +16,6 @@ services:
     depends_on:
       - django
       - hasura
-    networks:
-      - db_network
 
   django:
     image: onroadapi:latest
@@ -33,8 +31,6 @@ services:
       - POSTGRES_HOST=db
     depends_on:
       - db
-    networks:
-      - db_network
 
   worker:
     image: onroadapi:latest
@@ -52,8 +48,6 @@ services:
     depends_on:
       - db
       - rabbitmq
-    networks:
-      - db_network
 
   caddy:
     restart: unless-stopped
@@ -79,11 +73,9 @@ services:
     depends_on:
       - django
       - hasura
-    networks:
-      - db_network
 
   db:
-    image: postgis/postgis
+    image: postgis/postgis:16-master
     container_name: or_database
     volumes:
       - postgres:/var/lib/postgresql/data
@@ -91,11 +83,9 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-    networks:
-      - db_network
 
   rabbitmq:
-    image: rabbitmq:management
+    image: rabbitmq:3-management
     container_name: or_rabbitmq
     restart: always
     volumes:
@@ -104,8 +94,6 @@ services:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
       RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_DEFAULT_VHOST}
-    networks:
-      - db_network
 
   hasura:
     container_name: or_hasura
@@ -129,17 +117,54 @@ services:
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: "anonymous"
       HASURA_GRAPHQL_MIGRATIONS_SERVER_TIMEOUT: 120
       API_HOST: "http://django:9000"
-    networks:
-      - db_network
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-networks:
-  db_network:
-    driver: bridge
+  mail:
+    container_name: or_plausible_mail
+    image: bytemark/smtp
+    restart: always
+
+  plausible_db:
+    # supported versions are 12, 13, and 14
+    container_name: or_plausible_postgres
+    image: postgres:14-alpine
+    restart: unless-stopped
+    volumes:
+      - plausible_postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+
+  plausible_events_db:
+    container_name: or_plausible_clickhouse
+    image: clickhouse/clickhouse-server:23.3.7.5-alpine
+    restart: unless-stopped
+    volumes:
+      - plausible_clickhouse:/var/lib/clickhouse
+      - ./plausible/clickhouse-config.xml:/etc/clickhouse-server/config.d/logging.xml:ro
+      - ./plausible/clickhouse-user-config.xml:/etc/clickhouse-server/users.d/logging.xml:ro
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+
+  plausible:
+    container_name: or_plausible
+    image: plausible/analytics:v2.0
+    restart: unless-stopped
+    command: sh -c "sleep 10 && /entrypoint.sh db createdb && /entrypoint.sh db migrate && /entrypoint.sh run"
+    depends_on:
+      - plausible_db
+      - plausible_events_db
+      - mail
+    environment:
+      - BASE_URL=${PLAUSIBLE_BASE_URL}
+      - SECRET_KEY_BASE=${PLAUSIBLE_SECRET_KEY_BASE}
 
 volumes:
   postgres:
   rabbitmq:
   caddy_data:
   caddy_config:
+  plausible_postgres:
+  plausible_clickhouse:

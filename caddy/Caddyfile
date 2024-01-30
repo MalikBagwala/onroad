@@ -1,12 +1,6 @@
 {$DOMAIN_NAME} {
 	tls {$TLS} {$TLS_KEY}
 
-	# Media Files
-	# handle_path /media* {
-	# 	root * /static/djmedia
-	# 	file_server
-	# }
-
 	# Django Staticfiles
 	handle_path /static* {
 		root * /static/djstatic
@@ -33,5 +27,12 @@
 	# Main Web Application (Client)
 	handle_path /* {
 		reverse_proxy client:5000
+	}
+}
+
+analytics.{$DOMAIN_NAME} {
+	tls {$TLS} {$TLS_KEY}
+	handle_path /* {
+		reverse_proxy plausible:8000
 	}
 }
