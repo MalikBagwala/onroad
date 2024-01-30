@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - malik/main
 
 jobs:
   deploy:
@@ -18,5 +17,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           script: |
-            whoami
             ls -al
+            cd onroad
+            git pull
+            docker compose up --build -d --remove-orphans
