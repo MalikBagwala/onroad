@@ -1,6 +1,6 @@
 certs:
 	chmod +x deploy.sh
-	mkcert --cert-file ./caddy/cert.crt --key-file ./caddy/cert.key localhost
+	mkcert --cert-file ./caddy/cert.crt --key-file ./caddy/cert.key localhost analytics.localhost
 
 makemigrations:
 	docker-compose -f development.yml exec django python manage.py makemigrations
