@@ -11030,7 +11030,6 @@ __metadata:
     typescript: "npm:^5.3.3"
     urql: "npm:^4.0.6"
     vite: "npm:^5.0.10"
-    vite-plugin-compression2: "npm:^0.11.0"
     vite-tsconfig-paths: "npm:^4.2.2"
     vitest: "npm:^1.1.0"
   languageName: unknown
@@ -15095,15 +15094,6 @@ __metadata:
   bin:
     vite-node: vite-node.mjs
   checksum: 0162f6b2bea58278fd32bfdd1ed72a2583fd803adaad3456881a6b2ff3ff89404c1746c841990ae985c324b2a8aa06559d7d2be1776328b998f31e099e965e34
-  languageName: node
-  linkType: hard
-
-"vite-plugin-compression2@npm:^0.11.0":
-  version: 0.11.0
-  resolution: "vite-plugin-compression2@npm:0.11.0"
-  dependencies:
-    "@rollup/pluginutils": "npm:^5.0.2"
-  checksum: acccdbbe5acb12b41cd33fdda77e49225ef2fe122c5099ecf57a5e6fa9b6f55870f2e56fa9c99459e7e740c22ce1efbc52960000adb6eb29892e7fb26b8b86aa
   languageName: node
   linkType: hard
 
