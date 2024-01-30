@@ -7,8 +7,8 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile.client
-      tags:
-        - registry.digitalocean.com/or-main/client:latest
+      # tags:
+      #   - registry.digitalocean.com/or-main/client:latest
       args:
         - API_DOMAIN=${DOMAIN_NAME}
         - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
@@ -24,8 +24,8 @@ services:
     container_name: or_django
     build:
       dockerfile: ./Dockerfile.api
-      tags:
-        - registry.digitalocean.com/or-main/api:latest
+      # tags:
+      #   - registry.digitalocean.com/or-main/api:latest
     restart: unless-stopped
     env_file:
       - ./.env
@@ -41,8 +41,8 @@ services:
     container_name: or_worker
     build:
       dockerfile: ./Dockerfile.api
-      tags:
-        - registry.digitalocean.com/or-main/api:latest
+      # tags:
+      #   - registry.digitalocean.com/or-main/api:latest
     command: python manage.py rundramatiq
     restart: unless-stopped
     env_file:
@@ -57,12 +57,12 @@ services:
 
   caddy:
     restart: unless-stopped
-    image: onroadcaddy:dev
+    image: onroadcaddy:latest
     build:
       context: ./caddy
       dockerfile: Dockerfile.caddy
-      tags:
-        - registry.digitalocean.com/or-main/caddy:latest
+      # tags:
+      #   - registry.digitalocean.com/or-main/caddy:latest
     volumes:
       - caddy_data:/data
       - caddy_config:/config
@@ -94,23 +94,6 @@ services:
     networks:
       - db_network
 
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: or_admin
-    links:
-      - db
-    depends_on:
-      - db
-    environment:
-      PGADMIN_DEFAULT_EMAIL: m.bagwala@gmail.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-    ports:
-      - "4000:80"
-    volumes:
-      - pgadmin:/var/lib/pgadmin
-    networks:
-      - db_network
-
   rabbitmq:
     image: rabbitmq:management
     container_name: or_rabbitmq
@@ -130,8 +113,8 @@ services:
     build:
       context: ./hasura
       dockerfile: Dockerfile.hasura
-      tags:
-        - registry.digitalocean.com/or-main/hasura:latest
+      # tags:
+      #   - registry.digitalocean.com/or-main/hasura:latest
     restart: unless-stopped
     depends_on:
       - "db"
@@ -157,7 +140,6 @@ networks:
 
 volumes:
   postgres:
-  pgadmin:
   rabbitmq:
   caddy_data:
   caddy_config:
