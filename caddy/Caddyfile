@@ -18,13 +18,15 @@
 		reverse_proxy django:9000
 	}
 
-	# Hasura 
-	handle_path /hasura* {
+	# Hasura
+	redir /hasura /hasura/ 301
+	handle_path /hasura/* {
 		reverse_proxy hasura:8080
 	}
 
 	# Rabbit MQ Management
-	handle_path /rabbitmq* {
+	redir /rabbitmq /rabbitmq/ 301
+	handle_path /rabbitmq/* {
 		reverse_proxy rabbitmq:15672
 	}
 
