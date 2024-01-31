@@ -12,6 +12,8 @@ import Root from './routes/root';
 import './styles/index.css';
 import { theme } from './theme';
 import ContributionsList from './components/ContributionsList/ContributionsList';
+import TermsAndConditions from './components/TermsAndConditions/TermsAndConditions';
+import Privacy from './components/Privacy/Privacy';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -52,6 +54,14 @@ const router = createBrowserRouter([
       {
         path: '/reset/:id',
         element: <ResetPassword />,
+      },
+      {
+        path: '/terms',
+        element: <TermsAndConditions />,
+      },
+      {
+        path: '/privacy',
+        element: <Privacy />,
       },
     ],
   },

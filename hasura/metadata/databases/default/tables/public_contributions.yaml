@@ -78,6 +78,7 @@ select_permissions:
         - upvotes
         - variant_id
       filter: {}
+      allow_aggregations: true
     comment: ""
   - role: user
     permission:
@@ -99,6 +100,7 @@ select_permissions:
       filter:
         user_id:
           _eq: X-Hasura-User-Id
+      allow_aggregations: true
     comment: ""
 update_permissions:
   - role: contributor
