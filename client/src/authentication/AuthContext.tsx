@@ -63,7 +63,7 @@ export const useCurrentUser = () => {
   const navigate = useNavigate();
   const [{ fetching, data, error }] = useQuery({
     query: CURRENT_USER,
-    pause: !localStorage.getItem('token') || window.location.pathname.startsWith('/reset'),
+    pause: window.location.pathname.startsWith('/reset'),
   });
   const user = data?.users?.[0];
   const hasContributed = user?.has_contributed;
