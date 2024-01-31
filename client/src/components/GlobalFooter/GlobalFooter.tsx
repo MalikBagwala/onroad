@@ -8,23 +8,17 @@ import {
 } from '@tabler/icons-react';
 import classes from './GlobalFooter.module.css';
 import OnRoadLogo from '../OnroadLogo';
+import { Link } from 'react-router-dom';
 
 const links = [
-  { link: '#', label: 'Contact' },
-  { link: '#', label: 'Privacy' },
-  { link: '#', label: 'Terms' },
+  { link: '#  ', label: 'Contact' },
+  { link: '/privacy', label: 'Privacy' },
+  { link: '/terms', label: 'Terms' },
 ];
 
 export function GlobalFooter() {
   const items = links.map((link) => (
-    <Anchor
-      c="dimmed"
-      key={link.label}
-      href={link.link}
-      lh={1}
-      onClick={(event) => event.preventDefault()}
-      size="sm"
-    >
+    <Anchor component={Link} c="dimmed" key={link.label} to={link.link} lh={1} size="sm">
       {link.label}
     </Anchor>
   ));
