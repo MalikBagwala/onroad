@@ -30,7 +30,7 @@ const AuthProvider = ({ children }: AuthProviderType) => {
         },
       });
     } catch {
-      console.log('Error deleting refresh tokens');
+      console.warn('Error deleting refresh tokens');
     }
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');

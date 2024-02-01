@@ -14,7 +14,6 @@ type UserMenuType = {
   user?: CurrentUserQuery['users'][0];
 };
 export const UserMenu = ({ user }: UserMenuType) => {
-  const theme = useMantineTheme();
   const { logout } = useAuth();
   let identity = '';
   if (user?.first_name) {
@@ -25,7 +24,6 @@ export const UserMenu = ({ user }: UserMenuType) => {
     identity += user.last_name;
   }
   if (!identity) return user?.email;
-  console.log(user);
   return (
     <Menu
       width={260}

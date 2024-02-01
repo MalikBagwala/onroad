@@ -31,14 +31,15 @@ select_permissions:
   - role: contributor
     permission:
       columns:
+        - description
         - fuel_type
+        - id
+        - launch_date
         - manufacturer_link
         - name
-        - transmission
-        - launch_date
+        - short_description
         - specifications
-        - description
-        - id
+        - transmission
         - vehicle_id
       filter: {}
       allow_aggregations: true
@@ -52,6 +53,7 @@ select_permissions:
         - launch_date
         - manufacturer_link
         - name
+        - short_description
         - specifications
         - transmission
         - vehicle_id

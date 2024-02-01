@@ -90,6 +90,7 @@ export const CONTRIBUTIONS_BRIEF = graphql(/* GraphQL */ `
     }
   }
 `);
+
 export const ADD_UPDATE_CONTRIBUTION = graphql(/* GraphQL */ `
   mutation add_update_contribution(
     $object: contributions_insert_input!
