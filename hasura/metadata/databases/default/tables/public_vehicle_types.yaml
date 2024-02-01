@@ -1,6 +1,14 @@
 table:
   name: vehicle_types
   schema: public
+array_relationships:
+  - name: vehicles
+    using:
+      foreign_key_constraint_on:
+        column: vehicle_type_id
+        table:
+          name: vehicles
+          schema: public
 select_permissions:
   - role: contributor
     permission:
