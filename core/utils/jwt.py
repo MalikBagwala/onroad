@@ -14,7 +14,7 @@ def decode(token):
 def get_access_token(user):
     roles = []
     if user.is_superuser:
-        roles = ["admin", "user"]
+        roles = ["admin", "contributor", "user"]
     elif user.has_contributed:
         roles = ["contributor", "user"]
     else:
