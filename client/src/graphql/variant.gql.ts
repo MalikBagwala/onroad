@@ -66,9 +66,35 @@ export const VARIANTS_LIST = graphql(/* GraphQL */ `
       id
       name
       manufacturer_link
+      colors {
+        id
+        attachments {
+          id
+          attachment {
+            id
+            url
+          }
+        }
+      }
       vehicle {
         id
-        name
+        type {
+          id
+          name
+        }
+      }
+      short_description
+      contributions_aggregate {
+        aggregate {
+          avg {
+            total
+          }
+        }
+      }
+    }
+    variants_aggregate(distinct_on: $distinct_on, order_by: $order_by, where: $where) {
+      aggregate {
+        count
       }
     }
   }

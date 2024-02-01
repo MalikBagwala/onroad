@@ -16,7 +16,18 @@ const VehicleTypeFilter = ({}: VehicleTypeFilterType) => {
       };
     }, {});
   }, [queryTypes, queryTypes.length]);
-  const [{ data }] = useQuery({ query: VEHICLE_TYPES });
+  const [{ data }] = useQuery({
+    query: VEHICLE_TYPES,
+    variables: {
+      where: {
+        vehicles: {
+          variants: {
+            contributions: {},
+          },
+        },
+      },
+    },
+  });
 
   const handleChange = ({ target: { name, checked } }: ChangeEvent<HTMLInputElement>) => {
     if (checked) {

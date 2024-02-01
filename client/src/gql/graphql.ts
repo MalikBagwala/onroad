@@ -8757,6 +8757,7 @@ export type Variants = {
   launch_date: Scalars['date']['output'];
   manufacturer_link?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
+  short_description?: Maybe<Scalars['String']['output']>;
   specifications?: Maybe<Scalars['jsonb']['output']>;
   transmission: Scalars['String']['output'];
   /** An object relationship */
@@ -9207,6 +9208,7 @@ export type Variants_Bool_Exp = {
   launch_date?: InputMaybe<Date_Comparison_Exp>;
   manufacturer_link?: InputMaybe<String_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
+  short_description?: InputMaybe<String_Comparison_Exp>;
   specifications?: InputMaybe<Jsonb_Comparison_Exp>;
   transmission?: InputMaybe<String_Comparison_Exp>;
   vehicle?: InputMaybe<Vehicles_Bool_Exp>;
@@ -9245,6 +9247,7 @@ export type Variants_Insert_Input = {
   launch_date?: InputMaybe<Scalars['date']['input']>;
   manufacturer_link?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  short_description?: InputMaybe<Scalars['String']['input']>;
   specifications?: InputMaybe<Scalars['jsonb']['input']>;
   transmission?: InputMaybe<Scalars['String']['input']>;
   vehicle?: InputMaybe<Vehicles_Obj_Rel_Insert_Input>;
@@ -9260,6 +9263,7 @@ export type Variants_Max_Fields = {
   launch_date?: Maybe<Scalars['date']['output']>;
   manufacturer_link?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  short_description?: Maybe<Scalars['String']['output']>;
   transmission?: Maybe<Scalars['String']['output']>;
   vehicle_id?: Maybe<Scalars['uuid']['output']>;
 };
@@ -9272,6 +9276,7 @@ export type Variants_Max_Order_By = {
   launch_date?: InputMaybe<Order_By>;
   manufacturer_link?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
+  short_description?: InputMaybe<Order_By>;
   transmission?: InputMaybe<Order_By>;
   vehicle_id?: InputMaybe<Order_By>;
 };
@@ -9285,6 +9290,7 @@ export type Variants_Min_Fields = {
   launch_date?: Maybe<Scalars['date']['output']>;
   manufacturer_link?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  short_description?: Maybe<Scalars['String']['output']>;
   transmission?: Maybe<Scalars['String']['output']>;
   vehicle_id?: Maybe<Scalars['uuid']['output']>;
 };
@@ -9297,6 +9303,7 @@ export type Variants_Min_Order_By = {
   launch_date?: InputMaybe<Order_By>;
   manufacturer_link?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
+  short_description?: InputMaybe<Order_By>;
   transmission?: InputMaybe<Order_By>;
   vehicle_id?: InputMaybe<Order_By>;
 };
@@ -9335,6 +9342,7 @@ export type Variants_Order_By = {
   launch_date?: InputMaybe<Order_By>;
   manufacturer_link?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
+  short_description?: InputMaybe<Order_By>;
   specifications?: InputMaybe<Order_By>;
   transmission?: InputMaybe<Order_By>;
   vehicle?: InputMaybe<Vehicles_Order_By>;
@@ -9366,6 +9374,8 @@ export enum Variants_Select_Column {
   /** column name */
   Name = 'name',
   /** column name */
+  ShortDescription = 'short_description',
+  /** column name */
   Specifications = 'specifications',
   /** column name */
   Transmission = 'transmission',
@@ -9381,6 +9391,7 @@ export type Variants_Set_Input = {
   launch_date?: InputMaybe<Scalars['date']['input']>;
   manufacturer_link?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  short_description?: InputMaybe<Scalars['String']['input']>;
   specifications?: InputMaybe<Scalars['jsonb']['input']>;
   transmission?: InputMaybe<Scalars['String']['input']>;
   vehicle_id?: InputMaybe<Scalars['uuid']['input']>;
@@ -9402,6 +9413,7 @@ export type Variants_Stream_Cursor_Value_Input = {
   launch_date?: InputMaybe<Scalars['date']['input']>;
   manufacturer_link?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  short_description?: InputMaybe<Scalars['String']['input']>;
   specifications?: InputMaybe<Scalars['jsonb']['input']>;
   transmission?: InputMaybe<Scalars['String']['input']>;
   vehicle_id?: InputMaybe<Scalars['uuid']['input']>;
@@ -9421,6 +9433,8 @@ export enum Variants_Update_Column {
   ManufacturerLink = 'manufacturer_link',
   /** column name */
   Name = 'name',
+  /** column name */
+  ShortDescription = 'short_description',
   /** column name */
   Specifications = 'specifications',
   /** column name */
@@ -9452,6 +9466,30 @@ export type Vehicle_Types = {
   category: Scalars['String']['output'];
   id: Scalars['uuid']['output'];
   name: Scalars['String']['output'];
+  /** An array relationship */
+  vehicles: Array<Vehicles>;
+  /** An aggregate relationship */
+  vehicles_aggregate: Vehicles_Aggregate;
+};
+
+
+/** columns and relationships of "vehicle_types" */
+export type Vehicle_TypesVehiclesArgs = {
+  distinct_on?: InputMaybe<Array<Vehicles_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Vehicles_Order_By>>;
+  where?: InputMaybe<Vehicles_Bool_Exp>;
+};
+
+
+/** columns and relationships of "vehicle_types" */
+export type Vehicle_TypesVehicles_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Vehicles_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Vehicles_Order_By>>;
+  where?: InputMaybe<Vehicles_Bool_Exp>;
 };
 
 /** aggregated selection of "vehicle_types" */
@@ -9484,6 +9522,8 @@ export type Vehicle_Types_Bool_Exp = {
   category?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
+  vehicles?: InputMaybe<Vehicles_Bool_Exp>;
+  vehicles_aggregate?: InputMaybe<Vehicles_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "vehicle_types" */
@@ -9497,6 +9537,7 @@ export type Vehicle_Types_Insert_Input = {
   category?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  vehicles?: InputMaybe<Vehicles_Arr_Rel_Insert_Input>;
 };
 
 /** aggregate max on columns */
@@ -9543,6 +9584,7 @@ export type Vehicle_Types_Order_By = {
   category?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
+  vehicles_aggregate?: InputMaybe<Vehicles_Aggregate_Order_By>;
 };
 
 /** primary key columns input for table: vehicle_types */
@@ -10282,7 +10324,7 @@ export type VariantsListQueryVariables = Exact<{
 }>;
 
 
-export type VariantsListQuery = { __typename?: 'query_root', variants: Array<{ __typename?: 'variants', id: any, name: string, manufacturer_link?: string | null, vehicle: { __typename?: 'vehicles', id: any, name: string } }> };
+export type VariantsListQuery = { __typename?: 'query_root', variants: Array<{ __typename?: 'variants', id: any, name: string, manufacturer_link?: string | null, short_description?: string | null, colors: Array<{ __typename?: 'variant_colors', id: any, attachments: Array<{ __typename?: 'variant_colors_attachments', id: any, attachment: { __typename?: 'attachments', id: any, url: string } }> }>, vehicle: { __typename?: 'vehicles', id: any, type: { __typename?: 'vehicle_types', id: any, name: string } }, contributions_aggregate: { __typename?: 'contributions_aggregate', aggregate?: { __typename?: 'contributions_aggregate_fields', avg?: { __typename?: 'contributions_avg_fields', total?: number | null } | null } | null } }>, variants_aggregate: { __typename?: 'variants_aggregate', aggregate?: { __typename?: 'variants_aggregate_fields', count: number } | null } };
 
 
 export const CurrentUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"currentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"first_name"}},{"kind":"Field","name":{"kind":"Name","value":"last_name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"}},{"kind":"Field","name":{"kind":"Name","value":"has_contributed"}},{"kind":"Field","name":{"kind":"Name","value":"email_verified"}},{"kind":"Field","name":{"kind":"Name","value":"google_id"}},{"kind":"Field","name":{"kind":"Name","value":"refresh_tokens"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"client"}},{"kind":"Field","name":{"kind":"Name","value":"expires_at"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}}]}},{"kind":"Field","name":{"kind":"Name","value":"city"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"state"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CurrentUserQuery, CurrentUserQueryVariables>;
@@ -10309,4 +10351,4 @@ export const Price_FilterDocument = {"kind":"Document","definitions":[{"kind":"O
 export const Update_Users_By_PkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"update_users_by_pk"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"_set"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"users_set_input"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"pk_columns"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"users_pk_columns_input"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_users_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"Variable","name":{"kind":"Name","value":"_set"}}},{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"Variable","name":{"kind":"Name","value":"pk_columns"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"email_verified"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"first_name"}},{"kind":"Field","name":{"kind":"Name","value":"last_name"}},{"kind":"Field","name":{"kind":"Name","value":"avatar"}},{"kind":"Field","name":{"kind":"Name","value":"city"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"state"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]} as unknown as DocumentNode<Update_Users_By_PkMutation, Update_Users_By_PkMutationVariables>;
 export const VariantsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"variants"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"distinct_on"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"variants_select_column"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"order_by"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"variants_order_by"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"variants_bool_exp"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"variants"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"distinct_on"},"value":{"kind":"Variable","name":{"kind":"Name","value":"distinct_on"}}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"Variable","name":{"kind":"Name","value":"order_by"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"manufacturer_link"}},{"kind":"Field","name":{"kind":"Name","value":"vehicle"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]} as unknown as DocumentNode<VariantsQuery, VariantsQueryVariables>;
 export const Variant_ColorsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"variant_colors"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"distinct_on"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"variant_colors_select_column"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"order_by"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"variant_colors_order_by"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"variant_colors_bool_exp"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"variant_colors"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"distinct_on"},"value":{"kind":"Variable","name":{"kind":"Name","value":"distinct_on"}}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"Variable","name":{"kind":"Name","value":"order_by"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"hex_code"}}]}}]}}]} as unknown as DocumentNode<Variant_ColorsQuery, Variant_ColorsQueryVariables>;
-export const VariantsListDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"variantsList"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"distinct_on"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"variants_select_column"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"order_by"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"variants_order_by"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"variants_bool_exp"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"variants"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"distinct_on"},"value":{"kind":"Variable","name":{"kind":"Name","value":"distinct_on"}}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"Variable","name":{"kind":"Name","value":"order_by"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"manufacturer_link"}},{"kind":"Field","name":{"kind":"Name","value":"vehicle"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]} as unknown as DocumentNode<VariantsListQuery, VariantsListQueryVariables>;
+export const VariantsListDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"variantsList"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"distinct_on"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"variants_select_column"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"limit"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"order_by"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"variants_order_by"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"where"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"variants_bool_exp"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"variants"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"distinct_on"},"value":{"kind":"Variable","name":{"kind":"Name","value":"distinct_on"}}},{"kind":"Argument","name":{"kind":"Name","value":"limit"},"value":{"kind":"Variable","name":{"kind":"Name","value":"limit"}}},{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"Variable","name":{"kind":"Name","value":"order_by"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"manufacturer_link"}},{"kind":"Field","name":{"kind":"Name","value":"colors"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"attachments"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"attachment"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"url"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"vehicle"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"type"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"short_description"}},{"kind":"Field","name":{"kind":"Name","value":"contributions_aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"avg"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"total"}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"variants_aggregate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"distinct_on"},"value":{"kind":"Variable","name":{"kind":"Name","value":"distinct_on"}}},{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"Variable","name":{"kind":"Name","value":"order_by"}}},{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"Variable","name":{"kind":"Name","value":"where"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}}]}}]}}]}}]} as unknown as DocumentNode<VariantsListQuery, VariantsListQueryVariables>;

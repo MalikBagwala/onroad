@@ -20,12 +20,7 @@ from .enums import (
     FluelTypes,
     ContributionStatus,
 )
-from io import BytesIO
-import sys
-from PIL import Image
-from django.core.files.uploadedfile import InMemoryUploadedFile
 from .utils import jwt
-import mimetypes
 from uuid import uuid4
 from django.conf import settings
 
@@ -193,6 +188,7 @@ class Variant(UUIDPrimaryKey):
         db_default=TransmissionTypes.MANUAL.value,
     )  # type: ignore
     description = models.TextField()
+    short_description = models.TextField(null=True, blank=True)
     specifications = models.JSONField(
         null=True, blank=True, default=dict, db_default=str({})
     )  # type: ignore

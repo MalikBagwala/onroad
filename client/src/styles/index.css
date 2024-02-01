@@ -1,6 +1,7 @@
 @import '@mantine/core/styles.css';
 @import '@mantine/notifications/styles.css';
 @import '@mantine/dates/styles.css';
+@import '@mantine/carousel/styles.css';
 
 strong {
   font-weight: 600;
@@ -19,4 +20,3 @@ a.link:hover {
   border-bottom: 2.5px solid var(--mantine-color-violet-2);
   color: #4e44d6;
 }
-  

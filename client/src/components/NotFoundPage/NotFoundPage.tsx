@@ -10,7 +10,7 @@ function NotFoundPage() {
         <Illustration className={classes.image} />
         <div className={classes.content}>
           <Title className={classes.title}>Nothing to see here</Title>
-          <Text c="dimmed" size="lg" ta="center" className={classes.description}>
+          <Text c="dimmed" size="lg" className={classes.description}>
             Page you are trying to open does not exist. You may have mistyped the address, or the
             page has been moved to another URL. If you think this is an error contact support.
           </Text>

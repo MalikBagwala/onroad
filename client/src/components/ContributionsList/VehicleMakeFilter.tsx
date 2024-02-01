@@ -1,7 +1,6 @@
 import { MAKES } from '@/graphql/filters.gql';
-import debounce from '@/utils/debounce';
 import { Box, Checkbox } from '@mantine/core';
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from 'urql';
 
@@ -17,7 +16,18 @@ const VehicleMakeFilter = ({}: VehicleMakeFilterType) => {
       };
     }, {});
   }, [queryTypes, queryTypes.length]);
-  const [{ data }] = useQuery({ query: MAKES });
+  const [{ data }] = useQuery({
+    query: MAKES,
+    variables: {
+      where: {
+        vehicles: {
+          variants: {
+            contributions: {},
+          },
+        },
+      },
+    },
+  });
   const handleChange = ({ target: { name, checked } }: ChangeEvent<HTMLInputElement>) => {
     if (checked) {
       params.append('make', name);

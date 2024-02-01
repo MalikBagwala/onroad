@@ -16,6 +16,7 @@ const ContributionFilters = ({}: ContributionFiltersType) => {
         border: '1px solid var(--mantine-color-gray-3)',
         borderRadius: 'var(--mantine-radius-default)',
         overflow: 'hidden',
+        height: 'fit-content',
       }}
     >
       <Flex justify={'space-between'} py="xs" px={'sm'}>

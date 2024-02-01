@@ -11,7 +11,7 @@ import UserProfile from './components/UserProfile/UserProfile';
 import Root from './routes/root';
 import './styles/index.css';
 import { theme } from './theme';
-import ContributionsList from './components/ContributionsList/ContributionsList';
+import VariantsList from './components/ContributionsList/ContributionsList';
 import TermsAndConditions from './components/TermsAndConditions/TermsAndConditions';
 import Privacy from './components/Privacy/Privacy';
 const router = createBrowserRouter([
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <HomePageHero />,
-      },
+    },
       {
         path: '/profile',
         element: <UserProfile />,
@@ -48,8 +48,8 @@ const router = createBrowserRouter([
         element: <AddUpdateContribution />,
       },
       {
-        path: '/contributions',
-        element: <ContributionsList />,
+        path: '/variants',
+        element: <VariantsList />,
       },
       {
         path: '/reset/:id',

@@ -55,7 +55,7 @@ export function HomePageHero() {
             </Stack>
           </Stack>
           <Group mt={30}>
-            <Button component={Link} to={'/contributions'} radius="xl" size="md">
+            <Button component={Link} to={'/variants'} radius="xl" size="md">
               View Contributions
             </Button>
             {data?.id ? null : (
