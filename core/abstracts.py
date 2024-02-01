@@ -31,3 +31,14 @@ class UUIDPrimaryKey(models.Model):
 
     class Meta:
         abstract = True
+
+
+class CodeField(models.Model):
+    """
+    User friendly unique identifier
+    """
+
+    short = models.CharField(unique=True, max_length=20)
+
+    class Meta:
+        abstract = True

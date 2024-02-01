@@ -34,7 +34,7 @@ from django.conf import settings
 
 class Country(UUIDPrimaryKey):
     name = models.CharField(max_length=255)
-    code = models.CharField(max_length=255, null=True, blank=True)
+    code = models.CharField(max_length=15, null=True, blank=True)
 
     class Meta:
         db_table = "countries"
@@ -47,7 +47,7 @@ class Country(UUIDPrimaryKey):
 class State(UUIDPrimaryKey):
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-    code = models.CharField(max_length=255, null=True, blank=True)
+    code = models.CharField(max_length=15, null=True, blank=True)
 
     class Meta:
         db_table = "states"
@@ -59,7 +59,7 @@ class State(UUIDPrimaryKey):
 class City(UUIDPrimaryKey):
     state = models.ForeignKey(State, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-    code = models.CharField(max_length=255, null=True, blank=True)
+    code = models.CharField(max_length=15, null=True, blank=True)
 
     class Meta:
         db_table = "cities"

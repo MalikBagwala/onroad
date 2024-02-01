@@ -47,3 +47,29 @@ export const VARIANT_COLORS = graphql(/* GraphQL */ `
     }
   }
 `);
+
+export const VARIANTS_LIST = graphql(/* GraphQL */ `
+  query variantsList(
+    $distinct_on: [variants_select_column!]
+    $limit: Int
+    $offset: Int
+    $order_by: [variants_order_by!]
+    $where: variants_bool_exp
+  ) {
+    variants(
+      distinct_on: $distinct_on
+      limit: $limit
+      offset: $offset
+      order_by: $order_by
+      where: $where
+    ) {
+      id
+      name
+      manufacturer_link
+      vehicle {
+        id
+        name
+      }
+    }
+  }
+`);
