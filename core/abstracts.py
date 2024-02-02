@@ -38,7 +38,7 @@ class CodeField(models.Model):
     User friendly unique identifier
     """
 
-    short = models.CharField(unique=True, max_length=20)
+    short = models.CharField(max_length=20)
 
     class Meta:
         abstract = True
