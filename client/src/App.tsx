@@ -11,9 +11,10 @@ import UserProfile from './components/UserProfile/UserProfile';
 import Root from './routes/root';
 import './styles/index.css';
 import { theme } from './theme';
-import VariantsList from './components/ContributionsList/ContributionsList';
+import VariantsList from './components/VariantsList/VariantsList';
 import TermsAndConditions from './components/TermsAndConditions/TermsAndConditions';
 import Privacy from './components/Privacy/Privacy';
+import VariantDetail from './components/VariantDetail/VariantDetail';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -23,7 +24,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <HomePageHero />,
-    },
+      },
       {
         path: '/profile',
         element: <UserProfile />,
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: '/variants',
         element: <VariantsList />,
+      },
+      {
+        path: '/variants/:id',
+        element: <VariantDetail />,
       },
       {
         path: '/reset/:id',

@@ -1,5 +1,5 @@
 import { VARIANTS_LIST } from '@/graphql/variant.gql';
-import { Flex, Grid, Pagination, Skeleton } from '@mantine/core';
+import { Flex, Grid, Pagination, SimpleGrid, Skeleton } from '@mantine/core';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from 'urql';
 import ContributionCard from '../ContributionCard/ContributionCard';
@@ -44,40 +44,28 @@ const VariantsList = ({}: VariantsListType) => {
     <Flex columnGap={'md'}>
       <ContributionFilters />
       <Flex gap={'md'} direction="column">
-        <Grid>
+        <SimpleGrid cols={{ md: 2, sm: 1 }}>
           {fetching ? (
             <>
-              <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
-                <Skeleton visible>
-                  <ContributionCard />
-                </Skeleton>
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
-                <Skeleton visible>
-                  <ContributionCard />
-                </Skeleton>
-              </Grid.Col>{' '}
-              <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
-                <Skeleton visible>
-                  <ContributionCard />
-                </Skeleton>
-              </Grid.Col>{' '}
-              <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
-                <Skeleton visible>
-                  <ContributionCard />
-                </Skeleton>
-              </Grid.Col>
+              <Skeleton visible>
+                <ContributionCard />
+              </Skeleton>
+              <Skeleton visible>
+                <ContributionCard />
+              </Skeleton>
+              <Skeleton visible>
+                <ContributionCard />
+              </Skeleton>
+              <Skeleton visible>
+                <ContributionCard />
+              </Skeleton>
             </>
           ) : data?.variants?.length ? (
             data?.variants?.map((variant) => {
-              return (
-                <Grid.Col key={variant.id} span={{ base: 12, md: 6, lg: 6 }}>
-                  <ContributionCard variant={variant} />
-                </Grid.Col>
-              );
+              return <ContributionCard key={variant.id} variant={variant} />;
             })
           ) : null}
-        </Grid>
+        </SimpleGrid>
         <Pagination
           value={currentPage}
           onChange={(value) => {
