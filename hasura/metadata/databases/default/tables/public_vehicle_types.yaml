@@ -14,15 +14,17 @@ select_permissions:
     permission:
       columns:
         - category
-        - name
+        - code
         - id
+        - name
       filter: {}
     comment: ""
   - role: user
     permission:
       columns:
         - category
-        - name
+        - code
         - id
+        - name
       filter: {}
     comment: ""

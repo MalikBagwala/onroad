@@ -13,16 +13,18 @@ select_permissions:
   - role: contributor
     permission:
       columns:
-        - name
+        - code
         - estb_year
         - id
+        - name
       filter: {}
     comment: ""
   - role: user
     permission:
       columns:
-        - name
+        - code
         - estb_year
         - id
+        - name
       filter: {}
     comment: ""

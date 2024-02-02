@@ -39,11 +39,12 @@ const VehicleMakeFilter = ({}: VehicleMakeFilterType) => {
   return (
     <>
       {data?.makes?.map((make) => {
+        const uniqueKey = make.code as string;
         return (
-          <Box key={make.id} py={'6px'}>
+          <Box key={uniqueKey} py={'6px'}>
             <Checkbox
-              checked={!!queryMap[make.id]}
-              name={make.id}
+              checked={!!queryMap[uniqueKey]}
+              name={uniqueKey}
               onChange={handleChange}
               label={make.name}
             />
