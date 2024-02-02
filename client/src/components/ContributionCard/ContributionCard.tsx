@@ -89,7 +89,7 @@ function ContributionCard({ variant }: ContributionCardType) {
           </div>
 
           <Group>
-            <Button component={Link} to={`/variants/${variant?.id}`} radius="md">
+            <Button component={Link} to={`/variants/${variant?.slug}`} radius="md">
               More Details
             </Button>
             {variant?.manufacturer_link && (

@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery } from 'urql';
 type VariantSearchType = {};
 const VariantSearch = ({ ...props }: VariantSearchType) => {
-  const theme = useMantineTheme();
   const navigate = useNavigate();
   const [dropdownOpened, { open, close }] = useDisclosure();
   const [searchValue, setSearchValue] = useState('');

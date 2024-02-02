@@ -17,6 +17,7 @@ export const VARIANTS = graphql(/* GraphQL */ `
     ) {
       id
       name
+      slug
       manufacturer_link
       vehicle {
         id
@@ -65,6 +66,7 @@ export const VARIANTS_LIST = graphql(/* GraphQL */ `
     ) {
       id
       name
+      slug
       manufacturer_link
       colors {
         id

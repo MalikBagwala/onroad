@@ -41,11 +41,12 @@ const VehicleTypeFilter = ({}: VehicleTypeFilterType) => {
   return (
     <>
       {data?.vehicle_types?.map((type) => {
+        const uniqueKey = type.code as string;
         return (
-          <Box key={type.id} py={'6px'}>
+          <Box key={uniqueKey} py={'6px'}>
             <Checkbox
-              checked={!!queryMap[type.id]}
-              name={type.id}
+              checked={!!queryMap[uniqueKey]}
+              name={uniqueKey}
               onChange={handleChange}
               label={type.name}
             />

@@ -24,14 +24,18 @@ const VariantsList = ({}: VariantsListType) => {
           },
         },
         vehicle: {
-          make_id: makes?.length
+          make: makes?.length
             ? {
-                _in: makes,
+                code: {
+                  _in: makes,
+                },
               }
             : undefined,
-          vehicle_type_id: types?.length
+          type: types?.length
             ? {
-                _in: types,
+                code: {
+                  _in: types,
+                },
               }
             : undefined,
         },

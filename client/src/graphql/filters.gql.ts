@@ -17,6 +17,7 @@ export const VEHICLE_TYPES = graphql(/* GraphQL */ `
     ) {
       id
       name
+      code
     }
   }
 `);
@@ -38,6 +39,7 @@ export const MAKES = graphql(/* GraphQL */ `
     ) {
       id
       name
+      code
     }
   }
 `);
