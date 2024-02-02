@@ -142,7 +142,7 @@ class Attachment(UUIDPrimaryKey, AbstractTimestamp):
 class Make(UUIDPrimaryKey):
     name = models.CharField(max_length=255)
     estb_year = models.SmallIntegerField(null=True, blank=True)
-    code = models.CharField(max_length=3, null=True, blank=True)
+    code = models.CharField(max_length=3, unique=True)
 
     class Meta:
         db_table = "makes"
@@ -157,7 +157,7 @@ class VehicleType(UUIDPrimaryKey):
         max_length=3,
         choices=VehicleCategories.choices,
     )
-    code = models.CharField(max_length=3, null=True, blank=True)
+    code = models.CharField(max_length=3, unique=True)
 
     class Meta:
         db_table = "vehicle_types"
