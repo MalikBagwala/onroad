@@ -1,6 +1,6 @@
 import { Flex, Image, Text, TextProps } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import logo from '../favicon.png';
+import logo from '../favicon.webp';
 type OnRoadLogoType = {
   height?: number;
   width?: number;
