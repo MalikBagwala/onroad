@@ -38,6 +38,7 @@ select_permissions:
         - manufacturer_link
         - name
         - short_description
+        - slug
         - specifications
         - transmission
         - vehicle_id
@@ -54,6 +55,7 @@ select_permissions:
         - manufacturer_link
         - name
         - short_description
+        - slug
         - specifications
         - transmission
         - vehicle_id
