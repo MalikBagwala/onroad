@@ -12,6 +12,11 @@
 		reverse_proxy django:9000
 	}
 
+	# Bun Uploader
+	handle /uploader* {
+		reverse_proxy uploader:3000
+	}
+
 	# Hasura
 	redir /hasura /hasura/ 301
 	handle_path /hasura/* {

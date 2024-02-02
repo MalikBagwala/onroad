@@ -51,6 +51,14 @@ services:
       - db
       - rabbitmq
 
+  uploader:
+    image: onroaduploader:dev
+    container_name: or_uploader_dev
+    build:
+      context: ./upload
+      dockerfile: Dockerfile.uploader.dev
+    restart: unless-stopped
+
   caddy:
     restart: always
     image: onroadcaddy:dev
