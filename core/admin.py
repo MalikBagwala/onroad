@@ -130,7 +130,7 @@ class CityAdmin(ImportExportModelAdmin):
 @admin.register(models.Make)
 class MakeAdmin(ImportExportModelAdmin):
     search_fields = ("name",)
-    list_display = ("name", "estb_year")
+    list_display = ("name", "code", "estb_year")
     pass
 
 
@@ -138,7 +138,7 @@ class MakeAdmin(ImportExportModelAdmin):
 class VehicleTypeAdmin(ImportExportModelAdmin):
     search_fields = ("name",)
     list_filter = ("category",)
-    list_display = ("name", "category")
+    list_display = ("name", "category", "code")
     pass
 
 
