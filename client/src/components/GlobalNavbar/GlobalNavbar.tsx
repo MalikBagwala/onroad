@@ -8,6 +8,7 @@ import { UserOnboard } from '../UserOnboard/UserOnboard';
 import styles from './GlobalNavbar.module.css';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import VariantSearch from '../VariantSearch/VariantSearch';
 type GlobalNavbarType = {
   user?: CurrentUserQuery['users'][0];
 };
@@ -40,7 +41,10 @@ export function GlobalNavbar({ user }: GlobalNavbarType) {
           />
           <Group visibleFrom="sm">
             {user ? (
-              <UserMenu user={user} />
+              <Group>
+                <VariantSearch />
+                <UserMenu user={user} />
+              </Group>
             ) : (
               <Button leftSection={<IconLogin size={14} />} onClick={openModal} variant="default">
                 Sign In
