@@ -5,6 +5,8 @@ if [ -f .env ]; then
   export $(grep -E '^POSTGRES_' .env | xargs)
 fi
 
+ENV=${1:-dev}
+
 # Set the container name
 CONTAINER_NAME="or_database"
 
@@ -27,7 +29,7 @@ ls -t ./*.sql.xz | tail -n +4 | xargs rm -f
 git add .
 
 # Create a git commit with a message containing the backup file name
-git commit -m "chore: backed up db_backup_${TIMESTAMP}.sql.xz"
+git commit -m "chore: backed up db_backup_${ENV}_${TIMESTAMP}.sql.xz"
 
 # Push the backup to the remote repository
 git push
