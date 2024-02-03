@@ -38,7 +38,7 @@ git commit -m "chore: backed up db_backup_${ENV}_${TIMESTAMP}.sql.xz"
 git push
 
 cd ..
-git add .
+git add backups
 
 # Commit and push the removal of older files
 git commit -m "Sync submodule 'backups' with latest changes" && git push
