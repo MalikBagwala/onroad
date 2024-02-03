@@ -6,3 +6,4 @@ development.yml
 hasura
 .gitlab-ci.yml
 **/*/node_modules
+backups/
