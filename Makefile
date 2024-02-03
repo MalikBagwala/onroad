@@ -19,3 +19,9 @@ hasura:
 
 seed:
 	hasura seeds apply --endpoint https://localhost/hasura/ --admin-secret onroad -C hasura
+
+caddy-reload-dev:
+	docker-compose -f development.yml exec caddy caddy reload --config /etc/caddy/Caddyfile
+
+caddy-reload-prod:
+	docker-compose exec caddy caddy reload --config /etc/caddy/Caddyfile

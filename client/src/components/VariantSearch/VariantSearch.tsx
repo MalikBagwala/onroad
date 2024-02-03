@@ -31,10 +31,10 @@ const VariantSearch = ({ ...props }: VariantSearchType) => {
     if (!listGroup) {
       listData.push({
         group: variant.vehicle.name,
-        items: [{ label: variant.name, value: variant.id }],
+        items: [{ label: variant.name, value: variant.slug }],
       });
     } else {
-      listGroup?.items.push({ label: variant.name, value: variant.id });
+      listGroup?.items.push({ label: variant.name, value: variant.slug });
     }
   }
   return (
