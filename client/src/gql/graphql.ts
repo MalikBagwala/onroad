@@ -2921,7 +2921,7 @@ export type Jsonb_Comparison_Exp = {
 /** columns and relationships of "makes" */
 export type Makes = {
   __typename?: 'makes';
-  code?: Maybe<Scalars['String']['output']>;
+  code: Scalars['String']['output'];
   estb_year?: Maybe<Scalars['smallint']['output']>;
   id: Scalars['uuid']['output'];
   name: Scalars['String']['output'];
@@ -3002,6 +3002,8 @@ export type Makes_Bool_Exp = {
 
 /** unique or primary key constraints on table "makes" */
 export enum Makes_Constraint {
+  /** unique or primary key constraint on columns "code" */
+  MakesCode_67a30dd4Uniq = 'makes_code_67a30dd4_uniq',
   /** unique or primary key constraint on columns "id" */
   MakesPkey = 'makes_pkey'
 }
@@ -9492,7 +9494,7 @@ export type Variants_Updates = {
 export type Vehicle_Types = {
   __typename?: 'vehicle_types';
   category: Scalars['String']['output'];
-  code?: Maybe<Scalars['String']['output']>;
+  code: Scalars['String']['output'];
   id: Scalars['uuid']['output'];
   name: Scalars['String']['output'];
   /** An array relationship */
@@ -9558,6 +9560,8 @@ export type Vehicle_Types_Bool_Exp = {
 
 /** unique or primary key constraints on table "vehicle_types" */
 export enum Vehicle_Types_Constraint {
+  /** unique or primary key constraint on columns "code" */
+  VehicleTypesCodeE8abf8b3Uniq = 'vehicle_types_code_e8abf8b3_uniq',
   /** unique or primary key constraint on columns "id" */
   VehicleTypesPkey = 'vehicle_types_pkey'
 }
@@ -10307,7 +10311,7 @@ export type Vehicle_TypesQueryVariables = Exact<{
 }>;
 
 
-export type Vehicle_TypesQuery = { __typename?: 'query_root', vehicle_types: Array<{ __typename?: 'vehicle_types', id: any, name: string, code?: string | null }> };
+export type Vehicle_TypesQuery = { __typename?: 'query_root', vehicle_types: Array<{ __typename?: 'vehicle_types', id: any, name: string, code: string }> };
 
 export type MakesQueryVariables = Exact<{
   distinct_on?: InputMaybe<Array<Makes_Select_Column> | Makes_Select_Column>;
@@ -10318,7 +10322,7 @@ export type MakesQueryVariables = Exact<{
 }>;
 
 
-export type MakesQuery = { __typename?: 'query_root', makes: Array<{ __typename?: 'makes', id: any, name: string, code?: string | null }> };
+export type MakesQuery = { __typename?: 'query_root', makes: Array<{ __typename?: 'makes', id: any, name: string, code: string }> };
 
 export type Price_FilterQueryVariables = Exact<{ [key: string]: never; }>;
 

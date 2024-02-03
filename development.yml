@@ -17,6 +17,7 @@ services:
     depends_on:
       - django
       - hasura
+      - caddy
 
   django:
     image: onroadapi:dev
@@ -33,6 +34,7 @@ services:
       - POSTGRES_HOST=db
     depends_on:
       - db
+      - caddy
 
   worker:
     image: onroadapi:dev
@@ -70,9 +72,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    depends_on:
-      - django
-      - hasura
 
   db:
     image: postgis/postgis:16-master
@@ -96,7 +95,6 @@ services:
       RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_DEFAULT_VHOST}
 
   hasura:
-    container_name: or_hasura
     image: onroadhasura:dev
     build:
       context: ./hasura
@@ -108,6 +106,7 @@ services:
     depends_on:
       - "db"
       - "django"
+      - "caddy"
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"

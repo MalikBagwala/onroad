@@ -1,4 +1,14 @@
+# Start from the official Caddy image
+FROM caddy:2.7-builder AS builder
+
+# Install the caddy-ratelimit module
+RUN xcaddy build \
+    --with github.com/RussellLuo/caddy-ext/ratelimit
+
+# Use the official Caddy image for the final image
 FROM caddy:2.7
 
+# Copy the custom-built Caddy binary from the builder stage
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 COPY ./static /static/djstatic
 COPY ./Caddyfile /etc/caddy/Caddyfile
