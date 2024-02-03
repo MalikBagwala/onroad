@@ -17,7 +17,7 @@ LOCAL_BACKUP_PATH="./backups"
 TIMESTAMP=$(date +"%Y%m%d%H%M%S")
 
 # Use docker exec to run pg_dumpall inside the PostgreSQL container, and compress the backup file with xz
-docker exec -t ${CONTAINER_NAME} pg_dumpall -U ${POSTGRES_USER} -w | xz -9e > ./backups/db_backup_${TIMESTAMP}.sql.xz
+docker exec -t ${CONTAINER_NAME} pg_dumpall -U ${POSTGRES_USER} -w | xz -9e > ./backups/db_backup_${ENV}_${TIMESTAMP}.sql.xz
 
 # Change directory to /backups
 cd ./backups && git pull
