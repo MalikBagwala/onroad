@@ -33,7 +33,6 @@ git commit -m "chore: backed up db_backup_${TIMESTAMP}.sql.xz"
 git push
 
 cd ..
-git submodule update --remote --recursive
 git add .
 
 # Commit and push the removal of older files
