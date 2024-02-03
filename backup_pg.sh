@@ -22,8 +22,11 @@ docker exec -t ${CONTAINER_NAME} pg_dumpall -U ${POSTGRES_USER} -w | xz -9e > ./
 # Change directory to /backups
 cd ./backups && git pull
 
-# Remove older .sql.xz files
-ls -t ./*.sql.xz | tail -n +4 | xargs rm -f
+# Keep 3 latest db_backup_dev*.sql.xz files
+ls -t ./db_backup_dev*.sql.xz | tail -n +4 | xargs rm -f
+
+# Keep 3 latest db_backup_prod*.sql.xz files
+ls -t ./db_backup_prod*.sql.xz | tail -n +4 | xargs rm -f
 
 # Add the backup file to git
 git add .
