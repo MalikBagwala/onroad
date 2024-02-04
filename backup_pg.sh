@@ -23,10 +23,7 @@ docker exec -t ${CONTAINER_NAME} pg_dumpall -U ${POSTGRES_USER} -w | xz -9e > ./
 cd ./backups && git pull
 
 # Keep 6 latest db_backup_dev*.sql.xz files
-ls -t ./db_backup_dev*.sql.xz | tail -n +7 | xargs rm -f
-
-# Keep 6 latest db_backup_prod*.sql.xz files
-ls -t ./db_backup_prod*.sql.xz | tail -n +7 | xargs rm -f
+ls -t ./db_backup_"$ENV"*.sql.xz | tail -n +7 | xargs rm -f
 
 # Add the backup file to git
 git add .
