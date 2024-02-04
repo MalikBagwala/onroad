@@ -3,14 +3,14 @@ import { CurrentUserQuery } from '@/gql/graphql';
 import { Box, Button, Container, Group } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { IconLogin } from '@tabler/icons-react';
+import { useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import OnRoadLogo from '../OnroadLogo';
 import { UserOnboard } from '../UserOnboard/UserOnboard';
-import styles from './GlobalNavbar.module.css';
-import { useParams, useSearchParams } from 'react-router-dom';
-import { useEffect } from 'react';
 import VariantSearch from '../VariantSearch/VariantSearch';
+import styles from './GlobalNavbar.module.css';
 type GlobalNavbarType = {
-  user?: CurrentUserQuery['users'][0];
+  user?: CurrentUserQuery['users'][0] | null;
 };
 export function GlobalNavbar({ user }: GlobalNavbarType) {
   const [params] = useSearchParams();
