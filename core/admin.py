@@ -73,13 +73,6 @@ class UserTokenAdmin(ImportExportModelAdmin):
     list_filter = ("type", "used")
 
 
-@admin.register(models.PasswordChangeRequest)
-class PasswordChangeRequestAdmin(ImportExportModelAdmin):
-    search_fields = ("user__username",)
-    list_display = ("id", "user", "expires_at", "used")
-    pass
-
-
 class AttachmentAdminForm(forms.ModelForm):
     file = forms.FileField(label="Upload File")
 

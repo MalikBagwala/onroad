@@ -355,25 +355,6 @@ class Vote(UUIDPrimaryKey, AbstractTimestamp):
         return f"{self.contribution}/{self.user}/{self.type}"
 
 
-class PasswordChangeRequest(UUIDPrimaryKey, AbstractTimestamp):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    expires_at = models.DateTimeField(default=get_password_change_request_expires_at)
-    used = models.BooleanField(default=False)
-
-    class Meta:
-        db_table = "password_change_requests"
-        verbose_name_plural = "Password Change Requests"
-        unique_together = ["user", "expires_at"]
-        ordering = ["-created_at"]
-
-    def __str__(self) -> str:
-        return f"{self.user} - {self.expires_at}"
-
-    @property
-    def is_expired(self):
-        return timezone.now() > self.expires_at
-
-
 class RefreshToken(UUIDPrimaryKey, AbstractTimestamp):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     token = models.UUIDField(default=uuid4, editable=False, unique=True)  # type: ignore

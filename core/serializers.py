@@ -47,4 +47,4 @@ class UserRegistrationInputSerializer(PasswordSerializer):
 
 class ChangePasswordSerializer(PasswordSerializer):
     user_id = serializers.UUIDField(required=True)
-    request_id = serializers.UUIDField(required=True)
+    token = serializers.CharField(required=True)
