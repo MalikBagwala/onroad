@@ -23,7 +23,10 @@ export const UserMenu = ({ user }: UserMenuType) => {
     if (user?.first_name) identity += ' ';
     identity += user.last_name;
   }
-  if (!identity) return user?.email;
+
+  if (!identity) {
+    identity = user?.email || '';
+  }
   return (
     <Menu
       width={260}

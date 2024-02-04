@@ -25,7 +25,11 @@ function ContributionCard({ variant }: ContributionCardType) {
   const total = variant?.contributions_aggregate?.aggregate?.avg?.total || 0;
   const images = [];
   for (const color of variant?.colors || []) {
-    images.push(...color.attachments.map(({ attachment }) => attachment.url));
+    images.push(
+      ...color.attachments
+        .filter(({ attachment }) => attachment?.url)
+        ?.map(({ attachment }) => attachment.url)
+    );
   }
   if (images.length === 0) {
     images.push(placeholder);
