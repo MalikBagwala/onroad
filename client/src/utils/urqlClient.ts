@@ -10,6 +10,7 @@ import {
   hasTokenExpired,
 } from './tokens';
 import { NavigateFunction } from 'react-router-dom';
+import { notifications } from '@mantine/notifications';
 
 export const AUTH_OPERATIONS = [
   'register',
@@ -20,6 +21,7 @@ export const AUTH_OPERATIONS = [
   'forgotPasswordConfirm',
   'membershipTypeByEmail',
 ];
+
 function makeClient(navigate: NavigateFunction) {
   return createClient({
     url: `https://${import.meta.env.VITE_API_DOMAIN}/hasura/v1/graphql`,
@@ -58,6 +60,13 @@ function makeClient(navigate: NavigateFunction) {
               }
             } catch {
               removeRefreshToken();
+              notifications.show({
+                id: 'session-expired',
+                message: 'Your session has expired, do login to continue using the app',
+                color: 'yellow',
+                withBorder: true,
+                autoClose: 1500,
+              });
               navigate('/', { replace: true });
             }
           },

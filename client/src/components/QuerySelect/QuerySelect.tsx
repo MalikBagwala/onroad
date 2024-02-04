@@ -4,10 +4,11 @@ import { useQuery } from 'urql';
 type QuerySelectType = SelectProps & {
   query: any;
   variables?: any;
+  pause?: boolean;
   groupBy?: (item: any) => string;
 };
-const QuerySelect = ({ query, variables, ...props }: QuerySelectType) => {
-  const [{ fetching, data }] = useQuery({ query, variables });
+const QuerySelect = ({ query, variables, pause, ...props }: QuerySelectType) => {
+  const [{ fetching, data }] = useQuery({ query, variables, pause });
 
   if (fetching || !data) return <Select disabled={fetching} {...props} />;
   const listData: any[] = [];

@@ -240,6 +240,7 @@ const AddUpdateContribution = ({}: AddUpdateContributionType) => {
               />
               <QuerySelect
                 query={VARIANT_COLORS}
+                pause={!form.values.variant}
                 variables={{
                   where: {
                     variant_id: {
