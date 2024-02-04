@@ -1,5 +1,5 @@
 import { useCurrentUser } from '@/authentication/AuthContext';
-import { DELETE_REFRESH_TOKENS, FORGOT_PASSWORD } from '@/graphql/auth.gql';
+import { DELETE_USER_TOKENS, FORGOT_PASSWORD } from '@/graphql/auth.gql';
 import signinWithGoogleLink from '@/utils/signinWithGoogleLink';
 import { ActionIcon, Button, Flex, PasswordInput, Stack, Text, TextInput } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
@@ -9,7 +9,7 @@ import { useMutation } from 'urql';
 type AccountDetailsType = {};
 const AccountDetails = ({}: AccountDetailsType) => {
   const { data: uData } = useCurrentUser();
-  const [{ fetching, data }, deleteRefreshToken] = useMutation(DELETE_REFRESH_TOKENS);
+  const [{ fetching, data }, deleteUserTokens] = useMutation(DELETE_USER_TOKENS);
   const [{ fetching: fFetching }, forgot] = useMutation(FORGOT_PASSWORD);
 
   return (
@@ -88,7 +88,7 @@ const AccountDetails = ({}: AccountDetailsType) => {
           Sessions
         </Text>
         <Stack gap={'xs'}>
-          {uData?.refresh_tokens?.map((token) => {
+          {uData?.tokens?.map((token) => {
             return (
               <Flex key={token.id} justify={'space-between'}>
                 <Flex gap={'sm'}>
@@ -99,11 +99,11 @@ const AccountDetails = ({}: AccountDetailsType) => {
                 </Flex>
                 <Button
                   loading={
-                    data?.delete_refresh_tokens?.returning?.find((idx) => idx.id === token.id)
+                    data?.delete_user_tokens?.returning?.find((idx) => idx.id === token.id)
                       ? fetching
                       : false
                   }
-                  onClick={() => deleteRefreshToken({ where: { id: { _eq: token.id } } })}
+                  onClick={() => deleteUserTokens({ where: { id: { _eq: token.id } } })}
                   color="red"
                   variant="light"
                   size="xs"

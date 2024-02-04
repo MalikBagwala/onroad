@@ -1,4 +1,4 @@
-import { REFRESH_TOKEN } from '@/graphql/auth.gql';
+import { AUTH_CODE_EXCHANGE } from '@/graphql/auth.gql';
 import { authExchange } from '@urql/exchange-auth';
 import { cacheExchange, createClient, fetchExchange } from 'urql';
 import {
@@ -15,7 +15,7 @@ export const AUTH_OPERATIONS = [
   'register',
   'login',
   'loginWithMagicLink',
-  'refreshToken',
+  'authCodeExchange',
   'forgotPassword',
   'forgotPasswordConfirm',
   'membershipTypeByEmail',
@@ -43,8 +43,11 @@ function makeClient(navigate: NavigateFunction) {
             try {
               const refreshToken = getRefreshToken();
               if (!refreshToken) throw new Error('No refresh token');
-              const { data } = await utils.mutate(REFRESH_TOKEN, { refreshToken });
-              const newAccessToken = data?.refreshToken?.data;
+              const { data } = await utils.mutate(AUTH_CODE_EXCHANGE, {
+                code: refreshToken,
+                type: 'RF',
+              });
+              const newAccessToken = data?.authCodeExchange?.data?.accessToken;
               if (newAccessToken) {
                 // Update our local variables and write to our storage
                 setAccessToken(newAccessToken);

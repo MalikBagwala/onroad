@@ -1,10 +1,13 @@
 import decimal
 from django.contrib.auth.models import AbstractUser
+from django.contrib.postgres.functions import RandomUUID
 
 from core.utils.time import (
+    get_expires_in,
     get_otp_expires_at,
     get_password_change_request_expires_at,
     get_refresh_token_expires_in,
+    get_user_token_expires_at,
 )
 from .abstracts import AbstractTimestamp, UUIDPrimaryKey
 from django.db import models
@@ -19,6 +22,7 @@ from .enums import (
     TransmissionTypes,
     FluelTypes,
     ContributionStatus,
+    UserTokenType,
 )
 from .utils import jwt
 from uuid import uuid4
@@ -84,8 +88,14 @@ class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
 
     def get_refresh_token(self, client="web"):
         try:
-            token_instance, _ = RefreshToken.objects.get_or_create(
-                user=self, client=client, expires_at__gt=timezone.now()
+            token_instance, _ = UserToken.objects.get_or_create(
+                user=self,
+                client=client,
+                type=UserTokenType.REFRESH.value,
+                expires_at__gt=timezone.now(),
+                defaults={
+                    "expires_at": get_refresh_token_expires_in(),
+                },
             )
             # Get refresh tokens if an un-expired token already exists, else create a new one
             return token_instance.token
@@ -99,9 +109,19 @@ class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
             "accessToken": self.get_access_token(),
         }
 
-    def get_login_link(self, include_refresh_token=True):
-        tokens = self.get_tokens()
-        return f"https://{settings.DOMAIN_NAME}?access={tokens['accessToken']}&refresh={tokens['refreshToken'] if include_refresh_token else ''}"
+    def get_login_link(self, one_time: bool = False):
+        if one_time:
+            return f"https://{settings.DOMAIN_NAME}?access={self.get_access_token()}"
+        auth_token, _ = UserToken.objects.get_or_create(
+            user=self,
+            type=UserTokenType.VERIFIER_CODE,
+            expires_at__gt=timezone.now(),
+            used=False,
+            defaults={
+                "expires_at": get_expires_in(minutes=5),
+            },
+        )
+        return f"https://{settings.DOMAIN_NAME}?code={auth_token.token}&type={auth_token.type}"
 
     @classmethod
     def get_user_from_access_token(cls, token):
@@ -120,6 +140,30 @@ class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
             return self.username
 
     pass
+
+
+class UserToken(UUIDPrimaryKey, AbstractTimestamp):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    token = models.CharField(max_length=255, editable=False, db_default=RandomUUID(), db_index=True)  # type: ignore
+    used = models.BooleanField(default=False)
+    expires_at = models.DateTimeField(
+        default=get_user_token_expires_at, null=True, blank=True
+    )
+    type = models.CharField(
+        max_length=2,
+        choices=UserTokenType.choices,
+        db_default=UserTokenType.VERIFIER_CODE.value,
+    )  # type: ignore
+    client = models.CharField(max_length=255, db_default="web")  # type: ignore
+    description = models.TextField(null=True, blank=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        db_table = "user_tokens"
+        verbose_name_plural = "User Tokens"
+
+    def __str__(self):
+        return f"{self.user} - {self.expires_at}"
 
 
 class Attachment(UUIDPrimaryKey, AbstractTimestamp):

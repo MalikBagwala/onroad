@@ -12,7 +12,7 @@ export const CURRENT_USER = graphql(/* GraphQL */ `
       has_contributed
       email_verified
       google_id
-      refresh_tokens {
+      tokens {
         id
         client
         expires_at
@@ -101,12 +101,16 @@ export const VERIFY_EMAIL_OTP = graphql(/* GraphQL */ `
   }
 `);
 
-export const REFRESH_TOKEN = graphql(/* GraphQL */ `
-  mutation refreshToken($refreshToken: UUID!) {
-    refreshToken(refreshToken: $refreshToken) {
+export const AUTH_CODE_EXCHANGE = graphql(/* GraphQL */ `
+  mutation authCodeExchange($code: String!, $type: String!) {
+    authCodeExchange(code: $code, type: $type) {
       code
-      data
       message
+      success
+      data {
+        accessToken
+        refreshToken
+      }
     }
   }
 `);
@@ -136,9 +140,9 @@ export const FORGOT_PASSWORD_CONFIRM = graphql(/* GraphQL */ `
   }
 `);
 
-export const DELETE_REFRESH_TOKENS = graphql(/* GraphQL */ `
-  mutation delete_refresh_tokens($where: refresh_tokens_bool_exp!) {
-    delete_refresh_tokens(where: $where) {
+export const DELETE_USER_TOKENS = graphql(/* GraphQL */ `
+  mutation delete_user_tokens($where: user_tokens_bool_exp!) {
+    delete_user_tokens(where: $where) {
       returning {
         id
         client

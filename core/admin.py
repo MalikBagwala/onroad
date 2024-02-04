@@ -60,10 +60,17 @@ class UserAdmin(UserAdmin, ImportExportModelAdmin):
     def login_as_user(self, _, queryset):
         if queryset.count() != 1:
             return
-        link = queryset.first().get_login_link(False)
+        link = queryset.first().get_login_link(True)
         return redirect(link)
 
     pass
+
+
+@admin.register(models.UserToken)
+class UserTokenAdmin(ImportExportModelAdmin):
+    search_fields = ("user__username", "token")
+    list_display = ("user", "token", "type", "expires_at")
+    list_filter = ("type",)
 
 
 @admin.register(models.PasswordChangeRequest)

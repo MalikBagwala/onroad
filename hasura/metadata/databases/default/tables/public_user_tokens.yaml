@@ -1,0 +1,75 @@
+table:
+  name: user_tokens
+  schema: public
+object_relationships:
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
+select_permissions:
+  - role: contributor
+    permission:
+      columns:
+        - client
+        - created_at
+        - description
+        - expires_at
+        - id
+        - token
+        - type
+        - updated_at
+        - used
+        - user_id
+      filter:
+        _and:
+          - user_id:
+              _eq: X-Hasura-User-Id
+          - type:
+              _eq: RF
+          - expires_at:
+              _gte: NOW()
+    comment: ""
+  - role: user
+    permission:
+      columns:
+        - used
+        - client
+        - token
+        - type
+        - description
+        - created_at
+        - expires_at
+        - updated_at
+        - id
+        - user_id
+      filter:
+        _and:
+          - user_id:
+              _eq: X-Hasura-User-Id
+          - type:
+              _eq: RF
+          - expires_at:
+              _gte: NOW()
+    comment: ""
+delete_permissions:
+  - role: contributor
+    permission:
+      filter:
+        _and:
+          - user_id:
+              _eq: X-Hasura-User-Id
+          - type:
+              _eq: RF
+          - expires_at:
+              _gte: NOW()
+    comment: ""
+  - role: user
+    permission:
+      filter:
+        _and:
+          - user_id:
+              _eq: X-Hasura-User-Id
+          - type:
+              _eq: RF
+          - expires_at:
+              _gte: NOW()
+    comment: ""
