@@ -1,6 +1,5 @@
 import strawberry
 from core.types import BaseResponse
-from rest_framework import status
 from django.template.loader import render_to_string
 from core.tasks.send_email import send_email
 from django.conf import settings

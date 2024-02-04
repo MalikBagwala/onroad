@@ -25,7 +25,7 @@ const VerifyOtp = ({ email }: VerifyOtpType) => {
       <form
         onSubmit={form.onSubmit(async (values) => {
           const { data } = await verify({
-            input: { otp: values.otp, type: 'EM' },
+            input: { otp: values.otp, type: 'OT' },
           });
           if (data?.verifyOtp?.code === 200) {
             notifications.show({

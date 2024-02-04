@@ -1,9 +1,9 @@
 import uuid
 import strawberry
 import strawberry_django
-from core.enums import OtpTypes
+from core.enums import OtpTypes, UserTokenType
 from core.types import BaseResponse
-from core.models import Otp
+from core.models import UserToken
 from django.utils import timezone
 from strawberry.types import Info
 
@@ -14,7 +14,7 @@ class VerifyOtpResponse(BaseResponse):
     pass
 
 
-@strawberry_django.input(Otp)
+@strawberry_django.input(UserToken)
 class OtpInput:
     otp: str
     type: str
@@ -23,22 +23,20 @@ class OtpInput:
 
 def verify_otp(self, input: OtpInput, info: Info) -> VerifyOtpResponse:
     try:
-        otp = Otp.objects.get(
+        token = UserToken.objects.get(
             user__id=info.context.request.user.id,
-            otp=input.otp,
+            token=input.otp,
             used=False,
             expires_at__gt=timezone.now(),
             type=input.type,
         )
 
-        otp.used = True
-        if input.type == OtpTypes.EMAIL.value:
-            otp.user.email_verified = True
-        elif input.type == OtpTypes.PHONE.value:
-            pass
+        token.used = True
+        if input.type == UserTokenType.OTP.value:
+            token.user.email_verified = True
 
-        otp.user.save()
-        otp.save()
+        token.user.save()
+        token.save()
         return VerifyOtpResponse(
             success=True,
             message="Otp Verified",

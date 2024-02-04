@@ -42,7 +42,6 @@ const AuthProvider = ({ children }: AuthProviderType) => {
   useEffect(() => {
     async function initAuth() {
       const access = params.get('access');
-      if (access) setAccessToken(access);
       const code = params.get('code');
       const code_type = params.get('type');
       if (code && code_type) {
@@ -59,9 +58,13 @@ const AuthProvider = ({ children }: AuthProviderType) => {
             withBorder: true,
           });
         }
+        refreshClient();
+        navigate('/', { replace: true });
+      } else if (access) {
+        setAccessToken(access);
+        refreshClient();
+        navigate('/', { replace: true });
       }
-      navigate('/', { replace: true });
-      refreshClient();
     }
     initAuth();
   }, [params, refreshClient]);

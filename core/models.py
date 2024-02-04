@@ -355,28 +355,6 @@ class Vote(UUIDPrimaryKey, AbstractTimestamp):
         return f"{self.contribution}/{self.user}/{self.type}"
 
 
-class Otp(UUIDPrimaryKey, AbstractTimestamp):
-    otp = models.CharField(max_length=6, default=generate_otp)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    expires_at = models.DateTimeField(default=get_otp_expires_at)
-    used = models.BooleanField(default=False)
-    type = models.CharField(
-        max_length=2, choices=OtpTypes.choices, default=OtpTypes.EMAIL.value
-    )
-
-    class Meta:
-        db_table = "otps"
-        unique_together = ["otp", "user", "expires_at", "type"]
-        ordering = ["-created_at"]
-
-    def __str__(self) -> str:
-        return f"{self.otp} ({self.user})"
-
-    @property
-    def is_expired(self):
-        return timezone.now() > self.expires_at
-
-
 class PasswordChangeRequest(UUIDPrimaryKey, AbstractTimestamp):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     expires_at = models.DateTimeField(default=get_password_change_request_expires_at)
