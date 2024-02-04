@@ -34,7 +34,7 @@ def send_email_otp(self, email: str) -> SendEmailOtpResponse:
             "email_otp.html",
             {
                 "otp": otp.token,
-                "username": str(user),
+                "username": user.username,
                 "expires_in": f"{settings.OTP_EXPIRATION_MINUTES} minutes",
                 "verification_link": f"https://{settings.DOMAIN_NAME}/api/verify/otp/{otp.user.id}/{otp.token}/",
             },  # type: ignore

@@ -131,10 +131,7 @@ class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
             return None
 
     def __str__(self):
-        if self.first_name:
-            return f"{self.first_name} {self.last_name}"
-        else:
-            return self.username
+        return self.username
 
     pass
 
