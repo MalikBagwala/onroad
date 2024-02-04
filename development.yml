@@ -116,6 +116,7 @@ services:
       HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256","key":"${JWT_SECRET_KEY}","claims_namespace":"user_claims","claims_format":"json"}'
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: "anonymous"
       HASURA_GRAPHQL_MIGRATIONS_SERVER_TIMEOUT: 120
+      HASURA_GRAPHQL_CORS_DOMAIN: ${CSRF_TRUSTED_ORIGINS}
       API_HOST: "http://django:9000"
 
 volumes:
