@@ -41,11 +41,6 @@ class VehicleCategories(models.TextChoices):
     MOPED = "MO", _("Moped")
 
 
-class OtpTypes(models.TextChoices):
-    EMAIL = "EM", _("Email")
-    PHONE = "PH", _("Phone")
-
-
 class UserTokenType(models.TextChoices):
     OTP = "OT", _("OTP")
     VERIFIER_CODE = "VC", _("Verifier Code")

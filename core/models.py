@@ -4,8 +4,6 @@ from django.contrib.postgres.functions import RandomUUID
 
 from core.utils.time import (
     get_expires_in,
-    get_otp_expires_at,
-    get_password_change_request_expires_at,
     get_refresh_token_expires_in,
     get_user_token_expires_at,
 )
@@ -17,7 +15,6 @@ from .enums import (
     PriceCategoryTypes,
     TransactionTypes,
     VoteTypes,
-    OtpTypes,
     VehicleCategories,
     TransmissionTypes,
     FluelTypes,

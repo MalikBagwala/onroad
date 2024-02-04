@@ -1,7 +1,6 @@
-import uuid
 import strawberry
 import strawberry_django
-from core.enums import OtpTypes, UserTokenType
+from core.enums import UserTokenType
 from core.types import BaseResponse
 from core.models import UserToken
 from django.utils import timezone
