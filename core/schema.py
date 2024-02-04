@@ -1,6 +1,10 @@
 import strawberry
 from strawberry_django.optimizer import DjangoOptimizerExtension
 from django.conf import settings
+from core.mutations.auth_code_exchange import (
+    AuthCodeExchangeResponse,
+    auth_code_exchange,
+)
 from core.mutations.change_password import change_password, ChangePasswordResponse
 from core.mutations.forgot_password_confirm import (
     forgot_password_confirm,
@@ -85,6 +89,10 @@ class Mutation:
     verify_otp: VerifyOtpResponse = strawberry.field(
         resolver=verify_otp, permission_classes=[IsAuthenticated]
     )
+    auth_code_exchange: AuthCodeExchangeResponse = strawberry.field(
+        resolver=auth_code_exchange
+    )
+
     pass
 
 

@@ -6,37 +6,36 @@ import {
   Contributions_Update_Column,
   Order_By,
 } from '@/gql/graphql';
+import { AUTH_CODE_EXCHANGE } from '@/graphql/auth.gql';
 import { ADD_UPDATE_CONTRIBUTION, CONTRIBUTIONS, PRICE_ITEMS } from '@/graphql/contribution.gql';
 import { VARIANT_COLORS } from '@/graphql/variant.gql';
+import convertToInr from '@/utils/convertToInr';
+import debounce from '@/utils/debounce';
+import { setAccessToken } from '@/utils/tokens';
 import {
+  ActionIcon,
   Alert,
   Box,
   Button,
   Divider,
   Flex,
-  Stack,
-  TextInput,
-  Text,
-  Select,
-  ActionIcon,
   NumberInput,
+  Select,
+  Stack,
+  Text,
+  TextInput,
 } from '@mantine/core';
 import { DateInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { IconDatabase, IconMinus, IconPlus, IconTrash } from '@tabler/icons-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
+import ConfettiExplosion from 'react-confetti-explosion';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useClient, useMutation, useQuery } from 'urql';
 import CitySelector from '../NewUser/CitySelector';
 import QuerySelect from '../QuerySelect/QuerySelect';
 import VariantSelector from '../VariantSelector/VariantSelector';
-import { REFRESH_TOKEN } from '@/graphql/auth.gql';
-import { setAccessToken } from '@/utils/tokens';
-import { modals } from '@mantine/modals';
-import ConfettiExplosion from 'react-confetti-explosion';
-import convertToInr from '@/utils/convertToInr';
-import debounce from '@/utils/debounce';
 
 type AddUpdateContributionType = {};
 
@@ -201,11 +200,13 @@ const AddUpdateContribution = ({}: AddUpdateContributionType) => {
       {data?.insert_contributions_one?.items?.length && form.values.id === 'new' && (
         <ConfettiExplosion
           onComplete={async () => {
-            if (!uData?.has_contributed) {
-              const { data } = await client.mutation(REFRESH_TOKEN, {
-                refreshToken: localStorage.getItem('refreshToken'),
+            const refreshToken = localStorage.getItem('refreshToken');
+            if (!uData?.has_contributed && refreshToken) {
+              const { data } = await client.mutation(AUTH_CODE_EXCHANGE, {
+                code: refreshToken,
+                type: 'RF',
               });
-              const newAccessToken = data?.refreshToken?.data;
+              const newAccessToken = data?.authCodeExchange.data?.accessToken;
               if (newAccessToken) {
                 // Update our local variables and write to our storage
                 setAccessToken(newAccessToken);

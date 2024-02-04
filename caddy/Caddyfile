@@ -10,7 +10,7 @@
 
 	# Django API
 	route /api/* {
-		rate_limit * {remote.ip} 30r/m
+		rate_limit * {remote.ip} {$RATE_LIMIT}
 		reverse_proxy django:9000
 	}
 
@@ -18,7 +18,7 @@
 	redir /hasura /hasura/ 301
 	route /hasura/* {
 		uri strip_prefix /hasura
-		rate_limit * {remote.ip} 30r/m
+		rate_limit * {remote.ip} {$RATE_LIMIT}
 		reverse_proxy hasura:8080
 	}
 

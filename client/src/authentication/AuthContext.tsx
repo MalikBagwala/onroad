@@ -1,7 +1,8 @@
-import { CURRENT_USER, DELETE_REFRESH_TOKENS } from '@/graphql/auth.gql';
+import { AUTH_CODE_EXCHANGE, CURRENT_USER, DELETE_USER_TOKENS } from '@/graphql/auth.gql';
 import { setAccessToken, setRefreshToken } from '@/utils/tokens';
 import makeClient from '@/utils/urqlClient';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { notifications } from '@mantine/notifications';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Client, Provider, useQuery } from 'urql';
 
@@ -19,10 +20,10 @@ const AuthProvider = ({ children }: AuthProviderType) => {
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const [client, setClient] = useState<Client>(makeClient(navigate));
-  const refreshClient = () => setClient(makeClient(navigate));
+  const refreshClient = useCallback(() => setClient(makeClient(navigate)), [navigate, setClient]);
   const logout = async () => {
     try {
-      await client.mutation(DELETE_REFRESH_TOKENS, {
+      await client.mutation(DELETE_USER_TOKENS, {
         where: {
           client: {
             _eq: 'web',
@@ -39,15 +40,30 @@ const AuthProvider = ({ children }: AuthProviderType) => {
   };
 
   useEffect(() => {
-    const access = params.get('access');
-    const refresh = params.get('refresh');
-    if (access) {
-      setAccessToken(access);
-      if (refresh) setRefreshToken(refresh);
-      refreshClient();
-      //   Remove Tokens from URL
+    async function initAuth() {
+      const access = params.get('access');
+      if (access) setAccessToken(access);
+      const code = params.get('code');
+      const code_type = params.get('type');
+      if (code && code_type) {
+        const { data } = await client.mutation(AUTH_CODE_EXCHANGE, { code, type: code_type });
+        if (data?.authCodeExchange?.data) {
+          const { accessToken, refreshToken } = data.authCodeExchange.data;
+          setAccessToken(accessToken);
+          setRefreshToken(refreshToken);
+        } else {
+          notifications.show({
+            message:
+              'Oops. The link seems to be invalid or it has expired. Login again to get a new one.',
+            color: 'red',
+            withBorder: true,
+          });
+        }
+      }
       navigate('/', { replace: true });
+      refreshClient();
     }
+    initAuth();
   }, [params, refreshClient]);
 
   return (

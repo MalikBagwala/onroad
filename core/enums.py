@@ -46,6 +46,13 @@ class OtpTypes(models.TextChoices):
     PHONE = "PH", _("Phone")
 
 
+class UserTokenType(models.TextChoices):
+    OTP = "OT", _("OTP")
+    VERIFIER_CODE = "VC", _("Verifier Code")
+    PASSWORD_RESET = "PR", _("Password Reset")
+    REFRESH = "RF", _("Refresh")
+
+
 class VoteTypes(models.TextChoices):
     UPVOTE = "UP", _("Upvote")
     DOWNVOTE = "DN", _("Downvote")
