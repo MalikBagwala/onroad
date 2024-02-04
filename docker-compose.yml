@@ -68,6 +68,7 @@ services:
       - DOMAIN_NAME=${DOMAIN_NAME}
       - TLS=${TLS}
       - TLS_KEY=${TLS_KEY}
+      - RATE_LIMIT=${RATE_LIMIT}
     container_name: or_caddy
     ports:
       - "80:80"

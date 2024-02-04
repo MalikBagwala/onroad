@@ -22,11 +22,11 @@ docker exec -t ${CONTAINER_NAME} pg_dumpall -U ${POSTGRES_USER} -w | xz -9e > ./
 # Change directory to /backups
 cd ./backups && git pull
 
-# Keep 3 latest db_backup_dev*.sql.xz files
-ls -t ./db_backup_dev*.sql.xz | tail -n +4 | xargs rm -f
+# Keep 6 latest db_backup_dev*.sql.xz files
+ls -t ./db_backup_dev*.sql.xz | tail -n +7 | xargs rm -f
 
-# Keep 3 latest db_backup_prod*.sql.xz files
-ls -t ./db_backup_prod*.sql.xz | tail -n +4 | xargs rm -f
+# Keep 6 latest db_backup_prod*.sql.xz files
+ls -t ./db_backup_prod*.sql.xz | tail -n +7 | xargs rm -f
 
 # Add the backup file to git
 git add .
@@ -43,4 +43,4 @@ git add backups
 # Commit and push the removal of older files
 git commit -m "Sync submodule 'backups' with latest changes" && git push
 
-echo "Backup completed at $(date), only the last three backup files are retained in the repository."
+echo "Backup completed at $(date), only the last 6 backup files are retained in the repository."
