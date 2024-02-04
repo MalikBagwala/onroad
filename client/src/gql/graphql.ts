@@ -62,7 +62,7 @@ export type ChangePasswordResponse = {
 export type ForgotPasswordConfirmInput = {
   confirmPassword: Scalars['String']['input'];
   password: Scalars['String']['input'];
-  requestId: Scalars['UUID']['input'];
+  token: Scalars['String']['input'];
   userId: Scalars['UUID']['input'];
 };
 
@@ -133,7 +133,7 @@ export type MyContributionsResponse = {
   success: Scalars['Boolean']['output'];
 };
 
-/** Otp(created_at, updated_at, id, otp, user, expires_at, used, type) */
+/** UserToken(created_at, updated_at, id, user, token, used, expires_at, type, client, description) */
 export type OtpInput = {
   otp: Scalars['String']['input'];
   type: Scalars['String']['input'];

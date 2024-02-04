@@ -69,15 +69,8 @@ class UserAdmin(UserAdmin, ImportExportModelAdmin):
 @admin.register(models.UserToken)
 class UserTokenAdmin(ImportExportModelAdmin):
     search_fields = ("user__username", "token")
-    list_display = ("user", "token", "type", "expires_at")
-    list_filter = ("type",)
-
-
-@admin.register(models.PasswordChangeRequest)
-class PasswordChangeRequestAdmin(ImportExportModelAdmin):
-    search_fields = ("user__username",)
-    list_display = ("id", "user", "expires_at", "used")
-    pass
+    list_display = ("user", "token", "type", "expires_at", "used")
+    list_filter = ("type", "used")
 
 
 class AttachmentAdminForm(forms.ModelForm):
@@ -205,25 +198,6 @@ class ContributionPriceItemAdmin(ImportExportModelAdmin):
 
 @admin.register(models.Vote)
 class VotesAdmin(ImportExportModelAdmin):
-    pass
-
-
-@admin.register(models.Otp)
-class OtpAdmin(ImportExportModelAdmin):
-    search_fields = ("user__username", "otp")
-    list_display = ("user", "otp", "expires_at", "used")
-    pass
-
-
-@admin.register(models.RefreshToken)
-class RefreshTokenAdmin(ImportExportModelAdmin):
-    search_fields = ("user__username",)
-    list_display = ("user", "user_email", "client", "expires_at")
-
-    def user_email(self, obj):
-        # Access the email field of the related User model
-        return obj.user.email
-
     pass
 
 

@@ -1,6 +1,6 @@
 import uuid
 import strawberry
-from core.models import PasswordChangeRequest
+from core.models import UserToken
 from core.serializers import ChangePasswordSerializer
 from core.types import BaseResponse, Tokens
 from django.utils import timezone
@@ -23,7 +23,7 @@ GENERIC_MESSAGE = (
 
 @strawberry.input
 class ForgotPasswordConfirmInput:
-    request_id: uuid.UUID
+    token: str
     user_id: uuid.UUID
     password: str
     confirm_password: str
@@ -35,11 +35,11 @@ def forgot_password_confirm(
     try:
         serializer = ChangePasswordSerializer(data=strawberry.asdict(input))
         serializer.is_valid(raise_exception=True)
-        request_id = input.request_id
+        request_token = input.token
         user_id = input.user_id
-        change_request = PasswordChangeRequest.objects.get(
-            id=request_id,
+        change_request = UserToken.objects.get(
             user_id=user_id,
+            token=request_token,
             used=False,
             expires_at__gt=timezone.now(),
         )

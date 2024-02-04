@@ -1,5 +1,5 @@
 import { AUTH_CODE_EXCHANGE, CURRENT_USER, DELETE_USER_TOKENS } from '@/graphql/auth.gql';
-import { setAccessToken, setRefreshToken } from '@/utils/tokens';
+import { getAccessToken, setAccessToken, setRefreshToken } from '@/utils/tokens';
 import makeClient from '@/utils/urqlClient';
 import { notifications } from '@mantine/notifications';
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
@@ -42,7 +42,6 @@ const AuthProvider = ({ children }: AuthProviderType) => {
   useEffect(() => {
     async function initAuth() {
       const access = params.get('access');
-      if (access) setAccessToken(access);
       const code = params.get('code');
       const code_type = params.get('type');
       if (code && code_type) {
@@ -59,9 +58,13 @@ const AuthProvider = ({ children }: AuthProviderType) => {
             withBorder: true,
           });
         }
+        refreshClient();
+        navigate('/', { replace: true });
+      } else if (access) {
+        setAccessToken(access);
+        refreshClient();
+        navigate('/', { replace: true });
       }
-      navigate('/', { replace: true });
-      refreshClient();
     }
     initAuth();
   }, [params, refreshClient]);
@@ -76,12 +79,13 @@ const AuthProvider = ({ children }: AuthProviderType) => {
 export const useAuth = () => useContext(AuthContext);
 
 export const useCurrentUser = () => {
+  const accessToken = getAccessToken();
   const navigate = useNavigate();
   const [{ fetching, data, error }] = useQuery({
     query: CURRENT_USER,
-    pause: window.location.pathname.startsWith('/reset'),
+    pause: !accessToken || window.location.pathname.startsWith('/reset'),
   });
-  const user = data?.users?.[0];
+  const user = !accessToken ? null : data?.users?.[0];
   const hasContributed = user?.has_contributed;
 
   useEffect(() => {

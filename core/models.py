@@ -4,8 +4,6 @@ from django.contrib.postgres.functions import RandomUUID
 
 from core.utils.time import (
     get_expires_in,
-    get_otp_expires_at,
-    get_password_change_request_expires_at,
     get_refresh_token_expires_in,
     get_user_token_expires_at,
 )
@@ -17,7 +15,6 @@ from .enums import (
     PriceCategoryTypes,
     TransactionTypes,
     VoteTypes,
-    OtpTypes,
     VehicleCategories,
     TransmissionTypes,
     FluelTypes,
@@ -353,47 +350,6 @@ class Vote(UUIDPrimaryKey, AbstractTimestamp):
 
     def __str__(self):
         return f"{self.contribution}/{self.user}/{self.type}"
-
-
-class Otp(UUIDPrimaryKey, AbstractTimestamp):
-    otp = models.CharField(max_length=6, default=generate_otp)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    expires_at = models.DateTimeField(default=get_otp_expires_at)
-    used = models.BooleanField(default=False)
-    type = models.CharField(
-        max_length=2, choices=OtpTypes.choices, default=OtpTypes.EMAIL.value
-    )
-
-    class Meta:
-        db_table = "otps"
-        unique_together = ["otp", "user", "expires_at", "type"]
-        ordering = ["-created_at"]
-
-    def __str__(self) -> str:
-        return f"{self.otp} ({self.user})"
-
-    @property
-    def is_expired(self):
-        return timezone.now() > self.expires_at
-
-
-class PasswordChangeRequest(UUIDPrimaryKey, AbstractTimestamp):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    expires_at = models.DateTimeField(default=get_password_change_request_expires_at)
-    used = models.BooleanField(default=False)
-
-    class Meta:
-        db_table = "password_change_requests"
-        verbose_name_plural = "Password Change Requests"
-        unique_together = ["user", "expires_at"]
-        ordering = ["-created_at"]
-
-    def __str__(self) -> str:
-        return f"{self.user} - {self.expires_at}"
-
-    @property
-    def is_expired(self):
-        return timezone.now() > self.expires_at
 
 
 class RefreshToken(UUIDPrimaryKey, AbstractTimestamp):

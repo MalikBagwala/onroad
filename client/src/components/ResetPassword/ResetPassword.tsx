@@ -55,7 +55,7 @@ const ResetPassword = ({}: ResetPasswordType) => {
           const { data } = await forgotPasswordConfirm({
             input: {
               userId: userId,
-              requestId: id,
+              token: id,
               password: values.password,
               confirmPassword: values.confirmPassword,
             },

@@ -1,12 +1,15 @@
+import random
 import strawberry
+from core.enums import UserTokenType
 from core.types import BaseResponse
-from rest_framework import status
 from django.template.loader import render_to_string
 from core.tasks.send_email import send_email
 from django.conf import settings
-from core.models import PasswordChangeRequest, User
+from core.models import User, UserToken
 from django.db.models import Q
 from django.utils import timezone
+
+from core.utils.time import get_expires_in
 
 
 @strawberry.type
@@ -21,17 +24,21 @@ GENERIC_MESSAGE = "Please check your email for a link to reset your password, on
 def forgot_password(self, identity: str) -> ForgotPasswordResponse:
     try:
         user = User.objects.filter(Q(email=identity) | Q(username=identity)).first()
-        change_request, _ = PasswordChangeRequest.objects.get_or_create(
+        change_token, _ = UserToken.objects.get_or_create(
             user=user,
             used=False,
+            type=UserTokenType.PASSWORD_RESET.value,
             expires_at__gt=timezone.now(),
-            defaults={"user_id": user.id},  # type: ignore
+            defaults={
+                "expires_at": get_expires_in(minutes=5),
+                "token": random.randbytes(32).hex(),
+            },
         )
-        reset_link = f"https://{settings.DOMAIN_NAME}/reset/{change_request.id}?u={user.id}"  # type: ignore
+        reset_link = f"https://{settings.DOMAIN_NAME}/reset/{change_token.token}?u={user.id}"  # type: ignore
         html_message = render_to_string(
             "forgot_password.html",
             {
-                "username": str(change_request.user),
+                "username": str(change_token.user),
                 "reset_link": reset_link,
             },
         )
