@@ -22,9 +22,7 @@ services:
     build:
       dockerfile: ./Dockerfile.api
     restart: unless-stopped
-    env_file:
-      - path: ./.env
-        required: false
+    env_file: "./.env"
     environment:
       - POSTGRES_HOST=db
     depends_on:
@@ -38,9 +36,7 @@ services:
       dockerfile: ./Dockerfile.api
     command: python manage.py rundramatiq
     restart: unless-stopped
-    env_file:
-      - path: ./.env
-        required: false
+    env_file: "./.env"
     environment:
       - POSTGRES_HOST=db
     depends_on:
