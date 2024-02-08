@@ -26,6 +26,7 @@ jobs:
 
       - name: Build and push Docker images
         run: |
+          docker compose version
           docker compose build && docker compose push
 
       - name: executing remote ssh commands using password
