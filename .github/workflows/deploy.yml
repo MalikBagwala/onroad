@@ -24,6 +24,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # Create a dummy .env file to avoid error in docker compose
       - name: Build and push Docker images
         run: |
           touch .env
