@@ -2,13 +2,11 @@ version: "3.9"
 
 services:
   client:
-    image: onroadclient:latest
+    image: ghcr.io/malikbagwala/onroadclient:${VERSION:-latest}
     container_name: or_client
     build:
       context: ./client
       dockerfile: Dockerfile.client
-      # tags:
-      #   - registry.digitalocean.com/or-main/client:latest
       args:
         - API_DOMAIN=${DOMAIN_NAME}
         - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
@@ -19,15 +17,14 @@ services:
       - caddy
 
   django:
-    image: onroadapi:latest
+    image: ghcr.io/malikbagwala/onroadapi:${VERSION:-latest}
     container_name: or_django
     build:
       dockerfile: ./Dockerfile.api
-      # tags:
-      #   - registry.digitalocean.com/or-main/api:latest
     restart: unless-stopped
     env_file:
-      - ./.env
+      - path: ./.env
+        required: false
     environment:
       - POSTGRES_HOST=db
     depends_on:
@@ -35,16 +32,15 @@ services:
       - caddy
 
   worker:
-    image: onroadapi:latest
+    image: ghcr.io/malikbagwala/onroadapi:${VERSION:-latest}
     container_name: or_worker
     build:
       dockerfile: ./Dockerfile.api
-      # tags:
-      #   - registry.digitalocean.com/or-main/api:latest
     command: python manage.py rundramatiq
     restart: unless-stopped
     env_file:
-      - ./.env
+      - path: ./.env
+        required: false
     environment:
       - POSTGRES_HOST=db
     depends_on:
@@ -53,12 +49,10 @@ services:
 
   caddy:
     restart: unless-stopped
-    image: onroadcaddy:latest
+    image: ghcr.io/malikbagwala/onroadcaddy:${VERSION:-latest}
     build:
       context: ./caddy
       dockerfile: Dockerfile.caddy
-      # tags:
-      #   - registry.digitalocean.com/or-main/caddy:latest
     volumes:
       - caddy_data:/data
       - caddy_config:/config
@@ -97,12 +91,10 @@ services:
 
   hasura:
     container_name: or_hasura
-    image: onroadhasura:latest
+    image: ghcr.io/malikbagwala/onroadhasura:${VERSION:-latest}
     build:
       context: ./hasura
       dockerfile: Dockerfile.hasura
-      # tags:
-      #   - registry.digitalocean.com/or-main/hasura:latest
     restart: unless-stopped
     depends_on:
       - "db"
@@ -128,7 +120,6 @@ services:
     restart: always
 
   plausible_db:
-    # supported versions are 12, 13, and 14
     container_name: or_plausible_postgres
     image: postgres:14-alpine
     restart: unless-stopped
