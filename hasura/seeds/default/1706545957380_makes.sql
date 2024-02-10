@@ -5,7 +5,7 @@ INSERT INTO public.makes (id, name, estb_year) VALUES ('610ffb65-7b92-4604-acda-
 INSERT INTO public.makes (id, name, estb_year) VALUES ('146a47ba-5812-4854-afa2-fcd2d7255fce', 'Mahindra & Mahindra', 1945);
 INSERT INTO public.makes (id, name, estb_year) VALUES ('1f5bee5a-043d-453b-8b57-05c419cd561c', 'Honda', 1948);
 INSERT INTO public.makes (id, name, estb_year) VALUES ('d73da496-f35b-4cc0-9318-633406cddb42', 'Toyota', 1937);
-INSERT INTO public.makes (id, name, estb_year) VALUES ('4ee01662-ba0b-4ccb-bb4d-b8288e64e5f6', 'Volkswagen', 1937);
+INSERT INTO public.makes (id, name, estb_year, code) VALUES ('4ee01662-ba0b-4ccb-bb4d-b8288e64e5f6', 'Volkswagen', 1937 , 'VLK');
 INSERT INTO public.makes (id, name, estb_year) VALUES ('6e7ff323-e59e-405d-8968-4a0ac6473b37', 'Ford', 1903);
 INSERT INTO public.makes (id, name, estb_year) VALUES ('f6022c9d-ac1c-44f5-9e07-867b80a3cadc', 'Kia', 1944);
 INSERT INTO public.makes (id, name, estb_year) VALUES ('d04bc353-c5d5-45a4-b679-88784447e932', 'Renault', 1899);
@@ -20,5 +20,5 @@ INSERT INTO public.makes (id, name, estb_year) VALUES ('f6fe441a-823d-429f-a549-
 INSERT INTO public.makes (id, name, estb_year) VALUES ('091671c2-6d80-4ba7-9d27-3cdbe24be1e8', 'MG Motor', 1924);
 INSERT INTO public.makes (id, name, estb_year) VALUES ('72347e22-3d29-4616-9f24-c7200bf1d7c8', 'Jeep', 1941);
 INSERT INTO public.makes (id, name, estb_year) VALUES ('11cd6871-d9a0-4632-a45a-b2f27455719c', 'Fiat', 1899);
-INSERT INTO public.makes (id, name, estb_year) VALUES ('09365eaa-c764-424d-a5a3-b8a65f859356', 'Force Motors', 1958);
+INSERT INTO public.makes (id, name, estb_year, code) VALUES ('09365eaa-c764-424d-a5a3-b8a65f859356', 'Force Motors', 1958, 'FRC');
 INSERT INTO public.makes (id, name, estb_year) VALUES ('d0763beb-6cac-45ae-b21c-e3b12d64bb70', 'Okinawa', 2015);
