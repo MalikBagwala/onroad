@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - build-and-push-docker
 
 jobs:
   deploy:
@@ -25,10 +24,10 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       # Create a dummy .env file to avoid error in docker compose
-      - name: Build and push Docker images
-        run: |
-          touch .env
-          docker compose build && docker compose push
+      # - name: Build and push Docker images
+      #   run: |
+      #     touch .env
+      #     docker compose build && docker compose push
 
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@v1.0.3
@@ -38,6 +37,4 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             ls -al
-            cd onroad
-            git pull
-            docker compose up --build -d --remove-orphans
+            cd onroad && bash docker_deploy.sh
