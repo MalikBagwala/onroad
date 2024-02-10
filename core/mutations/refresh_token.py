@@ -5,7 +5,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from core.types import BaseResponse
 from rest_framework import status
 from django.utils import timezone
-from enum import Enum
 
 
 @strawberry.type
@@ -15,7 +14,7 @@ class RefreshTokenResponse(BaseResponse):
 
 def refresh_token(self, refreshToken: uuid.UUID) -> RefreshTokenResponse:
     try:
-        token = models.RefreshToken.objects.get(
+        token = models.UserToken.objects.get(
             token=refreshToken, user__is_active=True, expires_at__gt=timezone.now()
         )
         return RefreshTokenResponse(
