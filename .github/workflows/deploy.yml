@@ -37,4 +37,4 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             ls -al
-            cd onroad && bash docker_deploy.sh
+            cd onroad && git pull && bash docker_deploy.sh
