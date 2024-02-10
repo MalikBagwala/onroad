@@ -56,6 +56,7 @@ export const VARIANTS_LIST = graphql(/* GraphQL */ `
     $offset: Int
     $order_by: [variants_order_by!]
     $where: variants_bool_exp
+    $contributions_where: contributions_bool_exp
   ) {
     variants(
       distinct_on: $distinct_on
@@ -86,7 +87,11 @@ export const VARIANTS_LIST = graphql(/* GraphQL */ `
         }
       }
       short_description
-      contributions_aggregate {
+      contributions_aggregate(
+        order_by: { created_at: desc, upvotes: desc }
+        limit: 5
+        where: $contributions_where
+      ) {
         aggregate {
           avg {
             total
@@ -97,6 +102,51 @@ export const VARIANTS_LIST = graphql(/* GraphQL */ `
     variants_aggregate(distinct_on: $distinct_on, order_by: $order_by, where: $where) {
       aggregate {
         count
+      }
+    }
+  }
+`);
+
+export const VARIANT_DETAIL = graphql(/* GraphQL */ `
+  query VariantDetail($slug: String, $contributions_where: contributions_bool_exp) {
+    variants(where: { slug: { _eq: $slug } }, limit: 1) {
+      id
+      name
+      launch_date
+      transmission
+      fuel_type
+      description
+      specifications
+      vehicle {
+        id
+        type {
+          id
+          name
+        }
+      }
+      colors {
+        id
+        name
+        attachments {
+          id
+          attachment {
+            id
+            url
+          }
+        }
+      }
+      contributions_aggregate(
+        order_by: { created_at: desc, upvotes: desc }
+        limit: 5
+        where: $contributions_where
+      ) {
+        aggregate {
+          avg {
+            total
+            upvotes
+            downvotes
+          }
+        }
       }
     }
   }

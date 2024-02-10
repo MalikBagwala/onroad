@@ -22,36 +22,28 @@ export function HomePageHero() {
               Decisions Starts Here.
             </Title>
             <Stack>
-              <Text size="xl">
-                <Highlight highlight={keywords}>
-                  Welcome to OnRoad – your destination for informed vehicle decisions, simplified.
-                  OnRoad prioritizes your privacy, allowing you to contribute and access real
-                  vehicle quotes anonymously. Your personal details stay confidential, giving you
-                  the freedom to share insights without compromise.
-                </Highlight>
-              </Text>
-              <Text size="xl">
-                <Highlight highlight={keywords}>
-                  Anonymity is key at OnRoad – share your experiences and pricing information
-                  confidently, knowing your identity is protected. We've implemented robust security
-                  measures to ensure your data remains safe, so you can focus on making decisions
-                  worry-free.
-                </Highlight>
-              </Text>
-              <Text size="xl">
-                <Highlight highlight={keywords}>
-                  What makes OnRoad unique is our live, real-time data contributed by the community.
-                  Access up-to-the-minute insights from actual users, empowering you with the latest
-                  information for smarter choices in the automotive world.
-                </Highlight>
-              </Text>
-              <Text size="xl">
-                <Highlight highlight={keywords}>
-                  OnRoad is more than a platform; it's a secure space for straightforward,
-                  confidential, and real-time information. Join us on the road to smarter decisions
-                  – your journey starts here, at OnRoad.
-                </Highlight>
-              </Text>
+              <Highlight size="xl" highlight={keywords}>
+                Welcome to OnRoad – your destination for informed vehicle decisions, simplified.
+                OnRoad prioritizes your privacy, allowing you to contribute and access real vehicle
+                quotes anonymously. Your personal details stay confidential, giving you the freedom
+                to share insights without compromise.
+              </Highlight>
+              <Highlight size="xl" highlight={keywords}>
+                Anonymity is key at OnRoad – share your experiences and pricing information
+                confidently, knowing your identity is protected. We've implemented robust security
+                measures to ensure your data remains safe, so you can focus on making decisions
+                worry-free.
+              </Highlight>
+              <Highlight size="xl" highlight={keywords}>
+                What makes OnRoad unique is our live, real-time data contributed by the community.
+                Access up-to-the-minute insights from actual users, empowering you with the latest
+                information for smarter choices in the automotive world.
+              </Highlight>
+              <Highlight size="xl" highlight={keywords}>
+                OnRoad is more than a platform; it's a secure space for straightforward,
+                confidential, and real-time information. Join us on the road to smarter decisions –
+                your journey starts here, at OnRoad.
+              </Highlight>
             </Stack>
           </Stack>
           <Group mt={30}>
