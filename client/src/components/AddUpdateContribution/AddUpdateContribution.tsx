@@ -197,7 +197,7 @@ const AddUpdateContribution = ({}: AddUpdateContributionType) => {
   });
   return (
     <Box>
-      {data?.insert_contributions_one?.items?.length && form.values.id === 'new' && (
+      {data?.insert_contributions_one?.items?.length && form.values.id === 'new' ? (
         <ConfettiExplosion
           onComplete={async () => {
             const refreshToken = localStorage.getItem('refreshToken');
@@ -221,7 +221,7 @@ const AddUpdateContribution = ({}: AddUpdateContributionType) => {
           duration={2500}
           zIndex={999}
         />
-      )}
+      ) : null}
       <Stack mb={'sm'}>
         <Alert p={'xs'} variant="light" color="blue" icon={<IconDatabase />}>
           This contribution is anomyous, we will <strong>NEVER</strong> share your personal
