@@ -209,10 +209,10 @@ REFRESH_TOKEN_EXPIRATION_MINUTES = 10080  # 7 days
 ACCESS_TOKEN_EXPIRATION_MINUTES = 10  # 10 minutes
 USER_TOKEN_EXPIRATION_MINUTES = 15  # 15 minutes
 
-EMAIL_HOST = "smtp.mail.me.com"
-EMAIL_HOST_USER = "malik.bagwala@icloud.com"
+EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.mail.me.com")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-SERVER_EMAIL = "malik.bagwala@icloud.com"
-DEFAULT_FROM_EMAIL = "malik.bagwala@icloud.com"
+SERVER_EMAIL = os.getenv("EMAIL_HOST_USER")
+DEFAULT_FROM_EMAIL = os.getenv("EMAIL_HOST_USER")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True

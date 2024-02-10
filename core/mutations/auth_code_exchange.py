@@ -1,4 +1,5 @@
 import strawberry
+from core.enums import UserTokenType
 import core.models as models
 from django.core.exceptions import ObjectDoesNotExist
 from core.types import BaseResponse, Tokens
@@ -20,7 +21,7 @@ def auth_code_exchange(self, code: str, type: str = "VC") -> AuthCodeExchangeRes
             type=type,
             used=False,
         )
-        if token.type is not "RF":
+        if token.type != UserTokenType.REFRESH.value:
             token.used = True
             token.save()
 
