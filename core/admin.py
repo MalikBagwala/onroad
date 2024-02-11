@@ -5,7 +5,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
 
-from core.utils.spaces import upload_file_obj
+from core.utils.s3 import upload_file_obj
 from . import models
 from django_dramatiq.admin import TaskAdmin
 from django_dramatiq.models import Task

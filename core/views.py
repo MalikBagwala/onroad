@@ -19,7 +19,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
 
 from core.serializers import AttachmentSerializer
-from .utils.spaces import upload_file_obj
+from .utils.s3 import upload_file_obj
 
 
 @api_view(["GET"])
