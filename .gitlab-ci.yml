@@ -37,7 +37,7 @@ dockerize:
     - docker compose push
   rules:
     # - *staging_tag
-    - *prod_tag
+    # - *prod_tag
 
 deploy:
   stage: deploy
