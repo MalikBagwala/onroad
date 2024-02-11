@@ -52,7 +52,7 @@ deploy:
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
     - ssh-add <(echo "$SSH_PRIVATE_KEY" | tr -d '\r')
-    - ssh user@$DROPLET_IP "cd onroad && git pull"
+    - ssh root@$DROPLET_IP "cd onroad && git pull"
   rules:
     - *staging_tag
     - *prod_tag
