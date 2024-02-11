@@ -56,10 +56,6 @@ deploy:
     - ssh-add ~/.ssh/id_ed25519
     - ssh-keyscan $DROPLET_IP >> ~/.ssh/known_hosts
   script:
-    - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_ed25519
-    - chmod 600 ~/.ssh/id_ed25519
-    - ssh-keyscan $DROPLET_IP >> ~/.ssh/known_hosts
     - ssh user@$DROPLET_IP "cd onroad && git pull"
   rules:
     - *staging_tag
