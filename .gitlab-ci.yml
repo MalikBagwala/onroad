@@ -1,7 +1,6 @@
 stages:
   - dockerize
   - deploy
-  # - deploy
 
 .base_rules:
   rules:
@@ -37,7 +36,7 @@ dockerize:
     - docker compose build
     - docker compose push
   rules:
-    # - *staging_tag
+    - *staging_tag
     - *prod_tag
 
 deploy:
@@ -52,7 +51,7 @@ deploy:
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
     - ssh-add <(echo "$SSH_PRIVATE_KEY" | tr -d '\r')
-    - ssh root@$DROPLET_IP "cd onroad && git pull"
+    - ssh root@$DROPLET_IP "cd onroad && git pull && bash docker_deploy.sh"
   rules:
     - *staging_tag
     - *prod_tag
