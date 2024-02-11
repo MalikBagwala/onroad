@@ -37,7 +37,7 @@ dockerize:
     - docker compose build
     - docker compose push
   rules:
-    - *staging_tag
+    # - *staging_tag
     - *prod_tag
 
 deploy:
@@ -45,12 +45,9 @@ deploy:
   environment:
     name: $ENVIRONMENT
     url: $ENVIRONMENT_URL
-  variables:
-    SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY
-    DROPLET_IP: $DROPLET_IP
   before_script:
     - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_ed25519
+    - echo "$SSH_SECRET_KEY" | tr -d '\r' > ~/.ssh/id_ed25519
     - chmod 600 ~/.ssh/id_ed25519
     - eval $(ssh-agent -s)
     - ssh-add ~/.ssh/id_ed25519
