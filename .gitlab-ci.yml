@@ -1,5 +1,6 @@
 stages:
   - dockerize
+  - deploy
   # - deploy
 
 .base_rules:
@@ -22,11 +23,14 @@ dockerize:
   image: docker:25
   services:
     - docker:25-dind
-  environment: $ENVIRONMENT
+  environment:
+    name: $ENVIRONMENT
+    url: $ENVIRONMENT_URL
   variables:
     # Extra slash '/' is needed properly append the project path see docker-compose.yml
     REGISTRY_PATH: $CI_REGISTRY/$CI_PROJECT_PATH/
     VERSION: $CI_ENVIRONMENT_SLUG
+    COMMIT_REF: $CI_COMMIT_SHORT_SHA
   script:
     - export REGISTRY_PATH=$(echo "$REGISTRY_PATH" | tr '[:upper:]' '[:lower:]')
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
@@ -35,19 +39,28 @@ dockerize:
   rules:
     - *staging_tag
     - *prod_tag
-# deploy:
-#   stage: deploy
-#   environment:
-#     name: $ENVIRONMENT
-#     url: $ENVIRONMENT_URL
-#   before_script:
-#     - wget https://storage.googleapis.com/kubernetes-release/release/v1.20.2/bin/linux/amd64/kubectl
-#     - chmod +x ./kubectl
-#     - mv ./kubectl /usr/local/bin/kubectl
-#     - kubectl config get-contexts
-#   script:
-#     - kubectl config use-context $CI_PROJECT_PATH:marketplace-$ENVIRONMENT
-#     - kubectl rollout restart deployment/mandix-api-app -n $ENVIRONMENT
-#   rules:
-#     - *staging_tag
-#     - *prod_tag
+
+deploy:
+  stage: deploy
+  environment:
+    name: $ENVIRONMENT
+    url: $ENVIRONMENT_URL
+  variables:
+    SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY
+    DROPLET_IP: $DROPLET_IP
+  before_script:
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_ed25519
+    - chmod 600 ~/.ssh/id_ed25519
+    - eval $(ssh-agent -s)
+    - ssh-add ~/.ssh/id_ed25519
+    - ssh-keyscan $DROPLET_IP >> ~/.ssh/known_hosts
+  script:
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_ed25519
+    - chmod 600 ~/.ssh/id_ed25519
+    - ssh-keyscan $DROPLET_IP >> ~/.ssh/known_hosts
+    - ssh user@$DROPLET_IP "cd onroad && git pull"
+  rules:
+    - *staging_tag
+    - *prod_tag
