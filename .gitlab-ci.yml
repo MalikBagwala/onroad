@@ -46,13 +46,12 @@ deploy:
     name: $ENVIRONMENT
     url: $ENVIRONMENT_URL
   before_script:
+    - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
     - mkdir -p ~/.ssh
-    - echo "$SSH_SECRET_KEY" | tr -d '\r' > ~/.ssh/id_ed25519
-    - chmod 600 ~/.ssh/id_ed25519
     - eval $(ssh-agent -s)
-    - ssh-add ~/.ssh/id_ed25519
-    - ssh-keyscan $DROPLET_IP >> ~/.ssh/known_hosts
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
+    - ssh-add <(echo "$SSH_PRIVATE_KEY" | tr -d '\r')
     - ssh user@$DROPLET_IP "cd onroad && git pull"
   rules:
     - *staging_tag
