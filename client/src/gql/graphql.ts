@@ -139,15 +139,6 @@ export type OtpInput = {
   type: Scalars['String']['input'];
 };
 
-export type RefreshTokenResponse = {
-  __typename?: 'RefreshTokenResponse';
-  code: Scalars['Int']['output'];
-  data?: Maybe<Scalars['String']['output']>;
-  errors?: Maybe<Scalars['JSON']['output']>;
-  message: Scalars['String']['output'];
-  success: Scalars['Boolean']['output'];
-};
-
 export type RegisterDataType = {
   __typename?: 'RegisterDataType';
   tokens: Tokens;
@@ -3378,7 +3369,6 @@ export type Mutation_Root = {
   insert_votes_one?: Maybe<Votes>;
   login: LoginResponse;
   loginWithMagicLink: LoginWithMagicLinkResponse;
-  refreshToken: RefreshTokenResponse;
   register: RegisterResponse;
   sendEmailOtp: SendEmailOtpResponse;
   /** update data of the table: "attachments" */
@@ -4157,12 +4147,6 @@ export type Mutation_RootLoginArgs = {
 /** mutation root */
 export type Mutation_RootLoginWithMagicLinkArgs = {
   email: Scalars['String']['input'];
-};
-
-
-/** mutation root */
-export type Mutation_RootRefreshTokenArgs = {
-  refreshToken: Scalars['UUID']['input'];
 };
 
 
