@@ -42,7 +42,6 @@ def passkey_register_verify(
             user=user,
             credential_id=res.credential_id,
             public_key=res.credential_public_key,
-            sign_count=res.sign_count,
             description=user_name,
         )
         info.context.request.session.pop("passkey")

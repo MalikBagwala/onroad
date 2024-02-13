@@ -160,13 +160,14 @@ class UserToken(UUIDPrimaryKey, AbstractTimestamp):
 
 
 class UserPassKeys(UUIDPrimaryKey, AbstractTimestamp):
+    name = models.CharField(max_length=64, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     public_key = models.BinaryField()
-    credential_id = models.BinaryField()
-    sign_count = models.PositiveIntegerField(default=decimal.Decimal(0), db_default=decimal.Decimal(0))  # type: ignore
+    credential_id = models.BinaryField(unique=True)
     description = models.TextField(null=True, blank=True)
 
     class Meta:
+        ordering = ["-created_at"]
         db_table = "user_passkeys"
         verbose_name_plural = "User Passkeys"
 

@@ -84,6 +84,18 @@ class AttachmentAdminForm(forms.ModelForm):
 
 @admin.register(models.UserPassKeys)
 class UserPassKeysAdmin(ImportExportModelAdmin):
+    search_fields = (
+        "description",
+        "name",
+    )
+    list_display = (
+        "name",
+        "description",
+        "created_at",
+        "credential_id",
+        "public_key",
+        "updated_at",
+    )
     pass
 
 

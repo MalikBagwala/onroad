@@ -8,6 +8,7 @@ import { notifications } from '@mantine/notifications';
 import { useMutation } from 'urql';
 import UserOnboardWrapper from '../UserOnboard/UserOnboardWrapper';
 import { useNavigate } from 'react-router-dom';
+import { IconHandRock } from '@tabler/icons-react';
 
 type ReturningUserType = {
   email: string;
@@ -87,6 +88,7 @@ const ReturningUser = ({ email, abort }: ReturningUserType) => {
             color: data?.login?.code === 200 ? 'green' : 'red',
             withBorder: true,
             autoClose: 1500,
+            icon: <IconHandRock />,
           });
         })}
       >

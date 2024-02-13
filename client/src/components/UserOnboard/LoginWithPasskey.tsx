@@ -3,8 +3,9 @@ import { PASSKEY_AUTH_OPTIONS, PASSKEY_AUTH_OPTIONS_VERIFY } from '@/graphql/aut
 import { setAccessToken, setRefreshToken } from '@/utils/tokens';
 import { Button } from '@mantine/core';
 import { modals } from '@mantine/modals';
+import { notifications } from '@mantine/notifications';
 import { startAuthentication } from '@simplewebauthn/browser';
-import { IconUserScan } from '@tabler/icons-react';
+import { IconHandRock, IconUserScan } from '@tabler/icons-react';
 import { useMutation } from 'urql';
 
 type LoginWithPasskeyType = {};
@@ -27,6 +28,12 @@ const LoginWithPasskey = ({}: LoginWithPasskeyType) => {
           setAccessToken(tokens.accessToken);
           setRefreshToken(tokens.refreshToken);
           refreshClient();
+          notifications.show({
+            message: avData?.passkeyAuthOptionsVerify?.message,
+            icon: <IconHandRock />,
+            color: avData?.passkeyAuthOptionsVerify?.code === 200 ? 'green' : 'red',
+            withBorder: true,
+          });
           modals.closeAll();
         }
       }}

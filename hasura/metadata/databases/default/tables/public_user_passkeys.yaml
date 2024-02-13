@@ -9,7 +9,6 @@ select_permissions:
         - credential_id
         - description
         - id
-        - sign_count
         - updated_at
         - user_id
       filter:
@@ -23,7 +22,6 @@ select_permissions:
         - credential_id
         - description
         - id
-        - sign_count
         - updated_at
         - user_id
       filter:
