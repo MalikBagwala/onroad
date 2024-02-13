@@ -12,6 +12,13 @@ export const CURRENT_USER = graphql(/* GraphQL */ `
       has_contributed
       email_verified
       google_id
+      passkeys {
+        id
+        credential_id
+        created_at
+        updated_at
+        description
+      }
       tokens {
         id
         client
@@ -141,8 +148,8 @@ export const FORGOT_PASSWORD_CONFIRM = graphql(/* GraphQL */ `
 `);
 
 export const REGISTER_PASSKEY = graphql(/* GraphQL */ `
-  mutation registerPasskey($email: String!) {
-    registerPasskey(email: $email) {
+  mutation passkeyRegisterOptions($name: String!) {
+    passkeyRegisterOptions(name: $name) {
       data
       code
       message
@@ -152,15 +159,49 @@ export const REGISTER_PASSKEY = graphql(/* GraphQL */ `
 `);
 
 export const VERIFY_PASSKEY_REGISTERATION = graphql(/* GraphQL */ `
-  mutation verifyPasskey($credential: String!) {
-    verifyPasskey(credential: $credential) {
-      data
+  mutation passkeyRegisterVerify($credential: String!) {
+    passkeyRegisterVerify(credential: $credential) {
+      data {
+        passKey {
+          id
+          credentialId
+          userId
+        }
+        tokens {
+          accessToken
+          refreshToken
+        }
+      }
       code
       message
       success
     }
   }
 `);
+
+export const PASSKEY_AUTH_OPTIONS = graphql(/* GraphQL */ `
+  mutation passkeyAuthOptions {
+    passkeyAuthOptions {
+      code
+      data
+      message
+    }
+  }
+`);
+
+export const PASSKEY_AUTH_OPTIONS_VERIFY = graphql(/* GraphQL */ `
+  mutation passkeyAuthOptionsVerify($credential: String!, $credentialId: String!) {
+    passkeyAuthOptionsVerify(credential: $credential, credentialId: $credentialId) {
+      code
+      message
+      data {
+        accessToken
+        refreshToken
+      }
+    }
+  }
+`);
+
 export const DELETE_USER_TOKENS = graphql(/* GraphQL */ `
   mutation delete_user_tokens($where: user_tokens_bool_exp!) {
     delete_user_tokens(where: $where) {

@@ -1,9 +1,25 @@
-import { useCurrentUser } from '@/authentication/AuthContext';
-import { DELETE_USER_TOKENS, FORGOT_PASSWORD } from '@/graphql/auth.gql';
+import { useAuth, useCurrentUser } from '@/authentication/AuthContext';
+import {
+  DELETE_USER_TOKENS,
+  FORGOT_PASSWORD,
+  REGISTER_PASSKEY,
+  VERIFY_PASSKEY_REGISTERATION,
+} from '@/graphql/auth.gql';
 import signinWithGoogleLink from '@/utils/signinWithGoogleLink';
-import { ActionIcon, Button, Flex, PasswordInput, Stack, Text, TextInput } from '@mantine/core';
+import { setAccessToken, setRefreshToken } from '@/utils/tokens';
+import {
+  ActionIcon,
+  Button,
+  Divider,
+  Flex,
+  PasswordInput,
+  Stack,
+  Text,
+  TextInput,
+} from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import { IconBrandGoogle, IconCheck, IconEdit, IconKey } from '@tabler/icons-react';
+import { startRegistration } from '@simplewebauthn/browser';
+import { IconBrandGoogle, IconCheck, IconEdit, IconKey, IconUserScan } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import { useMutation } from 'urql';
 type AccountDetailsType = {};
@@ -11,7 +27,8 @@ const AccountDetails = ({}: AccountDetailsType) => {
   const { data: uData } = useCurrentUser();
   const [{ fetching, data }, deleteUserTokens] = useMutation(DELETE_USER_TOKENS);
   const [{ fetching: fFetching }, forgot] = useMutation(FORGOT_PASSWORD);
-
+  const [, register] = useMutation(REGISTER_PASSKEY);
+  const [, verify] = useMutation(VERIFY_PASSKEY_REGISTERATION);
   return (
     <Stack>
       <Stack>
@@ -83,6 +100,7 @@ const AccountDetails = ({}: AccountDetailsType) => {
           </Flex>
         </Stack>
       </Stack>
+      <Divider />
       <Stack>
         <Text fw={500} c={'gray.7'} size="xl">
           Sessions
@@ -108,7 +126,60 @@ const AccountDetails = ({}: AccountDetailsType) => {
                   variant="light"
                   size="xs"
                 >
-                  Revoke
+                  Revoke Session
+                </Button>
+              </Flex>
+            );
+          })}
+        </Stack>
+      </Stack>
+      <Divider />
+      <Stack>
+        <Flex justify={'space-between'}>
+          <Text fw={500} c={'gray.7'} size="xl">
+            Passkeys
+          </Text>
+          <Button
+            variant="light"
+            size="xs"
+            onClick={async () => {
+              const { data } = await register({ name: 'MalikBagwala' });
+              const registrationOptions = data?.passkeyRegisterOptions?.data;
+              const credential = await startRegistration(registrationOptions);
+              const { data: vData } = await verify({
+                credential: JSON.stringify(credential),
+              });
+              const tokens = vData?.passkeyRegisterVerify?.data?.tokens;
+              if (tokens) {
+                notifications.show({
+                  message: vData?.passkeyRegisterVerify?.message,
+                });
+              }
+            }}
+          >
+            Register
+          </Button>
+        </Flex>
+        <Stack gap={'xs'}>
+          {uData?.passkeys?.map((passkey) => {
+            return (
+              <Flex key={passkey.id} justify={'space-between'}>
+                <Flex gap={'sm'}>
+                  <IconUserScan />
+                  <Text>{passkey.description}</Text>
+                </Flex>
+                <Button
+                  loading={
+                    data?.delete_user_tokens?.returning?.find((idx) => idx.id === passkey.id)
+                      ? fetching
+                      : false
+                  }
+                  onClick={() => deleteUserTokens({ where: { id: { _eq: passkey.id } } })}
+                  color="red"
+                  variant="light"
+                  size="xs"
+                >
+                  Revoke Passkey
                 </Button>
               </Flex>
             );

@@ -1,30 +1,23 @@
-import json
-import os
-from uuid import uuid4
-import uuid
 import strawberry
-from django.core.exceptions import ObjectDoesNotExist
-from webauthn import base64url_to_bytes, verify_authentication_response, options_to_json
+from webauthn import base64url_to_bytes, verify_authentication_response
 from core.models import UserPassKeys
-from core.types import BaseResponse
-from rest_framework.exceptions import ValidationError
-
-from core.utils.validation_error_serializer import validation_error_serializer
-from strawberry.scalars import JSON
+from core.types import BaseResponse, Tokens
 from strawberry.types import Info
 from django.conf import settings
 
 
 @strawberry.type
 class PasskeyAuthOptionsVerifyResponse(BaseResponse):
-    data: None
+    data: Tokens | None
 
 
 def passkey_auth_options_verify(
-    self, credential: str, passkey_id: uuid.UUID, info: Info
+    self, credential: str, credential_id: str, info: Info
 ) -> PasskeyAuthOptionsVerifyResponse:
     try:
-        passkey = UserPassKeys.objects.get(pk=passkey_id)
+        passkey = UserPassKeys.objects.get(
+            credential_id=base64url_to_bytes(credential_id)
+        )
         stored_challenge = info.context.request.session["auth_challenge"]
         verification_response = verify_authentication_response(
             expected_challenge=base64url_to_bytes(stored_challenge),
@@ -40,7 +33,10 @@ def passkey_auth_options_verify(
         return PasskeyAuthOptionsVerifyResponse(
             success=True,
             message=f"Registration process success",
-            data=None,
+            data=Tokens(
+                accessToken=passkey.user.get_access_token(),
+                refreshToken=passkey.user.get_refresh_token(),  # type: ignore
+            ),
             code=200,
         )
     except Exception as e:

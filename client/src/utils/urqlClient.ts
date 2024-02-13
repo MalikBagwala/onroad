@@ -20,6 +20,10 @@ export const AUTH_OPERATIONS = [
   'forgotPassword',
   'forgotPasswordConfirm',
   'membershipTypeByEmail',
+  // 'passkeyRegisterOptions',
+  // 'passkeyRegisterVerify',
+  'passkeyAuthOptions',
+  'passkeyAuthOptionsVerify',
 ];
 
 function makeClient(navigate: NavigateFunction) {

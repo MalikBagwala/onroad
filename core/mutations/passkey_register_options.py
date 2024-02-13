@@ -23,23 +23,27 @@ class PasskeyRegisterOptions(BaseResponse):
 def passkey_register_options(self, name: str, info: Info) -> PasskeyRegisterOptions:
     try:
         user = info.context.request.user
+        username = user.username
+        user_id = user.id
         if not user.id:
-            user = User.objects.create(username=name, email=name)
+            username = name
+            user_id = uuid4()
         options = generate_registration_options(
             rp_id=settings.DOMAIN_NAME,
             rp_name="OnRoad",
-            user_id=user.id.bytes,
-            user_name=user.username,
-            user_display_name=f"{user.username}@onroad",
+            user_id=user_id.bytes,
+            user_name=username,
             attestation=AttestationConveyancePreference.DIRECT,
             authenticator_selection=AuthenticatorSelectionCriteria(
                 authenticator_attachment=AuthenticatorAttachment.PLATFORM
             ),
         )
         data = json.loads(options_to_json(options))
-        print(data)
-        info.context.request.session["challenge"] = data.get("challenge")
-        info.context.request.session["user_id"] = user.id
+        info.context.request.session["passkey"] = {
+            "challenge": data.get("challenge"),
+            "user_id": str(user_id),
+            "username": username,
+        }
         return PasskeyRegisterOptions(
             success=True,
             message=f"Registration process intialized",

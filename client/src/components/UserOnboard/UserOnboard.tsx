@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useClient } from 'urql';
 import NewUser from '../NewUser/NewUser';
 import ReturningUser from '../ReturningUser/ReturningUser';
+import LoginWithPasskey from './LoginWithPasskey';
 import UserOnboardWrapper from './UserOnboardWrapper';
 
 export const UserOnboard = () => {
@@ -18,6 +19,7 @@ export const UserOnboard = () => {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Please enter a valid email address.'),
     },
   });
+
   const [membershipType, setMembershipType] = useState<null | 'NEW_USER' | 'RETURNING_USER'>(null);
   const [loading, setLoading] = useState(false);
 
@@ -72,6 +74,7 @@ export const UserOnboard = () => {
       >
         Continue with Google
       </Button>
+      <LoginWithPasskey />
       <Divider label="or" />
       <form
         onSubmit={form.onSubmit(async (values) => {

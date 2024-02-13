@@ -1,14 +1,10 @@
 import json
 import strawberry
-from django.core.exceptions import ObjectDoesNotExist
 from webauthn import (
     generate_authentication_options,
     options_to_json,
 )
 from core.types import BaseResponse
-from rest_framework.exceptions import ValidationError
-
-from core.utils.validation_error_serializer import validation_error_serializer
 from strawberry.scalars import JSON
 from strawberry.types import Info
 from django.conf import settings
