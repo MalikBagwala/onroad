@@ -361,27 +361,3 @@ class Vote(UUIDPrimaryKey, AbstractTimestamp):
 
     def __str__(self):
         return f"{self.contribution}/{self.user}/{self.type}"
-
-
-class RefreshToken(UUIDPrimaryKey, AbstractTimestamp):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    token = models.UUIDField(default=uuid4, editable=False, unique=True)  # type: ignore
-    expires_at = models.DateTimeField(
-        default=get_refresh_token_expires_in, null=True, blank=True
-    )
-    client = models.CharField(max_length=255, default="web")
-
-    class Meta:
-        db_table = "refresh_tokens"
-        ordering = ["-created_at"]
-        constraints = [
-            models.UniqueConstraint(
-                fields=["user", "client"],
-                name="one_token_per_user_client",
-            ),
-        ]
-
-    def __str__(self) -> str:
-        return f"{self.user} - {self.expires_at}"
-
-    pass
