@@ -3298,6 +3298,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@passwordless-id/webauthn@npm:^1.3.3":
+  version: 1.3.3
+  resolution: "@passwordless-id/webauthn@npm:1.3.3"
+  checksum: 13d8c787d22a1dd12f41956d886c622e32da204e409b972e66c12b674d73265727c3188d689a944b2a7c32aa56c0655af8829d34f11f425d14b3588164f57f0d
+  languageName: node
+  linkType: hard
+
 "@peculiar/asn1-schema@npm:^2.3.6, @peculiar/asn1-schema@npm:^2.3.8":
   version: 2.3.8
   resolution: "@peculiar/asn1-schema@npm:2.3.8"
@@ -4017,6 +4024,22 @@ __metadata:
   version: 4.4.1
   resolution: "@rollup/rollup-win32-x64-msvc@npm:4.4.1"
   conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@simplewebauthn/browser@npm:^9.0.1":
+  version: 9.0.1
+  resolution: "@simplewebauthn/browser@npm:9.0.1"
+  dependencies:
+    "@simplewebauthn/types": "npm:^9.0.1"
+  checksum: 141f3f55d99ad2b4dcf697026d2470fa10b65a36286b616ead71b56ddd5636c30eb001599d27c2509a87c93def6636a2c7081ae362910268b78733a676af3ebf
+  languageName: node
+  linkType: hard
+
+"@simplewebauthn/types@npm:^9.0.1":
+  version: 9.0.1
+  resolution: "@simplewebauthn/types@npm:9.0.1"
+  checksum: 397f079ac029ada1413d6001850e3b49f99297a9933822758bdca9c47c36d6558e1dc81682725e0b03c501551c94fea040cead76883dcd2bb3a34b32984900f5
   languageName: node
   linkType: hard
 
@@ -11015,6 +11038,8 @@ __metadata:
     "@mantine/hooks": "npm:7.4.1"
     "@mantine/modals": "npm:^7.4.2"
     "@mantine/notifications": "npm:^7.4.2"
+    "@passwordless-id/webauthn": "npm:^1.3.3"
+    "@simplewebauthn/browser": "npm:^9.0.1"
     "@storybook/addon-essentials": "npm:^7.6.6"
     "@storybook/addon-interactions": "npm:^7.6.6"
     "@storybook/addon-links": "npm:^7.6.6"

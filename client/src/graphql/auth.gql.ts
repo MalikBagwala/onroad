@@ -140,6 +140,27 @@ export const FORGOT_PASSWORD_CONFIRM = graphql(/* GraphQL */ `
   }
 `);
 
+export const REGISTER_PASSKEY = graphql(/* GraphQL */ `
+  mutation registerPasskey($email: String!) {
+    registerPasskey(email: $email) {
+      data
+      code
+      message
+      success
+    }
+  }
+`);
+
+export const VERIFY_PASSKEY_REGISTERATION = graphql(/* GraphQL */ `
+  mutation verifyPasskey($credential: String!) {
+    verifyPasskey(credential: $credential) {
+      data
+      code
+      message
+      success
+    }
+  }
+`);
 export const DELETE_USER_TOKENS = graphql(/* GraphQL */ `
   mutation delete_user_tokens($where: user_tokens_bool_exp!) {
     delete_user_tokens(where: $where) {

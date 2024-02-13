@@ -23,6 +23,8 @@ const documents = {
     "\n  mutation authCodeExchange($code: String!, $type: String!) {\n    authCodeExchange(code: $code, type: $type) {\n      code\n      message\n      success\n      data {\n        accessToken\n        refreshToken\n      }\n    }\n  }\n": types.AuthCodeExchangeDocument,
     "\n  mutation forgotPassword($identity: String!) {\n    forgotPassword(identity: $identity) {\n      code\n      data\n      success\n      message\n    }\n  }\n": types.ForgotPasswordDocument,
     "\n  mutation forgotPasswordConfirm($input: ForgotPasswordConfirmInput!) {\n    forgotPasswordConfirm(input: $input) {\n      data {\n        accessToken\n        refreshToken\n      }\n      success\n      code\n      message\n    }\n  }\n": types.ForgotPasswordConfirmDocument,
+    "\n  mutation registerPasskey($email: String!) {\n    registerPasskey(email: $email) {\n      data\n      code\n      message\n      success\n    }\n  }\n": types.RegisterPasskeyDocument,
+    "\n  mutation verifyPasskey($credential: String!) {\n    verifyPasskey(credential: $credential) {\n      data\n      code\n      message\n      success\n    }\n  }\n": types.VerifyPasskeyDocument,
     "\n  mutation delete_user_tokens($where: user_tokens_bool_exp!) {\n    delete_user_tokens(where: $where) {\n      returning {\n        id\n        client\n      }\n      affected_rows\n    }\n  }\n": types.Delete_User_TokensDocument,
     "\n  query cities(\n    $distinct_on: [cities_select_column!]\n    $limit: Int\n    $offset: Int\n    $order_by: [cities_order_by!]\n    $where: cities_bool_exp\n  ) {\n    cities(\n      distinct_on: $distinct_on\n      limit: $limit\n      offset: $offset\n      order_by: $order_by\n      where: $where\n    ) {\n      id\n      name\n      state {\n        id\n        name\n      }\n    }\n  }\n": types.CitiesDocument,
     "\n  query myContributions($limit: Int, $offset: Int, $query: String) {\n    myContributions(limit: $limit, offset: $offset, query: $query) {\n      code\n      data\n      message\n    }\n  }\n": types.MyContributionsDocument,
@@ -95,6 +97,14 @@ export function graphql(source: "\n  mutation forgotPassword($identity: String!)
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation forgotPasswordConfirm($input: ForgotPasswordConfirmInput!) {\n    forgotPasswordConfirm(input: $input) {\n      data {\n        accessToken\n        refreshToken\n      }\n      success\n      code\n      message\n    }\n  }\n"): (typeof documents)["\n  mutation forgotPasswordConfirm($input: ForgotPasswordConfirmInput!) {\n    forgotPasswordConfirm(input: $input) {\n      data {\n        accessToken\n        refreshToken\n      }\n      success\n      code\n      message\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation registerPasskey($email: String!) {\n    registerPasskey(email: $email) {\n      data\n      code\n      message\n      success\n    }\n  }\n"): (typeof documents)["\n  mutation registerPasskey($email: String!) {\n    registerPasskey(email: $email) {\n      data\n      code\n      message\n      success\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation verifyPasskey($credential: String!) {\n    verifyPasskey(credential: $credential) {\n      data\n      code\n      message\n      success\n    }\n  }\n"): (typeof documents)["\n  mutation verifyPasskey($credential: String!) {\n    verifyPasskey(credential: $credential) {\n      data\n      code\n      message\n      success\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

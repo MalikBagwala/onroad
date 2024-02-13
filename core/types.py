@@ -26,3 +26,10 @@ class UserType:
 class Tokens:
     accessToken: str
     refreshToken: uuid.UUID
+
+
+@strawberry.type
+class PassKey:
+    id: uuid.UUID
+    credential_id: str
+    user_id: uuid.UUID

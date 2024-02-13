@@ -20,6 +20,7 @@ python-dotenv = "*"
 pillow = "*"
 requests = "*"
 boto3 = "*"
+webauthn = "*"
 
 [dev-packages]
 black = "*"

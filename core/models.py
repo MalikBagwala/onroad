@@ -9,7 +9,6 @@ from core.utils.time import (
 )
 from .abstracts import AbstractTimestamp, UUIDPrimaryKey
 from django.db import models
-from .utils.random import generate_otp
 from django.utils import timezone
 from .enums import (
     PriceCategoryTypes,
@@ -158,6 +157,21 @@ class UserToken(UUIDPrimaryKey, AbstractTimestamp):
 
     def __str__(self):
         return f"{self.user} - {self.expires_at}"
+
+
+class UserPassKeys(UUIDPrimaryKey, AbstractTimestamp):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    public_key = models.BinaryField()
+    credential_id = models.BinaryField()
+    sign_count = models.PositiveIntegerField(default=decimal.Decimal(0), db_default=decimal.Decimal(0))  # type: ignore
+    description = models.TextField(null=True, blank=True)
+
+    class Meta:
+        db_table = "user_passkeys"
+        verbose_name_plural = "User Passkeys"
+
+    def __str__(self):
+        return f"{self.user} - {self.credential_id}"
 
 
 class Attachment(UUIDPrimaryKey, AbstractTimestamp):

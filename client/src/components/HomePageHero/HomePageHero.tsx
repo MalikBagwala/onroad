@@ -3,6 +3,7 @@ import classes from './HomePageHero.module.css';
 import { useCurrentUser } from '@/authentication/AuthContext';
 import { Link } from 'react-router-dom';
 import { IconLogin } from '@tabler/icons-react';
+import Passkeys from '../Passkeys';
 
 const keywords = [
   'contribute and access real vehicle quotes anonymously',
@@ -45,6 +46,7 @@ export function HomePageHero() {
                 your journey starts here, at OnRoad.
               </Highlight>
             </Stack>
+            <Passkeys />
           </Stack>
           <Group mt={30}>
             <Button component={Link} to={'/variants'} radius="xl" size="md">

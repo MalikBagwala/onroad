@@ -1,6 +1,21 @@
 import strawberry
 from strawberry_django.optimizer import DjangoOptimizerExtension
 from django.conf import settings
+from core.mutations.passkey_register_options import (
+    passkey_register_options,
+    PasskeyRegisterOptions,
+)
+
+from core.mutations.passkey_auth_options import (
+    passkey_auth_options,
+    PasskeyAuthOptionsResponse,
+)
+
+from core.mutations.passkey_auth_options_verify import (
+    passkey_auth_options_verify,
+    PasskeyAuthOptionsVerifyResponse,
+)
+
 from core.mutations.auth_code_exchange import (
     AuthCodeExchangeResponse,
     auth_code_exchange,
@@ -18,6 +33,10 @@ from core.mutations.login_with_magic_link import (
     LoginWithMagicLinkResponse,
 )
 from core.mutations.send_email_otp import SendEmailOtpResponse, send_email_otp
+from core.mutations.passkey_register_verify import (
+    PasskeyRegisterVerifyResponse,
+    passkey_register_verify,
+)
 from core.queries.membership_type import (
     MembershipTypeByEmailResponse,
     membership_type_by_email,
@@ -73,6 +92,20 @@ class Query:
 class Mutation:
     login: LoginResponse = strawberry.field(resolver=login)
     register: RegisterResponse = strawberry.field(resolver=register)
+    passkey_register_options: PasskeyRegisterOptions = strawberry.field(
+        resolver=passkey_register_options
+    )
+    passkey_register_verify: PasskeyRegisterVerifyResponse = strawberry.field(
+        resolver=passkey_register_verify
+    )
+
+    passkey_auth_options: PasskeyAuthOptionsResponse = strawberry.field(
+        resolver=passkey_auth_options
+    )
+    passkey_auth_options_verify: PasskeyAuthOptionsVerifyResponse = strawberry.field(
+        resolver=passkey_auth_options_verify
+    )
+
     login_with_magic_link: LoginWithMagicLinkResponse = strawberry.field(
         resolver=login_with_magic_link
     )
