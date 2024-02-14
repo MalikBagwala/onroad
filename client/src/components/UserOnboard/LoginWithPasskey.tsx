@@ -6,6 +6,7 @@ import { modals } from '@mantine/modals';
 import { notifications } from '@mantine/notifications';
 import { startAuthentication } from '@simplewebauthn/browser';
 import { IconHandRock, IconUserScan } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'urql';
 
 type LoginWithPasskeyType = {};
@@ -13,6 +14,7 @@ const LoginWithPasskey = ({}: LoginWithPasskeyType) => {
   const { refreshClient } = useAuth();
   const [, authInit] = useMutation(PASSKEY_AUTH_OPTIONS);
   const [, authVerify] = useMutation(PASSKEY_AUTH_OPTIONS_VERIFY);
+  const navigate = useNavigate();
   return (
     <Button
       onClick={async () => {
@@ -35,6 +37,7 @@ const LoginWithPasskey = ({}: LoginWithPasskeyType) => {
             withBorder: true,
           });
           modals.closeAll();
+          navigate({ search: '' }, { replace: true });
         }
       }}
       component="a"

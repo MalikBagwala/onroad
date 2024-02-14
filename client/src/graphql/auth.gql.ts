@@ -214,6 +214,18 @@ export const DELETE_USER_TOKENS = graphql(/* GraphQL */ `
   }
 `);
 
+export const DELETE_USER_PASSKEYS = graphql(/* GraphQL */ `
+  mutation delete_user_passkeys($where: user_passkeys_bool_exp!) {
+    delete_user_passkeys(where: $where) {
+      returning {
+        id
+        credential_id
+      }
+      affected_rows
+    }
+  }
+`);
+
 export const CITIES = graphql(/* GraphQL */ `
   query cities(
     $distinct_on: [cities_select_column!]

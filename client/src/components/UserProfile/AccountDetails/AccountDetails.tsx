@@ -1,5 +1,6 @@
 import { useAuth, useCurrentUser } from '@/authentication/AuthContext';
 import {
+  DELETE_USER_PASSKEYS,
   DELETE_USER_TOKENS,
   FORGOT_PASSWORD,
   REGISTER_PASSKEY,
@@ -24,8 +25,10 @@ import dayjs from 'dayjs';
 import { useMutation } from 'urql';
 type AccountDetailsType = {};
 const AccountDetails = ({}: AccountDetailsType) => {
-  const { data: uData } = useCurrentUser();
+  const { data: uData, fetchUser } = useCurrentUser();
   const [{ fetching, data }, deleteUserTokens] = useMutation(DELETE_USER_TOKENS);
+  const [{ fetching: pFetching, data: pData }, deletePasskeys] = useMutation(DELETE_USER_PASSKEYS);
+
   const [{ fetching: fFetching }, forgot] = useMutation(FORGOT_PASSWORD);
   const [, register] = useMutation(REGISTER_PASSKEY);
   const [, verify] = useMutation(VERIFY_PASSKEY_REGISTERATION);
@@ -135,7 +138,7 @@ const AccountDetails = ({}: AccountDetailsType) => {
       </Stack>
       <Divider />
       <Stack>
-        <Flex justify={'space-between'}>
+        <Flex gap={'sm'}>
           <Text fw={500} c={'gray.7'} size="xl">
             Passkeys
           </Text>
@@ -150,14 +153,18 @@ const AccountDetails = ({}: AccountDetailsType) => {
                 credential: JSON.stringify(credential),
               });
               const tokens = vData?.passkeyRegisterVerify?.data?.tokens;
+
               if (tokens) {
+                fetchUser({ requestPolicy: 'network-only' });
                 notifications.show({
+                  icon: <IconCheck />,
                   message: vData?.passkeyRegisterVerify?.message,
+                  color: vData.passkeyRegisterVerify?.success ? 'green' : 'red',
                 });
               }
             }}
           >
-            Register
+            Create New
           </Button>
         </Flex>
         <Stack gap={'xs'}>
@@ -170,11 +177,11 @@ const AccountDetails = ({}: AccountDetailsType) => {
                 </Flex>
                 <Button
                   loading={
-                    data?.delete_user_tokens?.returning?.find((idx) => idx.id === passkey.id)
-                      ? fetching
+                    pData?.delete_user_passkeys?.returning?.find((idx) => idx.id === passkey.id)
+                      ? pFetching
                       : false
                   }
-                  onClick={() => deleteUserTokens({ where: { id: { _eq: passkey.id } } })}
+                  onClick={() => deletePasskeys({ where: { id: { _eq: passkey.id } } })}
                   color="red"
                   variant="light"
                   size="xs"
