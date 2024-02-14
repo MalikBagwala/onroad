@@ -47,7 +47,7 @@ def passkey_register_verify(
         info.context.request.session.pop("passkey")
         return PasskeyRegisterVerifyResponse(
             success=True,
-            message=f"Registration process successful",
+            message=f"Passkey registered for successfully, you can use this to login without a password :)",
             data=PasskeyRegisterVerifyData(
                 passKey=PassKey(
                     id=passkey.id,

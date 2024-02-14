@@ -81,7 +81,7 @@ export const useAuth = () => useContext(AuthContext);
 export const useCurrentUser = () => {
   const accessToken = getAccessToken();
   const navigate = useNavigate();
-  const [{ fetching, data, error }] = useQuery({
+  const [{ fetching, data, error }, fetchUser] = useQuery({
     query: CURRENT_USER,
     pause: !accessToken || window.location.pathname.startsWith('/reset'),
   });
@@ -93,6 +93,6 @@ export const useCurrentUser = () => {
       navigate('/contributions/new', { replace: true });
     }
   }, [hasContributed, user]);
-  return { fetching, data: user, error } as const;
+  return { fetching, data: user, error, fetchUser } as const;
 };
 export default AuthProvider;

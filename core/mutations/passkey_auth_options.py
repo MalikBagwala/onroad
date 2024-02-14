@@ -24,7 +24,7 @@ def passkey_auth_options(self, info: Info) -> PasskeyAuthOptionsResponse:
         info.context.request.session["auth_challenge"] = data.get("challenge")
         return PasskeyAuthOptionsResponse(
             success=True,
-            message=f"Registration process intialized",
+            message=f"Please verify the challenge and sign the response to authenticate.",
             data=data,
             code=200,
         )
