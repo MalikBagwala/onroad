@@ -11,6 +11,7 @@ from django_dramatiq.admin import TaskAdmin
 from django_dramatiq.models import Task
 from django import forms
 
+
 # Register your models here.
 UserAdmin.fieldsets += (("Extra Fields", {"fields": ("city", "email_verified", "has_contributed", "google_id", "avatar")}),)  # type: ignore
 
@@ -79,6 +80,23 @@ class AttachmentAdminForm(forms.ModelForm):
     class Meta:
         model = models.Attachment
         fields = "__all__"
+
+
+@admin.register(models.UserPassKeys)
+class UserPassKeysAdmin(ImportExportModelAdmin):
+    search_fields = (
+        "description",
+        "name",
+    )
+    list_display = (
+        "name",
+        "description",
+        "created_at",
+        "credential_id",
+        "public_key",
+        "updated_at",
+    )
+    pass
 
 
 @admin.register(models.Attachment)

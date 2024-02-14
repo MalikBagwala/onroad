@@ -10,6 +10,7 @@
 - "!include public_makes.yaml"
 - "!include public_price_items.yaml"
 - "!include public_states.yaml"
+- "!include public_user_passkeys.yaml"
 - "!include public_user_tokens.yaml"
 - "!include public_users.yaml"
 - "!include public_users_groups.yaml"

@@ -1,8 +1,8 @@
-import { Button, Container, Group, Highlight, Stack, Text, Title } from '@mantine/core';
-import classes from './HomePageHero.module.css';
 import { useCurrentUser } from '@/authentication/AuthContext';
-import { Link } from 'react-router-dom';
+import { Button, Container, Group, Highlight, Stack, Title } from '@mantine/core';
 import { IconLogin } from '@tabler/icons-react';
+import { Link } from 'react-router-dom';
+import classes from './HomePageHero.module.css';
 
 const keywords = [
   'contribute and access real vehicle quotes anonymously',

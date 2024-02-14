@@ -25,3 +25,4 @@ caddy-reload-dev:
 
 caddy-reload-prod:
 	docker-compose exec caddy caddy reload --config /etc/caddy/Caddyfile
+	

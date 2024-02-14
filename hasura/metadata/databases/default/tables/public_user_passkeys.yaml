@@ -1,0 +1,43 @@
+table:
+  name: user_passkeys
+  schema: public
+select_permissions:
+  - role: contributor
+    permission:
+      columns:
+        - created_at
+        - credential_id
+        - description
+        - id
+        - updated_at
+        - user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+    comment: ""
+  - role: user
+    permission:
+      columns:
+        - created_at
+        - credential_id
+        - description
+        - id
+        - updated_at
+        - user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+    comment: ""
+delete_permissions:
+  - role: contributor
+    permission:
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+    comment: ""
+  - role: user
+    permission:
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+    comment: ""

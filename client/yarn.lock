@@ -4020,6 +4020,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@simplewebauthn/browser@npm:^9.0.1":
+  version: 9.0.1
+  resolution: "@simplewebauthn/browser@npm:9.0.1"
+  dependencies:
+    "@simplewebauthn/types": "npm:^9.0.1"
+  checksum: 141f3f55d99ad2b4dcf697026d2470fa10b65a36286b616ead71b56ddd5636c30eb001599d27c2509a87c93def6636a2c7081ae362910268b78733a676af3ebf
+  languageName: node
+  linkType: hard
+
+"@simplewebauthn/types@npm:^9.0.1":
+  version: 9.0.1
+  resolution: "@simplewebauthn/types@npm:9.0.1"
+  checksum: 397f079ac029ada1413d6001850e3b49f99297a9933822758bdca9c47c36d6558e1dc81682725e0b03c501551c94fea040cead76883dcd2bb3a34b32984900f5
+  languageName: node
+  linkType: hard
+
 "@sinclair/typebox@npm:^0.27.8":
   version: 0.27.8
   resolution: "@sinclair/typebox@npm:0.27.8"
@@ -11015,6 +11031,7 @@ __metadata:
     "@mantine/hooks": "npm:7.4.1"
     "@mantine/modals": "npm:^7.4.2"
     "@mantine/notifications": "npm:^7.4.2"
+    "@simplewebauthn/browser": "npm:^9.0.1"
     "@storybook/addon-essentials": "npm:^7.6.6"
     "@storybook/addon-interactions": "npm:^7.6.6"
     "@storybook/addon-links": "npm:^7.6.6"
