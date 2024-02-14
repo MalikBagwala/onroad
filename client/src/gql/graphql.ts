@@ -4548,7 +4548,6 @@ export type Mutation_RootUpdate_States_ManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_User_PasskeysArgs = {
-  _inc?: InputMaybe<User_Passkeys_Inc_Input>;
   _set?: InputMaybe<User_Passkeys_Set_Input>;
   where: User_Passkeys_Bool_Exp;
 };
@@ -4556,7 +4555,6 @@ export type Mutation_RootUpdate_User_PasskeysArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_User_Passkeys_By_PkArgs = {
-  _inc?: InputMaybe<User_Passkeys_Inc_Input>;
   _set?: InputMaybe<User_Passkeys_Set_Input>;
   pk_columns: User_Passkeys_Pk_Columns_Input;
 };
@@ -7020,8 +7018,8 @@ export type User_Passkeys = {
   credential_id: Scalars['bytea']['output'];
   description?: Maybe<Scalars['String']['output']>;
   id: Scalars['uuid']['output'];
+  name?: Maybe<Scalars['String']['output']>;
   public_key: Scalars['bytea']['output'];
-  sign_count: Scalars['Int']['output'];
   updated_at: Scalars['timestamptz']['output'];
   user_id: Scalars['uuid']['output'];
 };
@@ -7047,17 +7045,9 @@ export type User_Passkeys_Aggregate_Bool_Exp_Count = {
 /** aggregate fields of "user_passkeys" */
 export type User_Passkeys_Aggregate_Fields = {
   __typename?: 'user_passkeys_aggregate_fields';
-  avg?: Maybe<User_Passkeys_Avg_Fields>;
   count: Scalars['Int']['output'];
   max?: Maybe<User_Passkeys_Max_Fields>;
   min?: Maybe<User_Passkeys_Min_Fields>;
-  stddev?: Maybe<User_Passkeys_Stddev_Fields>;
-  stddev_pop?: Maybe<User_Passkeys_Stddev_Pop_Fields>;
-  stddev_samp?: Maybe<User_Passkeys_Stddev_Samp_Fields>;
-  sum?: Maybe<User_Passkeys_Sum_Fields>;
-  var_pop?: Maybe<User_Passkeys_Var_Pop_Fields>;
-  var_samp?: Maybe<User_Passkeys_Var_Samp_Fields>;
-  variance?: Maybe<User_Passkeys_Variance_Fields>;
 };
 
 
@@ -7069,17 +7059,9 @@ export type User_Passkeys_Aggregate_FieldsCountArgs = {
 
 /** order by aggregate values of table "user_passkeys" */
 export type User_Passkeys_Aggregate_Order_By = {
-  avg?: InputMaybe<User_Passkeys_Avg_Order_By>;
   count?: InputMaybe<Order_By>;
   max?: InputMaybe<User_Passkeys_Max_Order_By>;
   min?: InputMaybe<User_Passkeys_Min_Order_By>;
-  stddev?: InputMaybe<User_Passkeys_Stddev_Order_By>;
-  stddev_pop?: InputMaybe<User_Passkeys_Stddev_Pop_Order_By>;
-  stddev_samp?: InputMaybe<User_Passkeys_Stddev_Samp_Order_By>;
-  sum?: InputMaybe<User_Passkeys_Sum_Order_By>;
-  var_pop?: InputMaybe<User_Passkeys_Var_Pop_Order_By>;
-  var_samp?: InputMaybe<User_Passkeys_Var_Samp_Order_By>;
-  variance?: InputMaybe<User_Passkeys_Variance_Order_By>;
 };
 
 /** input type for inserting array relation for remote table "user_passkeys" */
@@ -7087,17 +7069,6 @@ export type User_Passkeys_Arr_Rel_Insert_Input = {
   data: Array<User_Passkeys_Insert_Input>;
   /** upsert condition */
   on_conflict?: InputMaybe<User_Passkeys_On_Conflict>;
-};
-
-/** aggregate avg on columns */
-export type User_Passkeys_Avg_Fields = {
-  __typename?: 'user_passkeys_avg_fields';
-  sign_count?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by avg() on columns of table "user_passkeys" */
-export type User_Passkeys_Avg_Order_By = {
-  sign_count?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "user_passkeys". All fields are combined with a logical 'AND'. */
@@ -7109,22 +7080,19 @@ export type User_Passkeys_Bool_Exp = {
   credential_id?: InputMaybe<Bytea_Comparison_Exp>;
   description?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
+  name?: InputMaybe<String_Comparison_Exp>;
   public_key?: InputMaybe<Bytea_Comparison_Exp>;
-  sign_count?: InputMaybe<Int_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   user_id?: InputMaybe<Uuid_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "user_passkeys" */
 export enum User_Passkeys_Constraint {
+  /** unique or primary key constraint on columns "credential_id" */
+  UserPasskeysCredentialId_016b7a67Uniq = 'user_passkeys_credential_id_016b7a67_uniq',
   /** unique or primary key constraint on columns "id" */
   UserPasskeysPkey = 'user_passkeys_pkey'
 }
-
-/** input type for incrementing numeric columns in table "user_passkeys" */
-export type User_Passkeys_Inc_Input = {
-  sign_count?: InputMaybe<Scalars['Int']['input']>;
-};
 
 /** input type for inserting data into table "user_passkeys" */
 export type User_Passkeys_Insert_Input = {
@@ -7132,8 +7100,8 @@ export type User_Passkeys_Insert_Input = {
   credential_id?: InputMaybe<Scalars['bytea']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   public_key?: InputMaybe<Scalars['bytea']['input']>;
-  sign_count?: InputMaybe<Scalars['Int']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
 };
@@ -7144,7 +7112,7 @@ export type User_Passkeys_Max_Fields = {
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
-  sign_count?: Maybe<Scalars['Int']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
 };
@@ -7154,7 +7122,7 @@ export type User_Passkeys_Max_Order_By = {
   created_at?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  sign_count?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
@@ -7165,7 +7133,7 @@ export type User_Passkeys_Min_Fields = {
   created_at?: Maybe<Scalars['timestamptz']['output']>;
   description?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
-  sign_count?: Maybe<Scalars['Int']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamptz']['output']>;
   user_id?: Maybe<Scalars['uuid']['output']>;
 };
@@ -7175,7 +7143,7 @@ export type User_Passkeys_Min_Order_By = {
   created_at?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
-  sign_count?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
@@ -7202,8 +7170,8 @@ export type User_Passkeys_Order_By = {
   credential_id?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
   public_key?: InputMaybe<Order_By>;
-  sign_count?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
@@ -7224,9 +7192,9 @@ export enum User_Passkeys_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  PublicKey = 'public_key',
+  Name = 'name',
   /** column name */
-  SignCount = 'sign_count',
+  PublicKey = 'public_key',
   /** column name */
   UpdatedAt = 'updated_at',
   /** column name */
@@ -7239,43 +7207,10 @@ export type User_Passkeys_Set_Input = {
   credential_id?: InputMaybe<Scalars['bytea']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   public_key?: InputMaybe<Scalars['bytea']['input']>;
-  sign_count?: InputMaybe<Scalars['Int']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
-};
-
-/** aggregate stddev on columns */
-export type User_Passkeys_Stddev_Fields = {
-  __typename?: 'user_passkeys_stddev_fields';
-  sign_count?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by stddev() on columns of table "user_passkeys" */
-export type User_Passkeys_Stddev_Order_By = {
-  sign_count?: InputMaybe<Order_By>;
-};
-
-/** aggregate stddev_pop on columns */
-export type User_Passkeys_Stddev_Pop_Fields = {
-  __typename?: 'user_passkeys_stddev_pop_fields';
-  sign_count?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by stddev_pop() on columns of table "user_passkeys" */
-export type User_Passkeys_Stddev_Pop_Order_By = {
-  sign_count?: InputMaybe<Order_By>;
-};
-
-/** aggregate stddev_samp on columns */
-export type User_Passkeys_Stddev_Samp_Fields = {
-  __typename?: 'user_passkeys_stddev_samp_fields';
-  sign_count?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by stddev_samp() on columns of table "user_passkeys" */
-export type User_Passkeys_Stddev_Samp_Order_By = {
-  sign_count?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "user_passkeys" */
@@ -7292,21 +7227,10 @@ export type User_Passkeys_Stream_Cursor_Value_Input = {
   credential_id?: InputMaybe<Scalars['bytea']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
   public_key?: InputMaybe<Scalars['bytea']['input']>;
-  sign_count?: InputMaybe<Scalars['Int']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
-};
-
-/** aggregate sum on columns */
-export type User_Passkeys_Sum_Fields = {
-  __typename?: 'user_passkeys_sum_fields';
-  sign_count?: Maybe<Scalars['Int']['output']>;
-};
-
-/** order by sum() on columns of table "user_passkeys" */
-export type User_Passkeys_Sum_Order_By = {
-  sign_count?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "user_passkeys" */
@@ -7320,9 +7244,9 @@ export enum User_Passkeys_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  PublicKey = 'public_key',
+  Name = 'name',
   /** column name */
-  SignCount = 'sign_count',
+  PublicKey = 'public_key',
   /** column name */
   UpdatedAt = 'updated_at',
   /** column name */
@@ -7330,45 +7254,10 @@ export enum User_Passkeys_Update_Column {
 }
 
 export type User_Passkeys_Updates = {
-  /** increments the numeric columns with given value of the filtered values */
-  _inc?: InputMaybe<User_Passkeys_Inc_Input>;
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<User_Passkeys_Set_Input>;
   /** filter the rows which have to be updated */
   where: User_Passkeys_Bool_Exp;
-};
-
-/** aggregate var_pop on columns */
-export type User_Passkeys_Var_Pop_Fields = {
-  __typename?: 'user_passkeys_var_pop_fields';
-  sign_count?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by var_pop() on columns of table "user_passkeys" */
-export type User_Passkeys_Var_Pop_Order_By = {
-  sign_count?: InputMaybe<Order_By>;
-};
-
-/** aggregate var_samp on columns */
-export type User_Passkeys_Var_Samp_Fields = {
-  __typename?: 'user_passkeys_var_samp_fields';
-  sign_count?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by var_samp() on columns of table "user_passkeys" */
-export type User_Passkeys_Var_Samp_Order_By = {
-  sign_count?: InputMaybe<Order_By>;
-};
-
-/** aggregate variance on columns */
-export type User_Passkeys_Variance_Fields = {
-  __typename?: 'user_passkeys_variance_fields';
-  sign_count?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by variance() on columns of table "user_passkeys" */
-export type User_Passkeys_Variance_Order_By = {
-  sign_count?: InputMaybe<Order_By>;
 };
 
 /** columns and relationships of "user_tokens" */
