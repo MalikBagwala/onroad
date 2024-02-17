@@ -39,6 +39,7 @@ const VariantSearch = ({ ...props }: VariantSearchType) => {
   }
   return (
     <Select
+      visibleFrom="sm"
       w={450}
       searchable
       limit={20}

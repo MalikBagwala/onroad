@@ -39,7 +39,7 @@ export function GlobalNavbar({ user }: GlobalNavbarType) {
               size: 'xl',
             }}
           />
-          <Group visibleFrom="sm">
+          <Group>
             {user ? (
               <Group>
                 <VariantSearch />
