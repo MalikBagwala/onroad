@@ -23,6 +23,7 @@ const VariantContributions = ({ variantId, excludeContributions }: VariantContri
         },
       },
       order_by: {
+        downvotes: Order_By.Asc,
         upvotes: Order_By.DescNullsLast,
         city_id: Order_By.Asc,
         created_at: Order_By.Desc,
