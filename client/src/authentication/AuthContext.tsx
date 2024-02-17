@@ -59,11 +59,11 @@ const AuthProvider = ({ children }: AuthProviderType) => {
           });
         }
         refreshClient();
-        navigate('/', { replace: true });
+        navigate('/variants', { replace: true });
       } else if (access) {
         setAccessToken(access);
         refreshClient();
-        navigate('/', { replace: true });
+        navigate('/variants', { replace: true });
       }
     }
     initAuth();

@@ -9,6 +9,12 @@ const keywords = [
   'Anonymity is key at OnRoad',
   'real-time data contributed by the community',
 ];
+
+const keywords_small = [
+  'OnRoad offers live, real-time data',
+  'anonymously contributed by the community',
+  'complete breakdown of prices',
+];
 export function HomePageHero() {
   const { data } = useCurrentUser();
 
@@ -16,7 +22,17 @@ export function HomePageHero() {
     <Container size="md">
       <div className={classes.inner}>
         <div className={classes.content}>
-          <Stack>
+          <Stack hiddenFrom="sm">
+            <Title>OnRoad: Unleashing Anonymous Wisdom for Smarter Vehicle Choices!</Title>
+            <Stack>
+              <Highlight size="xl" highlight={keywords_small}>
+                Welcome to OnRoad! OnRoad offers live, real-time data, anonymously contributed by
+                the community, empowering you with the latest insights for smarter choices. We share
+                complete breakdown of prices which seperates us from the pack
+              </Highlight>
+            </Stack>
+          </Stack>
+          <Stack visibleFrom="sm">
             <Title>
               Unleashing Anonymous Wisdom for Smarter Vehicle Choices! Your Road to Informed
               Decisions Starts Here.
