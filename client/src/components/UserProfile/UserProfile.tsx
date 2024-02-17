@@ -6,7 +6,7 @@ import styles from './UserProfile.module.css';
 type UserProfileType = {};
 const UserProfile = ({}: UserProfileType) => {
   return (
-    <Flex className={styles.base}>
+    <Flex maw={{ xs: '100%', lg: '60rem' }} m={'auto'} className={styles.base}>
       <ProfileSections />
       <Box w={'65%'} p={'lg'} bg={'white'}>
         <Outlet />
