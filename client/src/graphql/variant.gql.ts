@@ -165,8 +165,20 @@ export const VARIANT_DETAIL = graphql(/* GraphQL */ `
 `);
 
 export const VARIANT_CONTRIBUTIONS = graphql(/* GraphQL */ `
-  query VariantContributions($where: contributions_bool_exp) {
-    contributions(order_by: { created_at: desc, upvotes: desc }, where: $where) {
+  query VariantContributions(
+    $where: contributions_bool_exp
+    $limit: Int
+    $offset: Int
+    $order_by: [contributions_order_by!]
+    $distinct_on: [contributions_select_column!]
+  ) {
+    contributions(
+      where: $where
+      limit: $limit
+      offset: $offset
+      order_by: $order_by
+      distinct_on: $distinct_on
+    ) {
       id
       total
       upvotes

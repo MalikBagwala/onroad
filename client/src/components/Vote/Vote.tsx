@@ -8,10 +8,15 @@ import { useMutation } from 'urql';
 type VoteType = {
   upvotes: number;
   downvotes: number;
-  contribution_id: number;
-  disable_voting?: boolean;
+  contributionId: number;
+  disableVoting?: boolean;
 };
-const Vote = ({ upvotes, downvotes, contribution_id, disable_voting = false }: VoteType) => {
+const Vote = ({
+  upvotes,
+  downvotes,
+  contributionId: contribution_id,
+  disableVoting: disable_voting = false,
+}: VoteType) => {
   const [{ fetching }, insertVote] = useMutation(INSERT_VOTE_ONE);
 
   const handleSubmit = (type: 'UP' | 'DN') => {

@@ -1,28 +1,20 @@
 import { VARIANT_DETAIL } from '@/graphql/variant.gql';
-import convertToInr, { convertToCompact } from '@/utils/convertToInr';
+import convertToInr from '@/utils/convertToInr';
 import { titleCase } from '@/utils/titleCase';
-import {
-  ActionIcon,
-  ActionIconGroup,
-  Badge,
-  Box,
-  Flex,
-  Grid,
-  Paper,
-  Pill,
-  Stack,
-  Table,
-  Text,
-} from '@mantine/core';
+import { Badge, Box, Flex, Grid, Paper, Pill, Stack, Table, Text } from '@mantine/core';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'urql';
-import { IconThumbDown, IconThumbUp } from '@tabler/icons-react';
+import VariantContributions from '../VariantContributions/VariantContributions';
 import VariantImages from '../VariantImages/VariantImages';
 import Vote from '../Vote/Vote';
+import { useCurrentUser } from '@/authentication/AuthContext';
+import ContributionSummary from '../ContributionSummary/ContributionSummary';
 
 type VariantDetailType = {};
 const VariantDetail = ({}: VariantDetailType) => {
+  const { data: uData } = useCurrentUser();
+  const prefferedCity = uData?.city?.id;
   const { id } = useParams();
   const [{ fetching, data }] = useQuery({ query: VARIANT_DETAIL, variables: { slug: id } });
 
@@ -102,43 +94,19 @@ const VariantDetail = ({}: VariantDetailType) => {
           <Text size="lg" c={'gray.8'}>
             {variant.description}
           </Text>
-          <Paper c={'gray.8'} fw={500} p={'sm'} w={'20rem'} shadow="xs">
-            <Text my={'xs'} ta={'center'} fw={600} size="1.9rem">
-              {convertToInr(contribution.total, 0)}{' '}
-              <Pill ml={'xs'}>Onroad - {contribution.city.name}</Pill>{' '}
-            </Text>
-            <Stack w={'100%'} gap={'0.5rem'}>
-              <Table>
-                <Table.Thead>
-                  <Table.Tr>
-                    <Table.Th>Price Item</Table.Th>
-                    <Table.Th>Amount</Table.Th>
-                  </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>
-                  {contribution.items.map((item) => {
-                    return (
-                      <Table.Tr key={item.id}>
-                        <Table.Td c={'gray.6'}>{item.price_item.name}</Table.Td>
-                        <Table.Td c={item.price_item.type === 'CR' ? 'green.9' : 'red.9'}>
-                          {convertToInr(item.value, 0)}
-                        </Table.Td>
-                      </Table.Tr>
-                    );
-                  })}
-                </Table.Tbody>
-              </Table>
-              <Vote
-                upvotes={contribution.upvotes}
-                downvotes={contribution.downvotes}
-                contribution_id={contribution.id}
-              />
-            </Stack>
-          </Paper>
+          {contribution ? (
+            <ContributionSummary contribution={contribution} />
+          ) : (
+            <Text size="lg">No Pricing Data Available for this variant</Text>
+          )}
           <Box>{specificationList}</Box>
         </Stack>
       </Flex>
-      <Box bg={'gray.6'}>All Contributions</Box>
+      <VariantContributions
+        variantId={variant.id}
+        excludeContributions={contribution?.id ? [contribution.id] : []}
+        prefferedCity={prefferedCity}
+      />
     </Stack>
   );
 };
