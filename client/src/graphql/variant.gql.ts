@@ -88,7 +88,7 @@ export const VARIANTS_LIST = graphql(/* GraphQL */ `
       }
       short_description
       contributions(
-        order_by: { downvotes: asc, created_at: desc, upvotes: desc }
+        order_by: { downvotes: asc, upvotes: desc }
         limit: 1
         where: $contributions_where
       ) {
@@ -138,7 +138,7 @@ export const VARIANT_DETAIL = graphql(/* GraphQL */ `
         }
       }
       contributions(
-        order_by: { downvotes: asc, created_at: desc, upvotes: desc }
+        order_by: { downvotes: asc, upvotes: desc }
         limit: 1
         where: $contributions_where
       ) {
