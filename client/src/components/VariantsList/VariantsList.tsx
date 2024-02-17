@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useQuery } from 'urql';
 import ContributionCard from '../ContributionCard/ContributionCard';
 import ContributionFilters from './ContributionFilters';
+import { useEffect } from 'react';
 
 type VariantsListType = {};
 const VariantsList = ({}: VariantsListType) => {
@@ -44,6 +45,10 @@ const VariantsList = ({}: VariantsListType) => {
       offset: (currentPage - 1) * 6,
     },
   });
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
   return (
     <Flex columnGap={'md'}>
       <ContributionFilters />
