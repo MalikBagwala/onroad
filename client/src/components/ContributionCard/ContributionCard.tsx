@@ -10,7 +10,8 @@ type ContributionCardType = {
   variant?: VariantsListQuery['variants'][0];
 };
 function ContributionCard({ variant }: ContributionCardType) {
-  const total = variant?.contributions_aggregate?.aggregate?.avg?.total || 0;
+  const most_relevant_contribution = variant?.contributions?.[0];
+  const total = most_relevant_contribution?.total || 0;
 
   return (
     <Card radius="sm" withBorder padding="xl">
@@ -49,7 +50,7 @@ function ContributionCard({ variant }: ContributionCardType) {
             </Tooltip>
             <Text span fz="sm" c="dimmed">
               {' '}
-              / onroad
+              / {most_relevant_contribution?.city?.name}
             </Text>
           </div>
 

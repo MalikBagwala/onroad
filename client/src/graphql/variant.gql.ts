@@ -87,15 +87,17 @@ export const VARIANTS_LIST = graphql(/* GraphQL */ `
         }
       }
       short_description
-      contributions_aggregate(
+      contributions(
         order_by: { created_at: desc, upvotes: desc }
-        limit: 5
+        limit: 1
         where: $contributions_where
       ) {
-        aggregate {
-          avg {
-            total
-          }
+        id
+        total
+        created_at
+        city {
+          id
+          name
         }
       }
     }
