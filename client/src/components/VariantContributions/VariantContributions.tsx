@@ -1,6 +1,7 @@
 import { Order_By } from '@/gql/graphql';
 import { VARIANT_CONTRIBUTIONS } from '@/graphql/variant.gql';
-import { Box, Flex, Skeleton } from '@mantine/core';
+import { Carousel } from '@mantine/carousel';
+import { Skeleton } from '@mantine/core';
 import { useQuery } from 'urql';
 import ContributionSummary from '../ContributionSummary/ContributionSummary';
 
@@ -30,17 +31,15 @@ const VariantContributions = ({ variantId, excludeContributions }: VariantContri
   });
   return (
     <Skeleton visible={fetching}>
-      <Flex gap={'sm'}>
+      <Carousel withIndicators slideGap="md" align="center" slideSize={'20%'} slidesToScroll={5}>
         {data?.contributions?.map((contribution) => {
           return (
-            <ContributionSummary
-              key={contribution.id}
-              contribution={contribution as any}
-              showBreakup={false}
-            />
+            <Carousel.Slide key={contribution.id}>
+              <ContributionSummary contribution={contribution as any} showBreakup={false} />
+            </Carousel.Slide>
           );
         })}
-      </Flex>
+      </Carousel>
     </Skeleton>
   );
 };

@@ -169,8 +169,17 @@ export const INSERT_VOTE_ONE = graphql(/* GraphQL */ `
   mutation insert_vote_one($object: votes_insert_input!, $on_conflict: votes_on_conflict) {
     insert_votes_one(object: $object, on_conflict: $on_conflict) {
       id
-      contribution_id
-      user_id
+      contribution {
+        id
+        upvotes
+        downvotes
+      }
+      user {
+        id
+        votes {
+          id
+        }
+      }
     }
   }
 `);

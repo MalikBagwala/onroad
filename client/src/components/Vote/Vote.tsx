@@ -21,7 +21,7 @@ const Vote = ({
 
   const handleSubmit = (type: 'UP' | 'DN') => {
     return async () => {
-      if (disable_voting) return;
+      if (disable_voting || fetching) return;
       await insertVote({
         object: { contribution_id, type },
         on_conflict: {
@@ -35,13 +35,7 @@ const Vote = ({
     <Flex gap={'0.5rem'}>
       <Flex align={'center'}>
         {disable_voting ? null : (
-          <ActionIcon
-            onClick={handleSubmit('UP')}
-            loading={fetching}
-            size={'sm'}
-            variant="transparent"
-            c={'gray.7'}
-          >
+          <ActionIcon onClick={handleSubmit('UP')} size={'sm'} variant="transparent" c={'gray.7'}>
             <IconThumbUp stroke={1} />{' '}
           </ActionIcon>
         )}
@@ -49,13 +43,7 @@ const Vote = ({
       </Flex>
       <Flex align={'center'}>
         {disable_voting ? null : (
-          <ActionIcon
-            onClick={handleSubmit('DN')}
-            loading={fetching}
-            size={'sm'}
-            variant="transparent"
-            c={'gray.7'}
-          >
+          <ActionIcon onClick={handleSubmit('DN')} size={'sm'} variant="transparent" c={'gray.7'}>
             <IconThumbDown stroke={1} />
           </ActionIcon>
         )}

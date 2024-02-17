@@ -1,6 +1,13 @@
 table:
   name: votes
   schema: public
+object_relationships:
+  - name: contribution
+    using:
+      foreign_key_constraint_on: contribution_id
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
 insert_permissions:
   - role: contributor
     permission:

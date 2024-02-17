@@ -1,15 +1,13 @@
+import { useCurrentUser } from '@/authentication/AuthContext';
 import { VARIANT_DETAIL } from '@/graphql/variant.gql';
-import convertToInr from '@/utils/convertToInr';
 import { titleCase } from '@/utils/titleCase';
-import { Badge, Box, Flex, Grid, Paper, Pill, Stack, Table, Text } from '@mantine/core';
+import { Badge, Box, Flex, Grid, Paper, Stack, Text } from '@mantine/core';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'urql';
+import ContributionSummary from '../ContributionSummary/ContributionSummary';
 import VariantContributions from '../VariantContributions/VariantContributions';
 import VariantImages from '../VariantImages/VariantImages';
-import Vote from '../Vote/Vote';
-import { useCurrentUser } from '@/authentication/AuthContext';
-import ContributionSummary from '../ContributionSummary/ContributionSummary';
 
 type VariantDetailType = {};
 const VariantDetail = ({}: VariantDetailType) => {
@@ -102,6 +100,7 @@ const VariantDetail = ({}: VariantDetailType) => {
           <Box>{specificationList}</Box>
         </Stack>
       </Flex>
+
       <VariantContributions
         variantId={variant.id}
         excludeContributions={contribution?.id ? [contribution.id] : []}
