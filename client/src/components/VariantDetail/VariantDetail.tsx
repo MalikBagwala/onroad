@@ -1,8 +1,7 @@
 import { VARIANT_DETAIL } from '@/graphql/variant.gql';
 import convertToInr from '@/utils/convertToInr';
 import { titleCase } from '@/utils/titleCase';
-import { Badge, Box, Flex, Grid, Paper, Pill, SimpleGrid, Stack, Table, Text } from '@mantine/core';
-import dayjs from 'dayjs';
+import { Badge, Box, Flex, Grid, Paper, Pill, Stack, Table, Text } from '@mantine/core';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'urql';
@@ -21,16 +20,25 @@ const VariantDetail = ({}: VariantDetailType) => {
       <Grid gutter={'xs'}>
         {Object.keys(specfications).map((key) => {
           return (
-            <Grid.Col span={'content'} key={key}>
-              <Text size="sm">
-                <Text fw={500} component="span" c={'gray.6'}>
+            <Grid.Col maw={'100%'} span={'content'} key={key}>
+              <Flex gap={'3px'}>
+                <Text size="sm" display={'inline-block'} fw={500} component="span" c={'gray.6'}>
                   {titleCase(key)}
-                </Text>{' '}
-                -{' '}
-                <Text truncate component="span" c={'gray.7'}>
+                </Text>
+                <Text size="sm" display={'inline-block'} fw={500} component="span" c={'gray.6'}>
+                  -
+                </Text>
+                <Text
+                  size="sm"
+                  display={'inline-block'}
+                  truncate
+                  maw={'100%'}
+                  component="span"
+                  c={'gray.7'}
+                >
                   {String(specfications?.[key]?.name || specfications?.[key])}
                 </Text>
-              </Text>
+              </Flex>
             </Grid.Col>
           );
         })}
@@ -41,7 +49,6 @@ const VariantDetail = ({}: VariantDetailType) => {
   if (fetching) return <Stack />;
   if (!variant) return <Stack />;
 
-  console.log(variant);
   const contribution = variant.contributions?.[0];
   return (
     <Stack>
