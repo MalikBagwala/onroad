@@ -46,16 +46,15 @@ def google_oauth(request):
             "https://oauth2.googleapis.com/tokeninfo", {"id_token": data["id_token"]}
         )
         token_json = token_content.json()
-        print(token_json)
         user, _ = User.objects.update_or_create(
             email=token_json["email"],
             defaults={
-                "first_name": token_json["given_name"],
-                "last_name": token_json["family_name"],
+                "first_name": token_json.get("given_name", ""),
+                "last_name": token_json.get("family_name", ""),
                 "username": token_json["email"],
-                "email_verified": token_json["email_verified"] == "true",
+                "email_verified": token_json.get("email_verified") == "true",
                 "google_id": token_json["sub"],
-                "avatar": token_json["picture"],
+                "avatar": token_json.get("picture", ""),
             },
         )
         user.groups.add(Group.objects.filter(name="user").first())
