@@ -4,7 +4,7 @@ import { Carousel } from '@mantine/carousel';
 import { Skeleton } from '@mantine/core';
 import { useQuery } from 'urql';
 import ContributionSummary from '../ContributionSummary/ContributionSummary';
-
+import styles from './VariantContributions.module.css';
 type VariantContributionsType = {
   variantId: string;
   excludeContributions?: string[];
@@ -34,7 +34,7 @@ const VariantContributions = ({ variantId, excludeContributions }: VariantContri
       <Carousel withIndicators slideGap="md" align="center" slideSize={'20%'} slidesToScroll={5}>
         {data?.contributions?.map((contribution) => {
           return (
-            <Carousel.Slide key={contribution.id}>
+            <Carousel.Slide className={styles.slide} key={contribution.id}>
               <ContributionSummary contribution={contribution as any} showBreakup={false} />
             </Carousel.Slide>
           );
