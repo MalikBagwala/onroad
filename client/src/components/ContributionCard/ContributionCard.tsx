@@ -1,60 +1,21 @@
 import { VariantsListQuery } from '@/gql/graphql';
 import convertToInr from '@/utils/convertToInr';
-import { Carousel } from '@mantine/carousel';
-import {
-  ActionIcon,
-  Badge,
-  Box,
-  Button,
-  Card,
-  Group,
-  Image,
-  Stack,
-  Text,
-  Tooltip,
-} from '@mantine/core';
+import { ActionIcon, Badge, Box, Button, Card, Group, Stack, Text, Tooltip } from '@mantine/core';
 import { IconLink } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
+import VariantImages from '../VariantImages/VariantImages';
 import classes from './ContributionCard.module.css';
-import placeholder from '@/images/vehicle_placeholder.webp';
 
 type ContributionCardType = {
   variant?: VariantsListQuery['variants'][0];
 };
 function ContributionCard({ variant }: ContributionCardType) {
   const total = variant?.contributions_aggregate?.aggregate?.avg?.total || 0;
-  const images = [];
-  for (const color of variant?.colors || []) {
-    images.push(
-      ...color.attachments
-        .filter(({ attachment }) => attachment?.url)
-        ?.map(({ attachment }) => attachment.url)
-    );
-  }
-  if (images.length === 0) {
-    images.push(placeholder);
-  }
-
-  const slides = images.map((image) => (
-    <Carousel.Slide key={image}>
-      <Image src={image} height={220} />
-    </Carousel.Slide>
-  ));
 
   return (
     <Card radius="sm" withBorder padding="xl">
       <Card.Section pos={'relative'}>
-        <Carousel
-          withIndicators
-          loop
-          classNames={{
-            root: classes.carousel,
-            controls: classes.carouselControls,
-            indicator: classes.carouselIndicator,
-          }}
-        >
-          {slides}
-        </Carousel>
+        <VariantImages variant={variant as any} />
         <Badge
           style={{
             top: 'var(--mantine-spacing-md)',

@@ -5,6 +5,7 @@ import { Badge, Box, Flex, Grid, Paper, Pill, Stack, Table, Text } from '@mantin
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'urql';
+import VariantImages from '../VariantImages/VariantImages';
 
 type VariantDetailType = {};
 const VariantDetail = ({}: VariantDetailType) => {
@@ -53,9 +54,22 @@ const VariantDetail = ({}: VariantDetailType) => {
   return (
     <Stack>
       <Flex w={'100%'} gap={'md'}>
-        <Box w={'40%'} bg={'gray.4'}>
-          Images
-        </Box>
+        <Paper
+          style={{
+            overflow: 'hidden',
+          }}
+          withBorder
+          radius={'md'}
+          w={'40%'}
+          h={'max-content'}
+        >
+          <VariantImages
+            imageProps={{
+              height: 300,
+            }}
+            variant={variant}
+          />
+        </Paper>
         <Stack w={'60%'}>
           <Stack>
             <Text fw={500} c={'gray.7'} size="2rem">
