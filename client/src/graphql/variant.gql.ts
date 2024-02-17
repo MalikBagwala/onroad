@@ -87,15 +87,17 @@ export const VARIANTS_LIST = graphql(/* GraphQL */ `
         }
       }
       short_description
-      contributions_aggregate(
+      contributions(
         order_by: { created_at: desc, upvotes: desc }
-        limit: 5
+        limit: 1
         where: $contributions_where
       ) {
-        aggregate {
-          avg {
-            total
-          }
+        id
+        total
+        created_at
+        city {
+          id
+          name
         }
       }
     }
@@ -135,18 +137,58 @@ export const VARIANT_DETAIL = graphql(/* GraphQL */ `
           }
         }
       }
-      contributions_aggregate(
+      contributions(
         order_by: { created_at: desc, upvotes: desc }
-        limit: 5
+        limit: 1
         where: $contributions_where
       ) {
-        aggregate {
-          avg {
-            total
-            upvotes
-            downvotes
+        id
+        total
+        upvotes
+        downvotes
+        created_at
+        city {
+          id
+          name
+        }
+        items(order_by: { price_item: { serial_no: asc_nulls_last } }) {
+          id
+          value
+          price_item {
+            id
+            name
+            type
+            category
           }
         }
+      }
+    }
+  }
+`);
+
+export const VARIANT_CONTRIBUTIONS = graphql(/* GraphQL */ `
+  query VariantContributions(
+    $where: contributions_bool_exp
+    $limit: Int
+    $offset: Int
+    $order_by: [contributions_order_by!]
+    $distinct_on: [contributions_select_column!]
+  ) {
+    contributions(
+      where: $where
+      limit: $limit
+      offset: $offset
+      order_by: $order_by
+      distinct_on: $distinct_on
+    ) {
+      id
+      total
+      upvotes
+      downvotes
+      created_at
+      city {
+        id
+        name
       }
     }
   }

@@ -19,6 +19,7 @@ def passkey_auth_options(self, info: Info) -> PasskeyAuthOptionsResponse:
     try:
         options = generate_authentication_options(
             rp_id=settings.DOMAIN_NAME,
+            # allow_credentials=[]
         )
         data = json.loads(options_to_json(options))
         info.context.request.session["auth_challenge"] = data.get("challenge")

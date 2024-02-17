@@ -26,16 +26,16 @@ const LoginWithPasskey = ({}: LoginWithPasskeyType) => {
           credentialId: authCredential.id,
         });
         const tokens = avData?.passkeyAuthOptionsVerify?.data;
+        notifications.show({
+          message: avData?.passkeyAuthOptionsVerify?.message,
+          icon: <IconHandRock />,
+          color: avData?.passkeyAuthOptionsVerify?.code === 200 ? 'green' : 'red',
+          withBorder: true,
+        });
         if (tokens) {
           setAccessToken(tokens.accessToken);
           setRefreshToken(tokens.refreshToken);
           refreshClient();
-          notifications.show({
-            message: avData?.passkeyAuthOptionsVerify?.message,
-            icon: <IconHandRock />,
-            color: avData?.passkeyAuthOptionsVerify?.code === 200 ? 'green' : 'red',
-            withBorder: true,
-          });
           modals.closeAll();
           navigate({ search: '' }, { replace: true });
         }
@@ -47,7 +47,7 @@ const LoginWithPasskey = ({}: LoginWithPasskeyType) => {
       fullWidth
       mt="md"
     >
-      Continue with passkey
+      Login with passkey
     </Button>
   );
 };

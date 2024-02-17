@@ -15,6 +15,7 @@ import VariantsList from './components/VariantsList/VariantsList';
 import TermsAndConditions from './components/TermsAndConditions/TermsAndConditions';
 import Privacy from './components/Privacy/Privacy';
 import VariantDetail from './components/VariantDetail/VariantDetail';
+
 const router = createBrowserRouter([
   {
     path: '/',

@@ -1,9 +1,12 @@
+from random import randbytes
 import strawberry
 from webauthn import base64url_to_bytes, verify_authentication_response
 from core.models import UserPassKeys
 from core.types import BaseResponse, Tokens
 from strawberry.types import Info
 from django.conf import settings
+
+from core.utils.exception import parse_exception
 
 
 @strawberry.type
@@ -18,7 +21,7 @@ def passkey_auth_options_verify(
         credential_id_bytes = base64url_to_bytes(credential_id)
         passkey = UserPassKeys.objects.get(credential_id=credential_id_bytes)
         stored_challenge = info.context.request.session["auth_challenge"]
-        verification_response = verify_authentication_response(
+        verify_authentication_response(
             expected_challenge=base64url_to_bytes(stored_challenge),
             credential=credential,
             expected_origin=settings.CSRF_TRUSTED_ORIGINS,
@@ -26,8 +29,6 @@ def passkey_auth_options_verify(
             credential_current_sign_count=0,
             credential_public_key=passkey.public_key,
         )
-        if verification_response.credential_id != credential_id_bytes:
-            raise Exception("Credential ID mismatch")
         info.context.request.session.pop("auth_challenge")
         return PasskeyAuthOptionsVerifyResponse(
             success=True,
@@ -41,7 +42,7 @@ def passkey_auth_options_verify(
     except Exception as e:
         return PasskeyAuthOptionsVerifyResponse(
             success=False,
-            message=str(e),
+            message=parse_exception(e, "Unable to authenticate you, please try again"),
             data=None,
             code=400,
         )
