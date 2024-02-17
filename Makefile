@@ -15,7 +15,7 @@ showmigrations:
 	docker-compose -f development.yml exec django python manage.py showmigrations
 
 hasura:
-	hasura console --admin-secret onroad --console-port 9800 --endpoint https://localhost/hasura/ -C hasura
+	hasura console --admin-secret onroad --console-port 9800 --endpoint https://localhost/hasura/ --project hasura
 
 seed:
 	hasura seeds apply --endpoint https://localhost/hasura/ --admin-secret onroad -C hasura

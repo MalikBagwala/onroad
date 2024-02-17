@@ -144,8 +144,14 @@ export const VARIANT_DETAIL = graphql(/* GraphQL */ `
         total
         upvotes
         downvotes
+        created_at
+        city {
+          id
+          name
+        }
         items(order_by: { price_item: { serial_no: asc_nulls_last } }) {
           id
+          value
           price_item {
             id
             name
@@ -165,14 +171,10 @@ export const VARIANT_CONTRIBUTIONS = graphql(/* GraphQL */ `
       total
       upvotes
       downvotes
-      items(order_by: { price_item: { serial_no: asc_nulls_last } }) {
+      created_at
+      city {
         id
-        price_item {
-          id
-          name
-          type
-          category
-        }
+        name
       }
     }
   }
