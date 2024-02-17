@@ -2,13 +2,27 @@ table:
   name: votes
   schema: public
 insert_permissions:
-  - role: user
+  - role: contributor
     permission:
-      check: {}
+      check:
+        user_id:
+          _eq: X-Hasura-User-Id
+      set:
+        user_id: x-hasura-User-Id
       columns:
         - contribution_id
         - type
-        - user_id
+    comment: ""
+  - role: user
+    permission:
+      check:
+        user_id:
+          _eq: X-Hasura-User-Id
+      set:
+        user_id: x-hasura-User-Id
+      columns:
+        - contribution_id
+        - type
     comment: ""
 select_permissions:
   - role: contributor

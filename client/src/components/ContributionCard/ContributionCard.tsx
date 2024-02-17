@@ -3,8 +3,8 @@ import convertToInr from '@/utils/convertToInr';
 import { ActionIcon, Badge, Box, Button, Card, Group, Stack, Text, Tooltip } from '@mantine/core';
 import { IconLink } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
-import VariantImages from '../VariantImages/VariantImages';
 import classes from './ContributionCard.module.css';
+import VariantImages from '../VariantImages/VariantImages';
 
 type ContributionCardType = {
   variant?: VariantsListQuery['variants'][0];

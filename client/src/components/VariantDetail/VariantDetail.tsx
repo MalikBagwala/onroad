@@ -1,11 +1,25 @@
 import { VARIANT_DETAIL } from '@/graphql/variant.gql';
-import convertToInr from '@/utils/convertToInr';
+import convertToInr, { convertToCompact } from '@/utils/convertToInr';
 import { titleCase } from '@/utils/titleCase';
-import { Badge, Box, Flex, Grid, Paper, Pill, Stack, Table, Text } from '@mantine/core';
+import {
+  ActionIcon,
+  ActionIconGroup,
+  Badge,
+  Box,
+  Flex,
+  Grid,
+  Paper,
+  Pill,
+  Stack,
+  Table,
+  Text,
+} from '@mantine/core';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'urql';
+import { IconThumbDown, IconThumbUp } from '@tabler/icons-react';
 import VariantImages from '../VariantImages/VariantImages';
+import Vote from '../Vote/Vote';
 
 type VariantDetailType = {};
 const VariantDetail = ({}: VariantDetailType) => {
@@ -90,7 +104,8 @@ const VariantDetail = ({}: VariantDetailType) => {
           </Text>
           <Paper c={'gray.8'} fw={500} p={'sm'} w={'20rem'} shadow="xs">
             <Text my={'xs'} ta={'center'} fw={600} size="1.9rem">
-              {convertToInr(contribution.total, 0)} <Pill ml={'xs'}>{contribution.city.name}</Pill>{' '}
+              {convertToInr(contribution.total, 0)}{' '}
+              <Pill ml={'xs'}>Onroad - {contribution.city.name}</Pill>{' '}
             </Text>
             <Stack w={'100%'} gap={'0.5rem'}>
               <Table>
@@ -113,6 +128,11 @@ const VariantDetail = ({}: VariantDetailType) => {
                   })}
                 </Table.Tbody>
               </Table>
+              <Vote
+                upvotes={contribution.upvotes}
+                downvotes={contribution.downvotes}
+                contribution_id={contribution.id}
+              />
             </Stack>
           </Paper>
           <Box>{specificationList}</Box>
