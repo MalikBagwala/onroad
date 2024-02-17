@@ -29,6 +29,7 @@ const VariantContributions = ({ variantId, excludeContributions }: VariantContri
       },
     },
   });
+  if (!fetching && !data?.contributions?.length) return null;
   return (
     <Skeleton visible={fetching}>
       <Carousel withIndicators slideGap="md" align="center" slideSize={'20%'} slidesToScroll={5}>
