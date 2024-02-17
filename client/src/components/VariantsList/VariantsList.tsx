@@ -1,10 +1,10 @@
 import { VARIANTS_LIST } from '@/graphql/variant.gql';
-import { Flex, Grid, Pagination, SimpleGrid, Skeleton } from '@mantine/core';
+import { Flex, Pagination, SimpleGrid, Skeleton } from '@mantine/core';
+import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from 'urql';
 import ContributionCard from '../ContributionCard/ContributionCard';
 import ContributionFilters from './ContributionFilters';
-import { useEffect } from 'react';
 
 type VariantsListType = {};
 const VariantsList = ({}: VariantsListType) => {
@@ -50,7 +50,11 @@ const VariantsList = ({}: VariantsListType) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
   return (
-    <Flex columnGap={'md'}>
+    <Flex
+      direction={{ xs: 'column', lg: 'row' }}
+      rowGap={{ xs: 'md', lg: 'none' }}
+      columnGap={'md'}
+    >
       <ContributionFilters />
       <Flex gap={'md'} direction="column">
         <SimpleGrid cols={{ md: 2, sm: 1 }}>
