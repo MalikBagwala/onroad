@@ -30,6 +30,11 @@ DOMAIN_NAME = os.getenv("DOMAIN_NAME")
 BUCKET = os.getenv("AWS_S3_BUCKET", "onroadcdn")
 ENVIRONMENT = os.getenv("ENVIRONMENT", "dev")
 
+# Redis
+REDIS_HOST = os.getenv("REDIS_HOST", "redis")
+REDIS_PORT = os.getenv("REDIS_PORT", 6379)
+REDIS_DB = os.getenv("REDIS_DB", 0)
+
 sentry_sdk.init(
     environment=ENVIRONMENT,
     dsn="https://43dcf3a582fdb087e216a978e9804127@o251958.ingest.sentry.io/4506794877976576",

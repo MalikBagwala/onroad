@@ -14,7 +14,6 @@ gunicorn = "*"
 argon2-cffi = "*"
 strawberry-graphql-django = "*"
 pyjwt = "*"
-dramatiq = {extras = ["rabbitmq", "watch"], version = "*"}
 django-dramatiq = "*"
 python-dotenv = "*"
 pillow = "*"
@@ -22,6 +21,7 @@ requests = "*"
 boto3 = "*"
 webauthn = "*"
 sentry-sdk = {extras = ["django"], version = "*"}
+dramatiq = {extras = ["watch", "redis", "rabbitmq"], version = "*"}
 
 [dev-packages]
 black = "*"

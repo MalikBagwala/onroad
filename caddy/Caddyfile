@@ -29,6 +29,13 @@
 		reverse_proxy rabbitmq:15672
 	}
 
+	# Redis Commander
+	redir /redis /redis/ 301
+	route /redis/* {
+		uri strip_prefix /redis
+		reverse_proxy redis-commander:8081
+	}
+
 	# Main Web Application (Client)
 	route /* {
 		reverse_proxy client:5000
