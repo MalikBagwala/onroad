@@ -1,5 +1,4 @@
 import decimal
-from os import urandom
 from django.contrib.auth.models import AbstractUser
 from django.contrib.postgres.functions import RandomUUID
 
@@ -25,7 +24,6 @@ from .utils import jwt
 from random import randbytes
 from webauthn.helpers import bytes_to_base64url
 from django.conf import settings
-from core.redis import store_refresh_token
 
 # Create your models here.
 
@@ -96,12 +94,6 @@ class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
                     "expires_at": get_refresh_token_expires_in(),
                 },
             )
-            store_refresh_token(
-                self.id,
-                bytes_to_base64url(randbytes(32)),
-                settings.REFRESH_TOKEN_EXPIRATION_MINUTES,
-            )
-            # Get refresh tokens if an un-expired token already exists, else create a new one
             return token_instance.token
         except Exception as e:
             print("get_refresh_token", str(e))
