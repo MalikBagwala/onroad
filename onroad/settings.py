@@ -37,7 +37,11 @@ REDIS_DB = os.getenv("REDIS_DB", 0)
 
 sentry_sdk.init(
     environment=ENVIRONMENT,
-    dsn="https://43dcf3a582fdb087e216a978e9804127@o251958.ingest.sentry.io/4506794877976576",
+    dsn=(
+        None
+        if ENVIRONMENT == "dev"
+        else "https://43dcf3a582fdb087e216a978e9804127@o251958.ingest.sentry.io/4506794877976576"
+    ),
     # Set traces_sample_rate to 1.0 to capture 100%
     # of transactions for performance monitoring.
     traces_sample_rate=1.0,
