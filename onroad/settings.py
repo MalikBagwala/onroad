@@ -12,10 +12,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+import sentry_sdk
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 try:
     from dotenv import load_dotenv
@@ -29,6 +29,18 @@ ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
 DOMAIN_NAME = os.getenv("DOMAIN_NAME")
 BUCKET = os.getenv("AWS_S3_BUCKET", "onroadcdn")
 ENVIRONMENT = os.getenv("ENVIRONMENT", "dev")
+
+sentry_sdk.init(
+    environment=ENVIRONMENT,
+    dsn="https://43dcf3a582fdb087e216a978e9804127@o251958.ingest.sentry.io/4506794877976576",
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    traces_sample_rate=1.0,
+    # Set profiles_sample_rate to 1.0 to profile 100%
+    # of sampled transactions.
+    # We recommend adjusting this value in production.
+    profiles_sample_rate=1.0,
+)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
