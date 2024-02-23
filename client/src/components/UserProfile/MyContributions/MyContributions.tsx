@@ -1,8 +1,8 @@
+import Vote from '@/components/Vote/Vote';
 import { Order_By } from '@/gql/graphql';
 import { CONTRIBUTIONS_BRIEF, MY_CONTRIBUTIONS } from '@/graphql/contribution.gql';
 import convertToInr from '@/utils/convertToInr';
-import { Badge, Card, Flex, Group, Pill, ScrollArea, Skeleton, Stack, Text } from '@mantine/core';
-import { IconThumbDown, IconThumbUp } from '@tabler/icons-react';
+import { Card, Flex, Group, Pill, ScrollArea, Skeleton, Stack, Text } from '@mantine/core';
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 import { useQuery } from 'urql';
@@ -65,27 +65,14 @@ const MyContributions = ({}: MyContributionsType) => {
                 return (
                   <Card mb={'sm'} radius={'md'} bg={'gray.0'} key={contribution.id}>
                     <Flex justify={'space-between'}>
-                      <Pill bg="blue.1">
+                      <Pill bg="blue.0">
                         {dayjs(contribution.created_at).format('MMMM DD, YYYY')}
                       </Pill>
-                      <Group>
-                        <Badge
-                          bg={'green.0'}
-                          color="green.7"
-                          variant="light"
-                          leftSection={<IconThumbUp stroke={1.5} />}
-                        >
-                          {contribution.upvotes.toLocaleString()}
-                        </Badge>
-                        <Badge
-                          bg={'gray.0'}
-                          color="gray.7"
-                          variant="light"
-                          leftSection={<IconThumbDown stroke={1.5} />}
-                        >
-                          {contribution.downvotes.toLocaleString()}
-                        </Badge>
-                      </Group>
+                      <Vote
+                        contributionId={contribution.id}
+                        upvotes={contribution.upvotes}
+                        downvotes={contribution.downvotes}
+                      />
                     </Flex>
                     <Flex mt="xs" justify={'space-between'}>
                       <Link className="link" to={`/contributions/${contribution.id}`}>
