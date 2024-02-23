@@ -21,6 +21,7 @@ pillow = "*"
 requests = "*"
 boto3 = "*"
 webauthn = "*"
+sentry-sdk = {extras = ["django"], version = "*"}
 
 [dev-packages]
 black = "*"
