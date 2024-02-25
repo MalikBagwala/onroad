@@ -1,6 +1,7 @@
 import decimal
 from django.contrib.auth.models import AbstractUser
 from django.contrib.postgres.functions import RandomUUID
+from core.utils.exception import parse_exception
 
 from core.utils.time import (
     get_expires_in,
@@ -96,7 +97,7 @@ class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
             )
             return token_instance.token
         except Exception as e:
-            print("get_refresh_token", str(e))
+            parse_exception(e)
             return None
 
     def get_tokens(self):
@@ -126,7 +127,7 @@ class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
             user_id = decoded_token["sub"]
             return cls.objects.get(id=user_id)
         except Exception as e:
-            print("get_user_from_access_token", str(e))
+            parse_exception(e)
             return None
 
     def __str__(self):
