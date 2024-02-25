@@ -17,6 +17,8 @@ services:
       - django
       - hasura
       - caddy
+    networks:
+      - caddy_network
 
   django:
     image: ${REGISTRY_PATH}api:${VERSION:-latest}
@@ -34,6 +36,11 @@ services:
     depends_on:
       - db
       - caddy
+    networks:
+      - postgres_network
+      - caddy_network
+      - rabbitmq_network
+      - redis_network
 
   worker:
     image: ${REGISTRY_PATH}api:${VERSION:-latest}
@@ -52,6 +59,10 @@ services:
     depends_on:
       - db
       - rabbitmq
+    networks:
+      - rabbitmq_network
+      - postgres_network
+      - caddy_network
 
   caddy:
     image: ${REGISTRY_PATH}caddy:${VERSION:-latest}
@@ -75,6 +86,8 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    networks:
+      - caddy_network
 
   db:
     image: postgis/postgis:16-master
@@ -85,6 +98,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+    networks:
+      - postgres_network
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -96,6 +111,9 @@ services:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
       RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_DEFAULT_VHOST}
+    networks:
+      - rabbitmq_network
+      - caddy_network
 
   hasura:
     image: ${REGISTRY_PATH}hasura:${VERSION:-latest}
@@ -123,11 +141,16 @@ services:
       API_HOST: "http://django:9000"
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    networks:
+      - postgres_network
+      - caddy_network
 
   mail:
     container_name: or_plausible_mail
     image: bytemark/smtp
     restart: always
+    networks:
+      - plausible_network
 
   plausible_db:
     container_name: or_plausible_postgres
@@ -137,6 +160,8 @@ services:
       - plausible_postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=${PLAUSIBLE_POSTGRES_PASSWORD}
+    networks:
+      - plausible_network
 
   plausible_events_db:
     container_name: or_plausible_clickhouse
@@ -150,6 +175,8 @@ services:
       nofile:
         soft: 262144
         hard: 262144
+    networks:
+      - plausible_network
 
   plausible:
     container_name: or_plausible
@@ -164,6 +191,40 @@ services:
     environment:
       - BASE_URL=${PLAUSIBLE_BASE_URL}
       - SECRET_KEY_BASE=${PLAUSIBLE_SECRET_KEY_BASE}
+    networks:
+      - plausible_network
+      - caddy_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: or_redis
+    restart: unless-stopped
+    volumes:
+      - redis:/data
+    networks:
+      - redis_network
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: or_redis_commander
+    restart: unless-stopped
+    environment:
+      REDIS_HOSTS: "redis"
+    networks:
+      - caddy_network
+      - redis_network
+
+networks:
+  caddy_network:
+    driver: bridge
+  redis_network:
+    driver: bridge
+  postgres_network:
+    driver: bridge
+  rabbitmq_network:
+    driver: bridge
+  plausible_network:
+    driver: bridge
 
 volumes:
   postgres:
@@ -172,3 +233,4 @@ volumes:
   caddy_config:
   plausible_postgres:
   plausible_clickhouse:
+  redis:
