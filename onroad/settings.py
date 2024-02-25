@@ -31,9 +31,7 @@ BUCKET = os.getenv("AWS_S3_BUCKET", "onroadcdn")
 ENVIRONMENT = os.getenv("ENVIRONMENT", "dev")
 
 # Redis
-REDIS_HOST = os.getenv("REDIS_HOST", "redis")
-REDIS_PORT = os.getenv("REDIS_PORT", 6379)
-REDIS_DB = os.getenv("REDIS_DB", 0)
+REDIS_URL = os.getenv("REDIS_URL", "redis://redis:6379/0")
 
 sentry_sdk.init(
     environment=ENVIRONMENT,
@@ -139,6 +137,14 @@ DRAMATIQ_BROKER = {
         "django_dramatiq.middleware.DbConnectionsMiddleware",
         "django_dramatiq.middleware.AdminMiddleware",
     ],
+}
+
+DRAMATIQ_RESULT_BACKEND = {
+    "BACKEND": "dramatiq.results.backends.redis.RedisBackend",
+    "BACKEND_OPTIONS": {
+        "url": REDIS_URL,
+    },
+    "MIDDLEWARE_OPTIONS": {"result_ttl": 1000 * 60 * 10},
 }
 
 # Defines which database should be used to persist Task objects when the
