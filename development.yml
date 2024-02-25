@@ -145,7 +145,6 @@ services:
     image: redis:7-alpine
     container_name: or_redis
     restart: unless-stopped
-    command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
     volumes:
       - redis:/data
     networks:
@@ -157,6 +156,8 @@ services:
     restart: unless-stopped
     environment:
       REDIS_HOSTS: "redis"
+      HTTP_USER: ${REDIS_COMMANDER_USER}
+      HTTP_PASSWORD: ${REDIS_COMMANDER_PASSWORD}
     networks:
       - caddy_network
       - redis_network
