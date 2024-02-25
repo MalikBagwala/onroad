@@ -7,6 +7,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from core.tasks.send_email import send_email
 from django.conf import settings
 
+from core.utils.exception import parse_exception
+
 
 @strawberry.type
 class LoginWithMagicLinkResponse(BaseResponse):
@@ -37,10 +39,9 @@ def login_with_magic_link(self, email: str) -> LoginWithMagicLinkResponse:
         )
 
     except Exception as e:
-        print(e)
         return LoginWithMagicLinkResponse(
             success=True,
-            message=str(e),
+            message=parse_exception(e, "Failed to send magic link"),
             data=None,
             code=status.HTTP_400_BAD_REQUEST,
         )

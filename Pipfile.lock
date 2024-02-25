@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "662b16c76bab80286035af0c3a8fb33b7dde3a4f9bd0ed2a7443837a431d96c5"
+            "sha256": "2cc4d284e811fa599c6814cd92ab96012e290b2ecea8a59c3477f950ed47899d"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -392,6 +392,7 @@
         "dramatiq": {
             "extras": [
                 "rabbitmq",
+                "redis",
                 "watch"
             ],
             "hashes": [
@@ -803,6 +804,13 @@
                 "sha256:fd66fc5d0da6d9815ba2cebeb4205f95818ff4b79c3ebe268e75d961704af52f"
             ],
             "version": "==6.0.1"
+        },
+        "redis": {
+            "hashes": [
+                "sha256:0dab495cd5753069d3bc650a0dde8a8f9edde16fc5691b689a566eda58100d0f",
+                "sha256:ed4802971884ae19d640775ba3b03aa2e7bd5e8fb8dfaed2decce4d0fc48391f"
+            ],
+            "version": "==5.0.1"
         },
         "requests": {
             "hashes": [

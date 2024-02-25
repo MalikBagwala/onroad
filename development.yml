@@ -18,6 +18,8 @@ services:
       - django
       - hasura
       - caddy
+    networks:
+      - caddy_network
 
   django:
     image: onroadapi:dev
@@ -35,6 +37,11 @@ services:
     depends_on:
       - db
       - caddy
+    networks:
+      - postgres_network
+      - caddy_network
+      - rabbitmq_network
+      - redis_network
 
   worker:
     image: onroadapi:dev
@@ -52,6 +59,10 @@ services:
     depends_on:
       - db
       - rabbitmq
+    networks:
+      - rabbitmq_network
+      - postgres_network
+      - caddy_network
 
   caddy:
     restart: always
@@ -73,6 +84,8 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    networks:
+      - caddy_network
 
   db:
     image: postgis/postgis:16-master
@@ -83,6 +96,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+    networks:
+      - postgres_network
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -94,13 +109,16 @@ services:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
       RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_DEFAULT_VHOST}
+    networks:
+      - rabbitmq_network
+      - caddy_network
 
   hasura:
     image: onroadhasura:dev
     build:
       context: ./hasura
       dockerfile: Dockerfile.hasura
-    restart: always
+    restart: unless-stopped
     volumes:
       - ./hasura/migrations:/hasura-migrations
       - ./hasura/metadata:/hasura-metadata
@@ -119,9 +137,44 @@ services:
       HASURA_GRAPHQL_MIGRATIONS_SERVER_TIMEOUT: 120
       HASURA_GRAPHQL_CORS_DOMAIN: "*"
       API_HOST: "http://django:9000"
+    networks:
+      - postgres_network
+      - caddy_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: or_redis
+    restart: unless-stopped
+    volumes:
+      - redis:/data
+    networks:
+      - redis_network
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: or_redis_commander
+    restart: unless-stopped
+    environment:
+      REDIS_HOSTS: "redis"
+      HTTP_USER: ${REDIS_COMMANDER_USER}
+      HTTP_PASSWORD: ${REDIS_COMMANDER_PASSWORD}
+    networks:
+      - caddy_network
+      - redis_network
+
+networks:
+  caddy_network:
+    driver: bridge
+  redis_network:
+    driver: bridge
+  postgres_network:
+    driver: bridge
+  rabbitmq_network:
+    driver: bridge
 
 volumes:
   postgres:
   rabbitmq:
   caddy_data:
   caddy_config:
+  redis:

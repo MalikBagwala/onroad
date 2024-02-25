@@ -3,7 +3,6 @@ from rest_framework.exceptions import ValidationError
 
 def validation_error_serializer(error: ValidationError):
     errors = []
-    print(str(error.detail))
     non_field_errors = error.detail.pop("non_field_errors", [])  # type: ignore
     error.detail.pop("code", None)  # type: ignore
     if len(non_field_errors) > 0:

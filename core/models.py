@@ -1,6 +1,7 @@
 import decimal
 from django.contrib.auth.models import AbstractUser
 from django.contrib.postgres.functions import RandomUUID
+from core.utils.exception import parse_exception
 
 from core.utils.time import (
     get_expires_in,
@@ -21,7 +22,8 @@ from .enums import (
     UserTokenType,
 )
 from .utils import jwt
-from uuid import uuid4
+from random import randbytes
+from webauthn.helpers import bytes_to_base64url
 from django.conf import settings
 
 # Create your models here.
@@ -93,10 +95,9 @@ class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
                     "expires_at": get_refresh_token_expires_in(),
                 },
             )
-            # Get refresh tokens if an un-expired token already exists, else create a new one
             return token_instance.token
         except Exception as e:
-            print("get_refresh_token", str(e))
+            parse_exception(e)
             return None
 
     def get_tokens(self):
@@ -126,7 +127,7 @@ class User(AbstractUser, AbstractTimestamp, UUIDPrimaryKey):
             user_id = decoded_token["sub"]
             return cls.objects.get(id=user_id)
         except Exception as e:
-            print("get_user_from_access_token", str(e))
+            parse_exception(e)
             return None
 
     def __str__(self):

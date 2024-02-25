@@ -51,6 +51,8 @@ deploy:
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
     - ssh-add <(echo "$SSH_PRIVATE_KEY" | tr -d '\r')
+    - ssh root@$DROPLET_IP "mkdir -p /backups && cp onroad/.env /backups/.env.$(date +%s).bak"
+    - scp $ENV_FILE root@$DROPLET_IP:/root/onroad/.env
     - ssh root@$DROPLET_IP "cd onroad && git fetch && git checkout $CI_COMMIT_TAG && bash docker_deploy.sh"
   rules:
     - *staging_tag
