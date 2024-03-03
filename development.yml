@@ -12,6 +12,7 @@ services:
       - ./client:/app
       - /app/node_modules/
     environment:
+      SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
       VITE_API_DOMAIN: ${DOMAIN_NAME}
       VITE_GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
     depends_on:

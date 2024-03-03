@@ -12,6 +12,7 @@ services:
       args:
         - API_DOMAIN=${DOMAIN_NAME}
         - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+        - SENTRY_AUTH_TOKEN_ARG=${SENTRY_AUTH_TOKEN}
     restart: unless-stopped
     depends_on:
       - django
