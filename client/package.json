@@ -28,6 +28,7 @@
     "@mantine/modals": "^7.4.2",
     "@mantine/notifications": "^7.4.2",
     "@sentry/react": "^7.104.0",
+    "@sentry/vite-plugin": "^2.14.2",
     "@simplewebauthn/browser": "^9.0.1",
     "@tabler/icons-react": "^2.46.0",
     "@urql/exchange-auth": "^2.1.6",
