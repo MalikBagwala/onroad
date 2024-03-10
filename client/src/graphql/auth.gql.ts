@@ -43,7 +43,7 @@ export const MEMBERSHIP_TYPE = graphql(/* GraphQL */ `
       message
       data {
         type
-        credentialIds
+        hasPasskeys
       }
     }
   }

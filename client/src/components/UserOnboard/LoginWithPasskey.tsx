@@ -18,7 +18,7 @@ const LoginWithPasskey = ({}: LoginWithPasskeyType) => {
   return (
     <Button
       onClick={async () => {
-        const { data: aData } = await authInit({});
+        const { data: aData } = await authInit({ email: 'm.bagwala@gmail.com' });
         const authCredential = await startAuthentication(aData?.passkeyAuthOptions?.data);
 
         const { data: avData } = await authVerify({

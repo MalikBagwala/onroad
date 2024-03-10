@@ -9,7 +9,7 @@ from core.utils.exception import parse_exception
 @strawberry.type
 class MemberType:
     type: str
-    credentialIds: list[str] | None
+    has_passkeys: bool
 
 
 @strawberry.type
@@ -21,17 +21,13 @@ class MembershipTypeByEmailResponse(BaseResponse):
 def membership_type_by_email(self, email: str) -> MembershipTypeByEmailResponse:
     try:
         user = User.objects.get(email=email)
-        passkeys = None
+        has_passkeys = False
         if user:
-            passkeys_bytes = UserPassKeys.objects.filter(user=user).values_list(
-                "credential_id",
-                flat=True,
-            )
-            passkeys = [bytes_to_base64url(passkey) for passkey in passkeys_bytes]
+            has_passkeys = UserPassKeys.objects.filter(user=user).exists()
         return MembershipTypeByEmailResponse(
             success=True,
             message="User already exists",
-            data=MemberType(type="RETURNING_USER", credentialIds=passkeys),
+            data=MemberType(type="RETURNING_USER", has_passkeys=has_passkeys),
             code=200,
         )
 
@@ -39,6 +35,6 @@ def membership_type_by_email(self, email: str) -> MembershipTypeByEmailResponse:
         return MembershipTypeByEmailResponse(
             success=True,
             message=parse_exception(e, "User does not exist"),
-            data=MemberType(type="NEW_USER", credentialIds=None),
+            data=MemberType(type="NEW_USER", has_passkeys=False),
             code=200,
         )
