@@ -14,7 +14,17 @@ const VariantDetail = ({}: VariantDetailType) => {
   const { data: uData } = useCurrentUser();
   const prefferedCity = uData?.city?.id;
   const { id } = useParams();
-  const [{ fetching, data }] = useQuery({ query: VARIANT_DETAIL, variables: { slug: id } });
+  const [{ fetching, data }] = useQuery({
+    query: VARIANT_DETAIL,
+    variables: {
+      slug: id,
+      contributions_where: {
+        status: {
+          _eq: 'AC',
+        },
+      },
+    },
+  });
 
   const variant = data?.variants?.[0];
   const specfications = variant?.specifications;

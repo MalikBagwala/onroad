@@ -36,6 +36,7 @@ function makeClient(navigate: NavigateFunction) {
           addAuthToOperation(operation) {
             const accessToken = getAccessToken();
             const opDefinition = operation.query.definitions[0] as any;
+            operation.context.url = `${operation.context.url}?op=${opDefinition.name.value}`;
             if (AUTH_OPERATIONS.includes(opDefinition?.name?.value)) return operation;
             if (!accessToken) return operation;
             return utils.appendHeaders(operation, {

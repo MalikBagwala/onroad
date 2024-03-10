@@ -77,29 +77,36 @@ select_permissions:
         - updated_at
         - upvotes
         - variant_id
-      filter: {}
+      filter:
+        _or:
+          - user_id:
+              _eq: X-Hasura-User-Id
+          - status:
+              _eq: AC
       allow_aggregations: true
     comment: ""
   - role: user
     permission:
       columns:
-        - dealership_name
-        - status
-        - quoted_on
-        - downvotes
-        - upvotes
-        - total
-        - remark
-        - created_at
-        - updated_at
         - city_id
         - color_id
+        - created_at
+        - dealership_name
+        - downvotes
         - id
-        - user_id
+        - quoted_on
+        - remark
+        - status
+        - total
+        - updated_at
+        - upvotes
         - variant_id
       filter:
-        user_id:
-          _eq: X-Hasura-User-Id
+        _or:
+          - user_id:
+              _eq: X-Hasura-User-Id
+          - status:
+              _eq: AC
       allow_aggregations: true
     comment: ""
 update_permissions:

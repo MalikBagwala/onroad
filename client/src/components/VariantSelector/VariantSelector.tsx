@@ -1,4 +1,3 @@
-import { CITIES } from '@/graphql/auth.gql';
 import { VARIANTS } from '@/graphql/variant.gql';
 import { Select, SelectProps } from '@mantine/core';
 import { useState } from 'react';

@@ -16,6 +16,11 @@ const VariantSearch = ({ ...props }: VariantSearchType) => {
     variables: {
       limit: 15,
       where: {
+        contributions: {
+          status: {
+            _eq: 'AC',
+          },
+        },
         ...(debouncedValue && {
           name: {
             _ilike: debouncedValue ? `%${debouncedValue}%` : '%%',
