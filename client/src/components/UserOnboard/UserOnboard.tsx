@@ -80,7 +80,7 @@ export const UserOnboard = () => {
         onSubmit={form.onSubmit(async (values) => {
           setLoading(true);
           const { data } = await client.query(MEMBERSHIP_TYPE, { email: values.email }).toPromise();
-          setMembershipType(data?.membershipTypeByEmail?.data as any);
+          if (data) setMembershipType(data.membershipTypeByEmail.data.type as any);
           setLoading(false);
         })}
       >
