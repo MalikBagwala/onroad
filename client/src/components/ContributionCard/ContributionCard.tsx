@@ -42,17 +42,23 @@ function ContributionCard({ variant }: ContributionCardType) {
         </Box>
 
         <Group justify="space-between" mt="md">
-          <div>
-            <Tooltip withArrow label={convertToInr(total, 0)}>
-              <Text fz="xl" span fw={600} className={classes.price}>
-                {convertToInr(total, 0, 'compact')}
+          {most_relevant_contribution ? (
+            <div>
+              <Tooltip withArrow label={convertToInr(total, 0)}>
+                <Text fz="xl" span fw={600} className={classes.price}>
+                  {convertToInr(total, 0, 'compact')}
+                </Text>
+              </Tooltip>
+              <Text span fz="sm" c="dimmed">
+                {' '}
+                / {most_relevant_contribution?.city?.name}
               </Text>
-            </Tooltip>
-            <Text span fz="sm" c="dimmed">
-              {' '}
-              / {most_relevant_contribution?.city?.name}
+            </div>
+          ) : (
+            <Text fz="xl" span fw={600} className={classes.price}>
+              Na
             </Text>
-          </div>
+          )}
 
           <Group>
             <Button component={Link} to={`/variants/${variant?.slug}`} radius="md">
