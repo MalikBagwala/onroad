@@ -178,7 +178,7 @@ const AddUpdateContribution = ({}: AddUpdateContributionType) => {
     });
     if (data?.insert_contributions_one?.id) {
       notifications.show({
-        title: 'Your Contribution has been added',
+        title: 'Your Contribution is added and waiting for approval!',
         message: 'Thank you for helping people make smarter decisions! 🧠💡',
         color: 'green',
       });

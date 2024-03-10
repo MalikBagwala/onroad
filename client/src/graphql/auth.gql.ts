@@ -41,7 +41,10 @@ export const MEMBERSHIP_TYPE = graphql(/* GraphQL */ `
   query membershipTypeByEmail($email: String!) {
     membershipTypeByEmail(email: $email) {
       message
-      data
+      data {
+        type
+        hasPasskeys
+      }
     }
   }
 `);
@@ -180,8 +183,8 @@ export const VERIFY_PASSKEY_REGISTERATION = graphql(/* GraphQL */ `
 `);
 
 export const PASSKEY_AUTH_OPTIONS = graphql(/* GraphQL */ `
-  mutation passkeyAuthOptions {
-    passkeyAuthOptions {
+  mutation passkeyAuthOptions($email: String) {
+    passkeyAuthOptions(email: $email) {
       code
       data
       message

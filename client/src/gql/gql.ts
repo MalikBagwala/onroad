@@ -14,7 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n  query currentUser {\n    users {\n      id\n      email\n      username\n      first_name\n      last_name\n      avatar\n      has_contributed\n      email_verified\n      google_id\n      passkeys {\n        id\n        credential_id\n        created_at\n        updated_at\n        description\n      }\n      tokens {\n        id\n        client\n        expires_at\n        created_at\n      }\n      city {\n        id\n        name\n        state {\n          id\n          name\n        }\n      }\n    }\n  }\n": types.CurrentUserDocument,
-    "\n  query membershipTypeByEmail($email: String!) {\n    membershipTypeByEmail(email: $email) {\n      message\n      data\n    }\n  }\n": types.MembershipTypeByEmailDocument,
+    "\n  query membershipTypeByEmail($email: String!) {\n    membershipTypeByEmail(email: $email) {\n      message\n      data {\n        type\n        hasPasskeys\n      }\n    }\n  }\n": types.MembershipTypeByEmailDocument,
     "\n  mutation login($email: String!, $password: String!) {\n    login(email: $email, password: $password) {\n      code\n      data {\n        accessToken\n        refreshToken\n      }\n      message\n    }\n  }\n": types.LoginDocument,
     "\n  mutation loginWithMagicLink($email: String!) {\n    loginWithMagicLink(email: $email) {\n      code\n      data\n      message\n    }\n  }\n": types.LoginWithMagicLinkDocument,
     "\n  mutation register($input: RegisterInput!) {\n    register(input: $input) {\n      data {\n        user {\n          id\n          email\n        }\n        tokens {\n          accessToken\n          refreshToken\n        }\n      }\n      success\n      message\n      errors\n    }\n  }\n": types.RegisterDocument,
@@ -25,7 +25,7 @@ const documents = {
     "\n  mutation forgotPasswordConfirm($input: ForgotPasswordConfirmInput!) {\n    forgotPasswordConfirm(input: $input) {\n      data {\n        accessToken\n        refreshToken\n      }\n      success\n      code\n      message\n    }\n  }\n": types.ForgotPasswordConfirmDocument,
     "\n  mutation passkeyRegisterOptions($name: String!) {\n    passkeyRegisterOptions(name: $name) {\n      data\n      code\n      message\n      success\n    }\n  }\n": types.PasskeyRegisterOptionsDocument,
     "\n  mutation passkeyRegisterVerify($credential: String!) {\n    passkeyRegisterVerify(credential: $credential) {\n      data {\n        passKey {\n          id\n          credentialId\n          userId\n        }\n        tokens {\n          accessToken\n          refreshToken\n        }\n      }\n      code\n      message\n      success\n    }\n  }\n": types.PasskeyRegisterVerifyDocument,
-    "\n  mutation passkeyAuthOptions {\n    passkeyAuthOptions {\n      code\n      data\n      message\n    }\n  }\n": types.PasskeyAuthOptionsDocument,
+    "\n  mutation passkeyAuthOptions($email: String) {\n    passkeyAuthOptions(email: $email) {\n      code\n      data\n      message\n    }\n  }\n": types.PasskeyAuthOptionsDocument,
     "\n  mutation passkeyAuthOptionsVerify($credential: String!, $credentialId: String!) {\n    passkeyAuthOptionsVerify(credential: $credential, credentialId: $credentialId) {\n      code\n      message\n      data {\n        accessToken\n        refreshToken\n      }\n    }\n  }\n": types.PasskeyAuthOptionsVerifyDocument,
     "\n  mutation delete_user_tokens($where: user_tokens_bool_exp!) {\n    delete_user_tokens(where: $where) {\n      returning {\n        id\n        client\n      }\n      affected_rows\n    }\n  }\n": types.Delete_User_TokensDocument,
     "\n  mutation delete_user_passkeys($where: user_passkeys_bool_exp!) {\n    delete_user_passkeys(where: $where) {\n      returning {\n        id\n        credential_id\n      }\n      affected_rows\n    }\n  }\n": types.Delete_User_PasskeysDocument,
@@ -69,7 +69,7 @@ export function graphql(source: "\n  query currentUser {\n    users {\n      id\
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query membershipTypeByEmail($email: String!) {\n    membershipTypeByEmail(email: $email) {\n      message\n      data\n    }\n  }\n"): (typeof documents)["\n  query membershipTypeByEmail($email: String!) {\n    membershipTypeByEmail(email: $email) {\n      message\n      data\n    }\n  }\n"];
+export function graphql(source: "\n  query membershipTypeByEmail($email: String!) {\n    membershipTypeByEmail(email: $email) {\n      message\n      data {\n        type\n        hasPasskeys\n      }\n    }\n  }\n"): (typeof documents)["\n  query membershipTypeByEmail($email: String!) {\n    membershipTypeByEmail(email: $email) {\n      message\n      data {\n        type\n        hasPasskeys\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -113,7 +113,7 @@ export function graphql(source: "\n  mutation passkeyRegisterVerify($credential:
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  mutation passkeyAuthOptions {\n    passkeyAuthOptions {\n      code\n      data\n      message\n    }\n  }\n"): (typeof documents)["\n  mutation passkeyAuthOptions {\n    passkeyAuthOptions {\n      code\n      data\n      message\n    }\n  }\n"];
+export function graphql(source: "\n  mutation passkeyAuthOptions($email: String) {\n    passkeyAuthOptions(email: $email) {\n      code\n      data\n      message\n    }\n  }\n"): (typeof documents)["\n  mutation passkeyAuthOptions($email: String) {\n    passkeyAuthOptions(email: $email) {\n      code\n      data\n      message\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
