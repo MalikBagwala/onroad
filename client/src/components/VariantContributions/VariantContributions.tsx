@@ -15,6 +15,9 @@ const VariantContributions = ({ variantId, excludeContributions }: VariantContri
     query: VARIANT_CONTRIBUTIONS,
     variables: {
       where: {
+        status: {
+          _eq: 'AC',
+        },
         variant_id: {
           _eq: variantId,
         },

@@ -199,9 +199,36 @@ class PriceItemAdmin(ImportExportModelAdmin):
 @admin.register(models.Contribution)
 class ContributionAdmin(ImportExportModelAdmin):
     search_fields = ("variant__name", "city__name")
-    list_display = ("user", "variant", "color", "city", "total", "upvotes", "downvotes")
+    list_display = (
+        "user",
+        "variant",
+        "color",
+        "city",
+        "total",
+        "upvotes",
+        "downvotes",
+        "status",
+    )
     list_filter = ("variant__name", "city__name")
     autocomplete_fields = ("user", "color", "variant", "city")
+    actions = (
+        "accept_contributions",
+        "reject_contributions",
+        "mark_contributions_as_pending",
+    )
+
+    @admin.action(description="✅ Accept Contributions")
+    def accept_contributions(self, _, queryset):
+        queryset.update(status=models.ContributionStatus.ACCEPTED)
+
+    @admin.action(description="❌ Reject Contributions")
+    def reject_contributions(self, _, queryset):
+        queryset.update(status=models.ContributionStatus.REJECTED)
+
+    @admin.action(description="⏱️ Mark Contributions as Pending")
+    def mark_contributions_as_pending(self, _, queryset):
+        queryset.update(status=models.ContributionStatus.PENDING)
+
     pass
 
 

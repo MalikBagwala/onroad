@@ -17,6 +17,11 @@ const VariantsList = ({}: VariantsListType) => {
   const [{ data, fetching }] = useQuery({
     query: VARIANTS_LIST,
     variables: {
+      contributions_where: {
+        status: {
+          _eq: 'AC',
+        },
+      },
       where: {
         contributions: {
           total: {

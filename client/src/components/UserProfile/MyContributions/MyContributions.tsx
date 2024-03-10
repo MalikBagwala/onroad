@@ -65,9 +65,27 @@ const MyContributions = ({}: MyContributionsType) => {
                 return (
                   <Card mb={'sm'} radius={'md'} bg={'gray.0'} key={contribution.id}>
                     <Flex justify={'space-between'}>
-                      <Pill bg="blue.0">
-                        {dayjs(contribution.created_at).format('MMMM DD, YYYY')}
-                      </Pill>
+                      <Flex gap={'xs'}>
+                        <Pill bg="blue.0">
+                          {dayjs(contribution.created_at).format('MMMM DD, YYYY')}
+                        </Pill>
+                        <Pill
+                          bg={
+                            contribution.status === 'AC'
+                              ? 'green.1'
+                              : contribution.status === 'RJ'
+                                ? 'red.1'
+                                : 'gray.2'
+                          }
+                        >
+                          {contribution.status === 'AC'
+                            ? 'Accepted'
+                            : contribution.status === 'RJ'
+                              ? 'Rejected'
+                              : 'Pending'}
+                        </Pill>
+                      </Flex>
+
                       <Vote
                         contributionId={contribution.id}
                         upvotes={contribution.upvotes}

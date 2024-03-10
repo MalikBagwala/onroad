@@ -75,9 +75,9 @@ class TransactionTypes(models.TextChoices):
 
 
 class ContributionStatus(models.TextChoices):
-    PENDING = "PD", _("Pending")
-    ACCEPTED = "AC", _("Accepted")
-    REJECTED = "RJ", _("Rejected")
+    PENDING = "PD", _("⏱️ Pending")
+    ACCEPTED = "AC", _("✅ Accepted")
+    REJECTED = "RJ", _("❌ Rejected")
 
 
 class AuthProvider(models.TextChoices):

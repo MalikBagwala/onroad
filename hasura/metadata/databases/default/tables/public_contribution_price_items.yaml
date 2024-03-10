@@ -46,7 +46,14 @@ select_permissions:
         - serial_no
         - updated_at
         - value
-      filter: {}
+      filter:
+        _or:
+          - contribution:
+              user_id:
+                _eq: X-Hasura-User-Id
+          - contribution:
+              status:
+                _eq: AC
     comment: ""
   - role: user
     permission:

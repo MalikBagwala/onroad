@@ -25,6 +25,7 @@ export const CONTRIBUTIONS = graphql(/* GraphQL */ `
       where: $where
     ) {
       id
+      status
       created_at
       updated_at
       quoted_on
@@ -75,6 +76,7 @@ export const CONTRIBUTIONS_BRIEF = graphql(/* GraphQL */ `
       where: $where
     ) {
       id
+      status
       created_at
       upvotes
       downvotes
@@ -98,6 +100,7 @@ export const ADD_UPDATE_CONTRIBUTION = graphql(/* GraphQL */ `
   ) {
     insert_contributions_one(object: $object, on_conflict: $on_conflict) {
       id
+      status
       created_at
       updated_at
       quoted_on
