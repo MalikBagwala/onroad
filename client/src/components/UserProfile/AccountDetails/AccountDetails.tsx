@@ -17,6 +17,7 @@ import {
   Stack,
   Text,
   TextInput,
+  Tooltip,
 } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { startRegistration } from '@simplewebauthn/browser';
@@ -69,7 +70,9 @@ const AccountDetails = ({}: AccountDetailsType) => {
                 }}
                 variant="white"
               >
-                <IconEdit />
+                <Tooltip withArrow label="Change Password">
+                  <IconEdit />
+                </Tooltip>
               </ActionIcon>
             }
           />
