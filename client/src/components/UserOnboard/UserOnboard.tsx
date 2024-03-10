@@ -1,3 +1,4 @@
+import { MemberType } from '@/gql/graphql';
 import { MEMBERSHIP_TYPE } from '@/graphql/auth.gql';
 import signinWithGoogleLink from '@/utils/signinWithGoogleLink';
 import { Button, Divider, TextInput } from '@mantine/core';
@@ -6,7 +7,6 @@ import { useState } from 'react';
 import { useClient } from 'urql';
 import NewUser from '../NewUser/NewUser';
 import ReturningUser from '../ReturningUser/ReturningUser';
-import LoginWithPasskey from './LoginWithPasskey';
 import UserOnboardWrapper from './UserOnboardWrapper';
 
 export const UserOnboard = () => {
@@ -20,7 +20,7 @@ export const UserOnboard = () => {
     },
   });
 
-  const [membershipType, setMembershipType] = useState<null | 'NEW_USER' | 'RETURNING_USER'>(null);
+  const [membershipType, setMembershipType] = useState<MemberType | null>(null);
   const [loading, setLoading] = useState(false);
 
   function handleAbort() {
@@ -28,11 +28,17 @@ export const UserOnboard = () => {
     setMembershipType(null);
   }
 
-  if (membershipType === 'RETURNING_USER') {
-    return <ReturningUser email={form.values.email} abort={handleAbort} />;
+  if (membershipType?.type === 'RETURNING_USER') {
+    return (
+      <ReturningUser
+        email={form.values.email}
+        abort={handleAbort}
+        hasPasskeys={membershipType.hasPasskeys}
+      />
+    );
   }
 
-  if (membershipType === 'NEW_USER') {
+  if (membershipType?.type === 'NEW_USER') {
     return <NewUser email={form.values.email} abort={handleAbort} />;
   }
   return (
@@ -74,13 +80,12 @@ export const UserOnboard = () => {
       >
         Continue with Google
       </Button>
-      <LoginWithPasskey />
       <Divider label="or" />
       <form
         onSubmit={form.onSubmit(async (values) => {
           setLoading(true);
           const { data } = await client.query(MEMBERSHIP_TYPE, { email: values.email }).toPromise();
-          if (data) setMembershipType(data.membershipTypeByEmail.data.type as any);
+          if (data) setMembershipType(data.membershipTypeByEmail.data);
           setLoading(false);
         })}
       >
