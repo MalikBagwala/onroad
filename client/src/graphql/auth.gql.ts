@@ -183,8 +183,8 @@ export const VERIFY_PASSKEY_REGISTERATION = graphql(/* GraphQL */ `
 `);
 
 export const PASSKEY_AUTH_OPTIONS = graphql(/* GraphQL */ `
-  mutation passkeyAuthOptions {
-    passkeyAuthOptions {
+  mutation passkeyAuthOptions($email: String) {
+    passkeyAuthOptions(email: $email) {
       code
       data
       message
