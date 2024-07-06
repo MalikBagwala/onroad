@@ -272,4 +272,5 @@ pyrightconfig.json
 *.crt
 *.key
 
+prod/*.env*
 # Node Modules
