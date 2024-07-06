@@ -8,39 +8,41 @@ stages:
       if: $CI_COMMIT_TAG =~ /^v\d+-beta$/
       variables:
         ENVIRONMENT: "staging"
-        ENVIRONMENT_URL: "https://staging.onroad.one"
         APP_VERSION: $CI_COMMIT_TAG
     - &prod_tag
       if: $CI_COMMIT_TAG =~ /^v\d+$/
       variables:
         ENVIRONMENT: "production"
-        ENVIRONMENT_URL: "https://onroad.one"
         APP_VERSION: $CI_COMMIT_TAG
 
-# dockerize:
-#   stage: dockerize
-#   image: docker:25
-#   services:
-#     - docker:25-dind
-#   environment:
-#     name: $ENVIRONMENT
-#     url: $ENVIRONMENT_URL
-#   variables:
-#     # Extra slash '/' is needed properly append the project path see docker-compose.yml
-#     REGISTRY_PATH: $CI_REGISTRY/$CI_PROJECT_PATH/
-#     VERSION: $CI_ENVIRONMENT_SLUG
-#     COMMIT_REF: $CI_COMMIT_TAG
-#   script:
-#     - export REGISTRY_PATH=$(echo "$REGISTRY_PATH" | tr '[:upper:]' '[:lower:]')
-#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-#     - docker compose build
-#     - docker compose push
-#   rules:
-#     - *staging_tag
-#     - *prod_tag
+dockerize:
+  stage: dockerize
+  image: docker:25
+  services:
+    - docker:25-dind
+  environment:
+    name: $ENVIRONMENT
+    url: $ENVIRONMENT_URL
+  variables:
+    # Extra slash '/' is needed properly append the project path see docker-compose.yml
+    REGISTRY_PATH: $CI_REGISTRY/$CI_PROJECT_PATH/
+    VERSION: $CI_ENVIRONMENT_SLUG
+    COMMIT_REF: $CI_COMMIT_TAG
+  script:
+    - mv $ENV_FILE ./.env
+    - export REGISTRY_PATH=$(echo "$REGISTRY_PATH" | tr '[:upper:]' '[:lower:]')
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker compose build
+    - docker compose push
+  rules:
+    - *staging_tag
+    - *prod_tag
 
 deploy:
   stage: deploy
+  image: docker:25
+  services:
+    - docker:25-dind
   environment:
     name: $ENVIRONMENT
     url: $ENVIRONMENT_URL
@@ -50,10 +52,10 @@ deploy:
     - eval $(ssh-agent -s)
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
+    - mv $ENV_FILE ./prod/.env
     - ssh-add <(echo "$SSH_PRIVATE_KEY" | tr -d '\r')
-    - ssh root@$DROPLET_IP "mkdir -p /backups && cp onroad/.env /backups/.env.$(date +%s).bak"
-    - scp $ENV_FILE root@$DROPLET_IP:/root/onroad/.env
-    - ssh root@$DROPLET_IP "cd onroad && git fetch && git checkout $CI_COMMIT_TAG && bash docker_deploy.sh"
+    - cd prod
+    - sh docker_deploy.sh
   rules:
     - *staging_tag
     - *prod_tag

@@ -4,15 +4,6 @@ services:
   client:
     image: ${REGISTRY_PATH}client:${VERSION:-latest}
     container_name: or_client
-    build:
-      context: ./client
-      dockerfile: Dockerfile.client
-      tags:
-        - ${REGISTRY_PATH}client:${COMMIT_REF:-latest}
-      args:
-        - API_DOMAIN=${DOMAIN_NAME}
-        - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
-        - SENTRY_AUTH_TOKEN_ARG=${SENTRY_AUTH_TOKEN}
     restart: unless-stopped
     depends_on:
       - django
@@ -24,10 +15,6 @@ services:
   django:
     image: ${REGISTRY_PATH}api:${VERSION:-latest}
     container_name: or_django
-    build:
-      dockerfile: ./Dockerfile.api
-      tags:
-        - ${REGISTRY_PATH}api:${COMMIT_REF:-latest}
     restart: unless-stopped
     env_file:
       - path: ./.env
@@ -46,10 +33,6 @@ services:
   worker:
     image: ${REGISTRY_PATH}api:${VERSION:-latest}
     container_name: or_worker
-    build:
-      dockerfile: ./Dockerfile.api
-      tags:
-        - ${REGISTRY_PATH}api:${COMMIT_REF:-latest}
     command: python manage.py rundramatiq
     restart: unless-stopped
     env_file:
@@ -68,16 +51,9 @@ services:
   caddy:
     image: ${REGISTRY_PATH}caddy:${VERSION:-latest}
     restart: unless-stopped
-    build:
-      context: ./caddy
-      dockerfile: Dockerfile.caddy
-      tags:
-        - ${REGISTRY_PATH}caddy:${COMMIT_REF:-latest}
     volumes:
       - caddy_data:/data
       - caddy_config:/config
-      - ./caddy/cert.crt:/etc/pki/tls/certs/cert.crt
-      - ./caddy/cert.key:/etc/pki/tls/private/cert.key
     environment:
       - DOMAIN_NAME=${DOMAIN_NAME}
       - TLS=${TLS}
@@ -91,8 +67,9 @@ services:
       - caddy_network
 
   db:
-    image: postgis/postgis:16-master
+    image: postgres:16
     container_name: or_database
+    restart: unless-stopped
     volumes:
       - postgres:/var/lib/postgresql/data
     environment:
@@ -105,7 +82,7 @@ services:
   rabbitmq:
     image: rabbitmq:3-management
     container_name: or_rabbitmq
-    restart: always
+    restart: unless-stopped
     volumes:
       - rabbitmq:/var/lib/rabbitmq
     environment:
@@ -119,11 +96,6 @@ services:
   hasura:
     image: ${REGISTRY_PATH}hasura:${VERSION:-latest}
     container_name: or_hasura
-    build:
-      context: ./hasura
-      dockerfile: Dockerfile.hasura
-      tags:
-        - ${REGISTRY_PATH}hasura:${COMMIT_REF:-latest}
     restart: unless-stopped
     depends_on:
       - "db"
