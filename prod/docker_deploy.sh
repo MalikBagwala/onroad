@@ -11,5 +11,8 @@ docker login -u $GITLAB_TOKEN_USERNAME -p $GITLAB_TOKEN_PASSWORD registry.gitlab
 # Pull Latest Images
 docker compose -f ./production-compose.yml pull
 
+# Deploy only database
+# docker compose -f ./production-compose.yml --env-file ./.env up -d --remove-orphans db
+
 # Deploy
 docker compose -f ./production-compose.yml --env-file ./.env up -d --remove-orphans && sleep 5 && docker compose -f ./production-compose.yml restart hasura
