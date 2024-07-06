@@ -175,7 +175,7 @@ WSGI_APPLICATION = "onroad.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.contrib.gis.db.backends.postgis",
+        "ENGINE": os.getenv("POSTGRES_ENGINE", "django.db.backends.postgresql"),
         "NAME": os.getenv("POSTGRES_DB"),
         "USER": os.getenv("POSTGRES_USER"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),

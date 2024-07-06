@@ -89,7 +89,7 @@ services:
       - caddy_network
 
   db:
-    image: postgis/postgis:16-master
+    image: postgres:16
     container_name: or_database
     volumes:
       - postgres:/var/lib/postgresql/data
