@@ -146,56 +146,6 @@ services:
       - postgres_network
       - caddy_network
 
-  mail:
-    container_name: or_plausible_mail
-    image: bytemark/smtp
-    restart: always
-    networks:
-      - plausible_network
-
-  plausible_db:
-    container_name: or_plausible_postgres
-    image: postgres:14-alpine
-    restart: unless-stopped
-    volumes:
-      - plausible_postgres:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_PASSWORD=${PLAUSIBLE_POSTGRES_PASSWORD}
-    networks:
-      - plausible_network
-
-  plausible_events_db:
-    container_name: or_plausible_clickhouse
-    image: clickhouse/clickhouse-server:23.3.7.5-alpine
-    restart: unless-stopped
-    volumes:
-      - plausible_clickhouse:/var/lib/clickhouse
-      - ./plausible/clickhouse-config.xml:/etc/clickhouse-server/config.d/logging.xml:ro
-      - ./plausible/clickhouse-user-config.xml:/etc/clickhouse-server/users.d/logging.xml:ro
-    ulimits:
-      nofile:
-        soft: 262144
-        hard: 262144
-    networks:
-      - plausible_network
-
-  plausible:
-    container_name: or_plausible
-    image: plausible/analytics:v2.0
-    restart: unless-stopped
-    command: sh -c "sleep 10 && /entrypoint.sh db createdb && /entrypoint.sh db migrate && /entrypoint.sh run"
-    depends_on:
-      - plausible_db
-      - plausible_events_db
-      - mail
-      - caddy
-    environment:
-      - BASE_URL=${PLAUSIBLE_BASE_URL}
-      - SECRET_KEY_BASE=${PLAUSIBLE_SECRET_KEY_BASE}
-    networks:
-      - plausible_network
-      - caddy_network
-
   redis:
     image: redis:7-alpine
     container_name: or_redis
@@ -226,14 +176,10 @@ networks:
     driver: bridge
   rabbitmq_network:
     driver: bridge
-  plausible_network:
-    driver: bridge
 
 volumes:
   postgres:
   rabbitmq:
   caddy_data:
   caddy_config:
-  plausible_postgres:
-  plausible_clickhouse:
   redis:

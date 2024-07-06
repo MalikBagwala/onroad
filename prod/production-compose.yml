@@ -2,19 +2,9 @@ version: "3.9"
 
 services:
   client:
-    image: onroadclient:dev
-    container_name: or_client_dev
-    build:
-      context: ./client
-      dockerfile: Dockerfile.client.dev
+    image: ${REGISTRY_PATH}client:${VERSION:-latest}
+    container_name: or_client
     restart: unless-stopped
-    volumes:
-      - ./client:/app
-      - /app/node_modules/
-    environment:
-      SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN}
-      VITE_API_DOMAIN: ${DOMAIN_NAME}
-      VITE_GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
     depends_on:
       - django
       - hasura
@@ -23,16 +13,12 @@ services:
       - caddy_network
 
   django:
-    image: onroadapi:dev
-    container_name: or_django_dev
-    build:
-      dockerfile: ./Dockerfile.api.dev
+    image: ${REGISTRY_PATH}api:${VERSION:-latest}
+    container_name: or_django
     restart: unless-stopped
-    volumes:
-      - ./caddy/static:/app/static
-      - .:/app
     env_file:
-      - ./.env
+      - path: ./.env
+        required: false
     environment:
       - POSTGRES_HOST=db
     depends_on:
@@ -45,16 +31,13 @@ services:
       - redis_network
 
   worker:
-    image: onroadapi:dev
-    container_name: or_worker_dev
-    build:
-      dockerfile: ./Dockerfile.api.dev
+    image: ${REGISTRY_PATH}api:${VERSION:-latest}
+    container_name: or_worker
     command: python manage.py rundramatiq
     restart: unless-stopped
-    volumes:
-      - .:/app
     env_file:
-      - ./.env
+      - path: ./.env
+        required: false
     environment:
       - POSTGRES_HOST=db
     depends_on:
@@ -66,22 +49,17 @@ services:
       - caddy_network
 
   caddy:
-    restart: always
-    image: onroadcaddy:dev
-    build:
-      context: ./caddy
-      dockerfile: Dockerfile.caddy
+    image: ${REGISTRY_PATH}caddy:${VERSION:-latest}
+    restart: unless-stopped
     volumes:
       - caddy_data:/data
       - caddy_config:/config
-      - ./caddy/cert.crt:/etc/pki/tls/certs/cert.crt
-      - ./caddy/cert.key:/etc/pki/tls/private/cert.key
     environment:
       - DOMAIN_NAME=${DOMAIN_NAME}
       - TLS=${TLS}
       - TLS_KEY=${TLS_KEY}
       - RATE_LIMIT=${RATE_LIMIT}
-    container_name: or_caddy_dev
+    container_name: or_caddy
     ports:
       - "80:80"
       - "443:443"
@@ -91,6 +69,7 @@ services:
   db:
     image: postgres:16
     container_name: or_database
+    restart: unless-stopped
     volumes:
       - postgres:/var/lib/postgresql/data
     environment:
@@ -103,7 +82,7 @@ services:
   rabbitmq:
     image: rabbitmq:3-management
     container_name: or_rabbitmq
-    restart: always
+    restart: unless-stopped
     volumes:
       - rabbitmq:/var/lib/rabbitmq
     environment:
@@ -115,14 +94,9 @@ services:
       - caddy_network
 
   hasura:
-    image: onroadhasura:dev
-    build:
-      context: ./hasura
-      dockerfile: Dockerfile.hasura
+    image: ${REGISTRY_PATH}hasura:${VERSION:-latest}
+    container_name: or_hasura
     restart: unless-stopped
-    volumes:
-      - ./hasura/migrations:/hasura-migrations
-      - ./hasura/metadata:/hasura-metadata
     depends_on:
       - "db"
       - "django"
@@ -130,14 +104,16 @@ services:
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
-      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_DEV_MODE: "false"
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
       HASURA_GRAPHQL_JWT_SECRET: '{"type":"HS256","key":"${JWT_SECRET_KEY}","claims_namespace":"user_claims","claims_format":"json"}'
       HASURA_GRAPHQL_UNAUTHORIZED_ROLE: "anonymous"
       HASURA_GRAPHQL_MIGRATIONS_SERVER_TIMEOUT: 120
-      HASURA_GRAPHQL_CORS_DOMAIN: "*"
+      HASURA_GRAPHQL_CORS_DOMAIN: ${CSRF_TRUSTED_ORIGINS}
       API_HOST: "http://django:9000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - postgres_network
       - caddy_network
