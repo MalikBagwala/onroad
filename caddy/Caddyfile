@@ -41,10 +41,3 @@
 		reverse_proxy client:5000
 	}
 }
-
-analytics.{$DOMAIN_NAME} {
-	tls {$TLS} {$TLS_KEY}
-	handle_path /* {
-		reverse_proxy plausible:8000
-	}
-}
