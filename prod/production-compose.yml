@@ -10,7 +10,7 @@ services:
       - hasura
       - caddy
     networks:
-      - caddy_network
+      - or_caddy_network
 
   django:
     image: ${REGISTRY_PATH}api:${VERSION:-latest}
@@ -25,10 +25,10 @@ services:
       - db
       - caddy
     networks:
-      - postgres_network
-      - caddy_network
-      - rabbitmq_network
-      - redis_network
+      - or_postgres_network
+      - or_caddy_network
+      - or_rabbitmq_network
+      - or_redis_network
 
   worker:
     image: ${REGISTRY_PATH}api:${VERSION:-latest}
@@ -44,16 +44,16 @@ services:
       - db
       - rabbitmq
     networks:
-      - rabbitmq_network
-      - postgres_network
-      - caddy_network
+      - or_rabbitmq_network
+      - or_postgres_network
+      - or_caddy_network
 
   caddy:
     image: ${REGISTRY_PATH}caddy:${VERSION:-latest}
     restart: unless-stopped
     volumes:
-      - caddy_data:/data
-      - caddy_config:/config
+      - or_caddy_data:/data
+      - or_caddy_config:/config
     environment:
       - DOMAIN_NAME=${DOMAIN_NAME}
       - TLS=${TLS}
@@ -64,34 +64,34 @@ services:
       - "80:80"
       - "443:443"
     networks:
-      - caddy_network
+      - or_caddy_network
 
   db:
     image: postgres:16
     container_name: or_database
     restart: unless-stopped
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - or_postgres:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     networks:
-      - postgres_network
+      - or_postgres_network
 
   rabbitmq:
     image: rabbitmq:3-management
     container_name: or_rabbitmq
     restart: unless-stopped
     volumes:
-      - rabbitmq:/var/lib/rabbitmq
+      - or_rabbitmq:/var/lib/rabbitmq
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
       RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_DEFAULT_VHOST}
     networks:
-      - rabbitmq_network
-      - caddy_network
+      - or_rabbitmq_network
+      - or_caddy_network
 
   hasura:
     image: ${REGISTRY_PATH}hasura:${VERSION:-latest}
@@ -115,17 +115,17 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks:
-      - postgres_network
-      - caddy_network
+      - or_postgres_network
+      - or_caddy_network
 
   redis:
     image: redis:7-alpine
     container_name: or_redis
     restart: unless-stopped
     volumes:
-      - redis:/data
+      - or_redis:/data
     networks:
-      - redis_network
+      - or_redis_network
 
   redis-commander:
     image: rediscommander/redis-commander:latest
@@ -136,22 +136,22 @@ services:
       HTTP_USER: ${REDIS_COMMANDER_USER}
       HTTP_PASSWORD: ${REDIS_COMMANDER_PASSWORD}
     networks:
-      - caddy_network
-      - redis_network
+      - or_caddy_network
+      - or_redis_network
 
 networks:
-  caddy_network:
+  or_caddy_network:
     driver: bridge
-  redis_network:
+  or_redis_network:
     driver: bridge
-  postgres_network:
+  or_postgres_network:
     driver: bridge
-  rabbitmq_network:
+  or_rabbitmq_network:
     driver: bridge
 
 volumes:
-  postgres:
-  rabbitmq:
-  caddy_data:
-  caddy_config:
-  redis:
+  or_postgres:
+  or_rabbitmq:
+  or_caddy_data:
+  or_caddy_config:
+  or_redis:
