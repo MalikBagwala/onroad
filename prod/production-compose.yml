@@ -1,7 +1,7 @@
 version: "3.9"
 
 services:
-  client:
+  or_client:
     image: ${REGISTRY_PATH}client:${VERSION:-latest}
     container_name: or_client
     restart: unless-stopped
@@ -12,7 +12,7 @@ services:
     networks:
       - or_caddy_network
 
-  django:
+  or_django:
     image: ${REGISTRY_PATH}api:${VERSION:-latest}
     container_name: or_django
     restart: unless-stopped
@@ -30,7 +30,7 @@ services:
       - or_rabbitmq_network
       - or_redis_network
 
-  worker:
+  or_worker:
     image: ${REGISTRY_PATH}api:${VERSION:-latest}
     container_name: or_worker
     command: python manage.py rundramatiq
@@ -48,7 +48,7 @@ services:
       - or_postgres_network
       - or_caddy_network
 
-  caddy:
+  or_caddy:
     image: ${REGISTRY_PATH}caddy:${VERSION:-latest}
     restart: unless-stopped
     volumes:
@@ -66,7 +66,7 @@ services:
     networks:
       - or_caddy_network
 
-  db:
+  or_db:
     image: postgres:16
     container_name: or_database
     restart: unless-stopped
@@ -79,7 +79,7 @@ services:
     networks:
       - or_postgres_network
 
-  rabbitmq:
+  or_rabbitmq:
     image: rabbitmq:3-management
     container_name: or_rabbitmq
     restart: unless-stopped
@@ -93,7 +93,7 @@ services:
       - or_rabbitmq_network
       - or_caddy_network
 
-  hasura:
+  or_hasura:
     image: ${REGISTRY_PATH}hasura:${VERSION:-latest}
     container_name: or_hasura
     restart: unless-stopped
@@ -118,7 +118,7 @@ services:
       - or_postgres_network
       - or_caddy_network
 
-  redis:
+  or_redis:
     image: redis:7-alpine
     container_name: or_redis
     restart: unless-stopped
@@ -127,7 +127,7 @@ services:
     networks:
       - or_redis_network
 
-  redis-commander:
+  or_redis_commander:
     image: rediscommander/redis-commander:latest
     container_name: or_redis_commander
     restart: unless-stopped

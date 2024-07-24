@@ -11,7 +11,7 @@
 	# Django API
 	route /api/* {
 		rate_limit * {remote.ip} {$RATE_LIMIT}
-		reverse_proxy django:9000
+		reverse_proxy or_django:9000
 	}
 
 	# Hasura
@@ -19,25 +19,25 @@
 	route /hasura/* {
 		uri strip_prefix /hasura
 		rate_limit * {remote.ip} {$RATE_LIMIT}
-		reverse_proxy hasura:8080
+		reverse_proxy or_hasura:8080
 	}
 
 	# Rabbit MQ Management
 	redir /rabbitmq /rabbitmq/ 301
 	route /rabbitmq/* {
 		uri strip_prefix /rabbitmq
-		reverse_proxy rabbitmq:15672
+		reverse_proxy or_rabbitmq:15672
 	}
 
 	# Redis Commander
 	redir /redis /redis/ 301
 	route /redis/* {
 		uri strip_prefix /redis
-		reverse_proxy redis-commander:8081
+		reverse_proxy or_redis_commander:8081
 	}
 
 	# Main Web Application (Client)
 	route /* {
-		reverse_proxy client:5000
+		reverse_proxy or_client:5000
 	}
 }
