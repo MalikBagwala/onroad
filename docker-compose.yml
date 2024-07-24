@@ -85,8 +85,8 @@ services:
       - RATE_LIMIT=${RATE_LIMIT}
     container_name: or_caddy
     ports:
-      - "80:80"
-      - "443:443"
+      - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
     networks:
       - caddy_network
 
